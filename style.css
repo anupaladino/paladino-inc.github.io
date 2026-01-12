@@ -1,0 +1,108 @@
+:root{
+  --pad: 60px;
+  --max: 1200px;
+
+  --text: #0a0a0a;
+  --bg: #ffffff;
+}
+
+*{ box-sizing: border-box; }
+html, body{ height: 100%; }
+
+body{
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Work Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
+  /* keeps it clean/neutral, matches your slide feel */
+  letter-spacing: 0.02em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.page{
+  min-height: 100svh;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: var(--pad);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.header{
+  display: flex;
+  align-items: flex-start;
+}
+
+.brand{
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.brand__logo{
+  height: 28px;
+  width: auto;
+  display: block;
+}
+
+.content{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 22px;
+}
+
+/* Headline */
+.headline{
+  margin: 0;
+  font-weight: 700;
+  font-size: clamp(28px, 4vw, 56px);
+  line-height: 1.05;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Subheadline */
+.subhead{
+  margin: 0;
+  font-weight: 400;
+  font-size: clamp(16px, 2.1vw, 26px);
+  line-height: 1.25;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.footer{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.link{
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  width: fit-content;
+  font-size: 14px;
+}
+
+/* Accessibility + niceness */
+.link:focus-visible,
+.brand:focus-visible{
+  outline: 2px solid var(--text);
+  outline-offset: 4px;
+}
+
+/* Mobile: keeps the spirit, adapts spacing */
+@media (max-width: 720px){
+  :root{ --pad: 28px; }
+  .brand__logo{ height: 24px; }
+  .footer{ gap: 12px; }
+  .link{ font-size: 13px; }
+}
