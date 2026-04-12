@@ -13,14 +13,13 @@ body{
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: "Work Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 
-  /* keeps it clean/neutral, matches your slide feel */
-  letter-spacing: 0.02em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Layout */
 .page{
   min-height: 100svh;
   max-width: var(--max);
@@ -30,6 +29,7 @@ body{
   grid-template-rows: auto 1fr auto;
 }
 
+/* Header */
 .header{
   display: flex;
   align-items: flex-start;
@@ -48,6 +48,7 @@ body{
   display: block;
 }
 
+/* Content */
 .content{
   display: flex;
   flex-direction: column;
@@ -60,46 +61,48 @@ body{
   margin: 0;
   font-weight: 700;
   font-size: clamp(28px, 4vw, 56px);
-  line-height: 1.05;
-  letter-spacing: 0.06em;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
 }
 
 /* Subheadline */
 .subhead{
   margin: 0;
-  font-weight: 400;
+  font-weight: 500;
   font-size: clamp(16px, 2.1vw, 26px);
-  line-height: 1.25;
-  letter-spacing: 0.14em;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
+/* Footer */
 .footer{
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
+/* Links */
 .link{
   color: var(--text);
   text-decoration: underline;
   text-underline-offset: 3px;
-  font-weight: 400;
-  letter-spacing: 0.12em;
+  font-weight: 500;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   width: fit-content;
   font-size: 14px;
 }
 
-/* Accessibility + niceness */
+/* Focus states */
 .link:focus-visible,
 .brand:focus-visible{
   outline: 2px solid var(--text);
   outline-offset: 4px;
 }
 
-/* Mobile: keeps the spirit, adapts spacing */
+/* Mobile */
 @media (max-width: 720px){
   :root{ --pad: 28px; }
   .brand__logo{ height: 24px; }
