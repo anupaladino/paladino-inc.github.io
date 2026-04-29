@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paladino × Galo Cinza — Kick-off</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #1A1A18;
+  --white: #F8F7F4;
+  --off: #F0EEE9;
+  --mid: #E2DED7;
+  --subtle: #A8A49C;
+  --ink: #5C5850;
+  --warm: #8B6F47;
+  --W: 1280px;
+  --H: 720px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+/* MOBILE WARNING */
+.mobile-warning {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #1A1A18;
+  z-index: 9999;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 32px;
+  text-align: center;
+}
+.mobile-warning svg { margin-bottom: 28px; opacity: .4; }
+.mobile-warning .mw-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.3);
+  margin-bottom: 16px;
+}
+.mobile-warning h2 {
+  font-size: 26px;
+  font-weight: 500;
+  color: #F8F7F4;
+  line-height: 1.1;
+  letter-spacing: -.02em;
+  margin-bottom: 16px;
+}
+.mobile-warning p {
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(255,255,255,.45);
+  line-height: 1.65;
+  max-width: 280px;
+}
+.mobile-warning .mw-divider {
+  width: 32px;
+  height: 1px;
+  background: rgba(255,255,255,.12);
+  margin: 24px auto;
+}
+.mobile-warning .mw-contact {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255,255,255,.25);
+  letter-spacing: .03em;
+}
+@media (max-width: 900px) {
+  .mobile-warning { display: flex; }
+  .nav { display: none; }
+}
+
+body {
+  font-family: "DM Sans", sans-serif;
+  background: #C8C5BE;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 20px;
+  gap: 20px;
+}
+
+/* NAV */
+.nav {
+  position: fixed; top: 18px; right: 22px; z-index: 200;
+  display: flex; gap: 6px; align-items: center;
+  background: rgba(26,26,24,.10); backdrop-filter: blur(10px);
+  padding: 7px 14px; border-radius: 100px;
+}
+.nav button {
+  background: none; border: none; cursor: pointer;
+  font-family: "DM Sans", sans-serif; font-size: 13px; font-weight: 500;
+  color: var(--black); padding: 3px 8px; border-radius: 5px; transition: background .15s;
+}
+.nav button:hover { background: rgba(26,26,24,.08); }
+.nav .ctr { font-size: 11px; color: var(--ink); width: 44px; text-align: center; letter-spacing: .03em; }
+
+/* SLIDE */
+.slide {
+  width: var(--W); height: var(--H);
+  background: var(--white);
+  position: relative; overflow: hidden; flex-shrink: 0;
+  display: none; animation: fu .25s ease;
+}
+.slide.active { display: flex; }
+@keyframes fu { from { opacity:.7; transform: translateY(6px); } to { opacity:1; transform: translateY(0); } }
+
+/* LAYOUT */
+.si { width:100%; height:100%; display:flex; flex-direction:column; padding: 52px 64px 68px; }
+.g2 { display: grid; grid-template-columns: 1fr 1fr; padding: 0; }
+.gc { padding: 52px 64px 68px; display: flex; flex-direction: column; }
+.gl { border-right: 1px solid var(--mid); }
+
+/* CHROME */
+.sh { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 44px; }
+.sl { font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--subtle); }
+.sn { font-size: 10px; color: var(--subtle); letter-spacing: .05em; }
+
+/* FOOTER */
+.bb {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 50px;
+  border-top: 1px solid var(--mid);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 64px; background: var(--white);
+}
+.bb span { font-size: 11px; color: var(--subtle); letter-spacing: .03em; }
+.bb svg { height: 13px; width: auto; display: block; }
+.dk .bb { background: var(--black); border-color: rgba(255,255,255,.08); }
+.dk .bb span { color: rgba(255,255,255,.25); }
+
+/* TYPE */
+h1 { font-size: 72px; font-weight: 500; line-height: .95; letter-spacing: -.03em; color: var(--black); }
+h2 { font-size: 44px; font-weight: 500; line-height: 1.0; letter-spacing: -.025em; color: var(--black); }
+h3 { font-size: 24px; font-weight: 500; line-height: 1.15; letter-spacing: -.01em; color: var(--black); }
+h4 { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--subtle); margin-bottom: 18px; }
+p { font-size: 15px; font-weight: 300; line-height: 1.65; color: var(--ink); }
+p.lg { font-size: 20px; font-weight: 300; line-height: 1.5; color: var(--black); }
+p.sm { font-size: 13px; font-weight: 300; line-height: 1.6; color: var(--ink); }
+strong { font-weight: 500; color: var(--black); }
+
+/* DARK */
+.dk { background: var(--black) !important; }
+.dk .sl, .dk .sn { color: rgba(255,255,255,.28) !important; }
+.dk h1, .dk h2, .dk h3 { color: var(--white) !important; }
+.dk p, .dk p.lg, .dk p.sm { color: rgba(255,255,255,.5) !important; }
+.dk h4 { color: rgba(255,255,255,.35) !important; }
+.dk strong { color: var(--white) !important; }
+.dk .div { background: rgba(255,255,255,.1) !important; }
+
+/* COMPONENTS */
+.tag { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; padding: 4px 10px; border: 1px solid var(--mid); border-radius: 100px; color: var(--ink); }
+.tag.bk { border-color: var(--black); color: var(--black); }
+.tag.wh { border-color: rgba(255,255,255,.3); color: rgba(255,255,255,.6); }
+.div { width: 36px; height: 1px; background: var(--mid); margin: 24px 0; }
+
+/* 4-STAGE MACRO */
+.macro { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--mid); border: 1px solid var(--mid); margin-top: 20px; }
+.mc { background: var(--white); padding: 22px 20px; }
+.mc.act { background: var(--black); }
+.mc .mn { font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 10px; color: var(--subtle); }
+.mc.act .mn { color: rgba(255,255,255,.35); }
+.mc .mt { font-size: 16px; font-weight: 500; line-height: 1.2; margin-bottom: 8px; color: var(--black); }
+.mc.act .mt { color: white; }
+.mc .md { font-size: 12px; font-weight: 300; line-height: 1.55; color: var(--ink); }
+.mc.act .md { color: rgba(255,255,255,.55); }
+.mc .d4 { font-size: 10px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; margin-top: 12px; color: var(--subtle); }
+.mc.act .d4 { color: rgba(255,255,255,.3); }
+
+/* TESE / ANTÍTESE / SÍNTESE FLOW */
+.flow { display: flex; gap: 0; margin-top: 20px; }
+.fb { flex: 1; padding: 24px 22px; border: 1px solid var(--mid); border-right: none; position: relative; }
+.fb:last-child { border-right: 1px solid var(--mid); }
+.fb.hi { background: var(--black); border-color: var(--black); }
+.fb .fn { font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 10px; color: var(--subtle); }
+.fb.hi .fn { color: rgba(255,255,255,.35); }
+.fb .ft { font-size: 18px; font-weight: 500; margin-bottom: 8px; color: var(--black); letter-spacing: -.01em; }
+.fb.hi .ft { color: white; }
+.fb .fd { font-size: 13px; font-weight: 300; line-height: 1.5; color: var(--ink); }
+.fb.hi .fd { color: rgba(255,255,255,.55); }
+.fb .arrow { position: absolute; right: -13px; top: 50%; transform: translateY(-50%); width: 25px; height: 25px; background: var(--white); border: 1px solid var(--mid); border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10; font-size: 10px; color: var(--subtle); }
+
+/* LAYER TABLE */
+.ltbl { display: grid; grid-template-columns: 100px 1fr; gap: 1px; background: var(--mid); border: 1px solid var(--mid); margin-top: 16px; }
+.ll { background: var(--off); padding: 14px 12px; display: flex; align-items: center; }
+.ll span { font-size: 9px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--ink); }
+.lc { background: var(--white); padding: 14px 18px; }
+.lc .lt { font-size: 13px; font-weight: 500; color: var(--black); margin-bottom: 3px; }
+.lc .lb { font-size: 12px; font-weight: 300; color: var(--ink); line-height: 1.5; }
+
+/* ROWS */
+.rl { display: flex; flex-direction: column; }
+.rr { display: grid; grid-template-columns: 26px 1fr; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--mid); align-items: start; }
+.rr:first-child { border-top: 1px solid var(--mid); }
+.rn { font-size: 11px; color: var(--subtle); padding-top: 2px; }
+.rt { font-size: 14px; font-weight: 300; color: var(--black); line-height: 1.45; }
+.rt em { font-style: normal; font-size: 12px; color: var(--ink); display: block; margin-top: 3px; }
+
+/* STEP INDICATOR — top timeline */
+.timeline { display: flex; align-items: center; gap: 0; margin-bottom: 36px; }
+.tl-step { display: flex; align-items: center; gap: 10px; }
+.tl-dot { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--mid); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; color: var(--subtle); flex-shrink: 0; }
+.tl-dot.act { background: var(--black); border-color: var(--black); color: white; }
+.tl-dot.done { background: var(--off); border-color: var(--mid); color: var(--subtle); }
+.tl-label { font-size: 11px; font-weight: 500; color: var(--subtle); letter-spacing: .02em; }
+.tl-label.act { color: var(--black); }
+.tl-line { flex: 1; height: 1px; background: var(--mid); margin: 0 12px; min-width: 24px; }
+.tl-line.act { background: var(--black); }
+
+/* NEXT STEPS */
+.nsgrid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--mid); border: 1px solid var(--mid); margin-top: 20px; }
+.ns { background: var(--white); padding: 22px 20px; }
+.ns .nsn { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--subtle); margin-bottom: 10px; }
+.ns .nst { font-size: 15px; font-weight: 500; color: var(--black); margin-bottom: 8px; line-height: 1.2; }
+.ns .nsd { font-size: 12px; font-weight: 300; color: var(--ink); line-height: 1.5; margin-bottom: 14px; }
+.ns a { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; color: var(--black); text-decoration: none; letter-spacing: .04em; text-transform: uppercase; padding: 8px 14px; border: 1px solid var(--black); border-radius: 100px; transition: all .15s; }
+.ns a:hover { background: var(--black); color: white; }
+
+/* TOUCHPOINT BADGE */
+.tp-badge { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; padding: 4px 12px; background: var(--black); color: white; border-radius: 100px; margin-bottom: 12px; }
+
+/* LOGO SVG inline helper */
+.logo-wrap { display: flex; align-items: center; }
+</style>
+</head>
+<body>
+
+<div class="mobile-warning">
+  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="5" y="2" width="14" height="20" rx="2" stroke="white" stroke-width="1.5"/>
+    <circle cx="12" cy="18" r="1" fill="white"/>
+  </svg>
+  <div class="mw-label">Paladino × Galo Cinza</div>
+  <h2>Este material foi desenvolvido para desktop.</h2>
+  <p>Para uma experiência completa, acesse pelo computador.</p>
+  <div class="mw-divider"></div>
+  <div class="mw-contact">paladino.inc</div>
+</div>
+
+<div class="nav">
+  <button onclick="prev()">←</button>
+  <span class="ctr" id="ctr">1 / 15</span>
+  <button onclick="next()">→</button>
+</div>
+
+<!-- LOGO paths shared via JS -->
+<script>
+const LP = `M70.2034 2.08691H2.07046L0 4.15737V144.564L2.07046 146.635H26.842L28.9125 144.564V90.88L30.9829 88.8096H70.2181C99.1306 88.8096 119.776 74.3607 119.776 45.4482C119.776 16.5358 99.1158 2.08691 70.2034 2.08691ZM70.2034 64.0232H30.9682L28.8977 61.9528V28.9142L30.9682 26.8437H70.2034C82.5965 26.8437 90.8488 30.9698 90.8488 45.4335C90.8488 59.8971 82.5965 64.0232 70.2034 64.0232Z M231.357 2.08461H204.515L202.444 4.15507L154.957 123.916V144.562L157.027 146.632H175.617L177.688 144.562L188.01 117.72L192.137 115.649H243.75L247.876 117.72L258.199 144.562L260.269 146.632H278.859L280.93 144.562V123.916L233.413 4.14028L231.342 2.06982L231.357 2.08461ZM235.483 90.863H200.374L198.304 88.7925L216.893 39.2346H218.964L237.554 88.7925L235.483 90.863Z M376.116 121.848L374.06 119.778V4.14258L371.989 2.08691H347.218L345.147 4.14258V144.549L347.218 146.62H440.137L442.193 144.549V123.904L440.137 121.848H376.116Z M575.899 2.08461H549.057L546.986 4.15507L499.499 123.916V144.562L501.569 146.632H520.159L522.23 144.562L532.552 117.72L536.679 115.649H588.292L592.418 117.72L602.741 144.562L604.811 146.632H623.401L625.472 144.562V123.916L577.969 4.14028L575.899 2.06982V2.08461ZM580.025 90.863H544.916L542.846 88.7925L561.435 39.2346H563.506L582.096 88.7925L580.025 90.863Z M740.487 2.08691H692.867C692.039 2.9151 691.58 3.37356 690.752 4.20174V144.52C691.58 145.348 692.039 145.806 692.867 146.635H740.487C763.736 146.635 781.689 140.349 794.334 127.779C806.979 115.208 813.294 97.4463 813.294 74.479C813.294 51.5117 806.934 33.7058 794.216 21.0612C781.497 8.4166 763.588 2.1017 740.473 2.1017L740.487 2.08691ZM771.766 109.987C764.135 117.692 752.466 121.538 736.775 121.538H721.853C721.025 120.709 720.567 120.251 719.738 119.423V29.2691C720.567 28.4409 721.025 27.9824 721.853 27.1543H736.775C752.466 27.1543 764.135 30.9994 771.766 38.7045C779.397 46.4095 783.213 58.2555 783.213 74.2424C783.213 90.2293 779.397 102.297 771.766 110.002V109.987Z M879.531 2.08461C878.703 2.9128 878.245 3.37126 877.417 4.19944V144.517C878.245 145.346 878.703 145.804 879.531 146.632H904.303C905.131 145.804 905.59 145.346 906.418 144.517V4.18465C905.59 3.35647 905.131 2.89801 904.303 2.06982H879.531V2.08461Z M1084.32 2.08461C1083.49 2.9128 1083.03 3.37126 1082.2 4.19944V101.304C1080.96 99.13 1079.72 97.0004 1078.46 94.9595L1019.13 3.06069C1018.49 2.72054 1017.99 2.43955 1017.35 2.0994H985.304C984.476 2.92759 984.017 3.38604 983.189 4.21423V144.532C984.017 145.36 984.476 145.819 985.304 146.647H1009.16C1009.99 145.819 1010.45 145.36 1011.27 144.532V43.2868C1011.81 44.2185 1012.34 45.1058 1012.84 45.9044L1077.39 145.656C1078.03 145.996 1078.53 146.277 1079.17 146.617H1108.16C1108.98 145.789 1109.44 145.331 1110.27 144.503V4.18465C1109.44 3.35647 1108.98 2.89801 1108.16 2.06982H1084.3L1084.32 2.08461Z M1312.27 34.9612C1306.65 23.7807 1298.43 15.1587 1287.6 9.09523C1276.78 3.03174 1263.87 0 1248.87 0C1233.87 0 1220.74 3.00217 1209.92 8.97692C1199.09 14.9665 1190.87 23.5441 1185.25 34.7246C1179.63 45.905 1176.8 59.0672 1176.8 74.2112C1176.8 89.3551 1179.61 102.532 1185.25 113.698C1190.87 124.878 1199.11 133.5 1209.92 139.564C1220.74 145.627 1233.73 148.659 1248.87 148.659C1264.01 148.659 1276.79 145.627 1287.6 139.564C1298.43 133.5 1306.65 124.893 1312.27 113.698C1317.89 102.517 1320.72 89.3551 1320.72 74.2112C1320.72 59.0672 1317.91 46.1121 1312.27 34.9316V34.9612ZM1280.02 110.917C1272.95 119.362 1262.57 123.577 1248.86 123.577C1235.15 123.577 1224.54 119.362 1217.47 110.917C1210.4 102.473 1206.87 90.2572 1206.87 74.2407C1206.87 58.2243 1210.43 46.2156 1217.58 37.7711C1224.72 29.3266 1235.15 25.1117 1248.84 25.1117C1262.54 25.1117 1272.93 29.3266 1280 37.7711C1287.07 46.2156 1290.61 58.3722 1290.61 74.2407C1290.61 90.1093 1287.07 102.488 1280 110.917H1280.02Z`;
+
+function logo(fill='#1A1A18', h=13) {
+  const paths = LP.trim().split(' M').map((seg,i) =>
+    `<path d="${i===0?seg:'M'+seg}" fill="${fill}"/>`).join('');
+  return `<svg style="height:${h}px;width:auto;display:block;" viewBox="0 0 1321 149" fill="none" xmlns="http://www.w3.org/2000/svg">${paths}</svg>`;
+}
+
+function footer(label, dark=false) {
+  return `<div class="bb">${logo(dark?'white':'#1A1A18')}<span>${label}</span></div>`;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('[data-footer]').forEach(el => {
+    const dark = el.classList.contains('dk');
+    el.insertAdjacentHTML('beforeend', footer(el.getAttribute('data-footer'), dark));
+  });
+  document.querySelectorAll('[data-logo]').forEach(el => {
+    el.innerHTML = logo(el.getAttribute('data-logo')==='white'?'white':'#1A1A18', el.getAttribute('data-h')||13);
+  });
+});
+</script>
+
+<!-- ═══════════════════════════
+  01 — CAPA
+═══════════════════════════ -->
+<div class="slide dk active" id="s1">
+  <div style="width:100%;height:100%;padding:52px 64px;display:grid;grid-template-rows:1fr auto;">
+    <div style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:40px;">
+      <div style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:20px;">Paladino × Galo Cinza</div>
+      <h1 style="color:white;font-size:80px;font-weight:500;">Imersão<br>Ontológica</h1>
+      <div style="display:flex;gap:10px;margin-top:24px;align-items:center;">
+        <span style="font-size:13px;font-weight:400;color:rgba(255,255,255,.4);letter-spacing:.04em;">Kick-off — Etapa 01</span>
+        <span style="width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.2);display:block;"></span>
+        <span style="font-size:13px;font-weight:400;color:rgba(255,255,255,.4);letter-spacing:.04em;">28 de abril de 2026</span>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding-top:22px;border-top:1px solid rgba(255,255,255,.08);">
+      <span data-logo="white" data-h="14"></span>
+      <span style="font-size:11px;color:rgba(255,255,255,.25);letter-spacing:.04em;">paladino.inc</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════
+  02 — COMO TRABALHAMOS
+═══════════════════════════ -->
+<div class="slide" id="s2" data-footer="Paladino × Galo Cinza">
+  <div class="si">
+    <div class="sh"><span class="sl">Paladino</span><span class="sn">02</span></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;">
+      <div>
+        <div style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:16px;">We orchestrate perception.</div>
+        <h2 style="font-size:38px;line-height:1.0;margin-bottom:24px;">Brand systems<br>that matter.</h2>
+        <p style="font-size:15px;line-height:1.7;color:var(--ink);max-width:420px;">O Paladino não cria marcas. Constrói sistemas estruturados que transformam como um negócio se entende, se posiciona, se expressa e opera ao longo do tempo.</p>
+      </div>
+      <div>
+        <h4>Três objetivos simultâneos</h4>
+        <div class="rl">
+          <div class="rr">
+            <span class="rn">01</span>
+            <span class="rt"><strong>Singularidade Estratégica</strong><em>Um território claro e inegociável — o que o negócio é e o que nunca será.</em></span>
+          </div>
+          <div class="rr">
+            <span class="rn">02</span>
+            <span class="rt"><strong>Expansão de Valor</strong><em>Percepção traduzida em ativo. O que o mercado entende sobre o negócio passa a gerar resultado concreto.</em></span>
+          </div>
+          <div class="rr">
+            <span class="rn">03</span>
+            <span class="rt"><strong>Autonomia Operacional</strong><em>A capacidade de sustentar coerência sem dependência. O sistema trabalha por você.</em></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════
+  03 — AS 4 ETAPAS
+═══════════════════════════ -->
+<div class="slide" id="s3" data-footer="Paladino × Galo Cinza">
+  <div class="si">
+    <div class="sh"><span class="sl">O Processo</span><span class="sn">03</span></div>
+    <h4>4 etapas sequenciais e interdependentes</h4>
+    <p class="sm" style="max-width:640px;margin-bottom:4px;">Cada etapa depende do que a anterior produziu. A ordem não é negociável.</p>
+    <div class="macro">
+      <div class="mc act">
+        <div class="mn">01 — Atual</div>
+        <div class="mt">Imersão<br>Ontológica</div>
+        <div class="md">Investigação profunda do negócio em todas as suas camadas. Mapeamos a visão, o modelo e o contexto para identificar tensões e lacunas estruturais.</div>
+        <div class="d4">Discover</div>
+      </div>
+      <div class="mc">
+        <div class="mn">02</div>
+        <div class="mt">Formulação<br>Estratégica</div>
+        <div class="md">Síntese e estruturação intelectual. Definimos proposta de valor, arquitetura de portfólio e identidade conceitual.</div>
+        <div class="d4">Define</div>
+      </div>
+      <div class="mc">
+        <div class="mn">03</div>
+        <div class="mt">Estruturação<br>Simbólica</div>
+        <div class="md">Tradução rigorosa da estratégia em sistema de linguagem. Tipografia, cor, forma e tom de voz como ativos de reconhecimento.</div>
+        <div class="d4">Develop</div>
+      </div>
+      <div class="mc">
+        <div class="mn">04</div>
+        <div class="mt">Ativação<br>Sistêmica</div>
+        <div class="md">Consolidação e autonomia. O sistema é formalizado em diretrizes que garantem aplicabilidade e preservação ao longo do tempo.</div>
+        <div class="d4">Deliver</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════
+  04 — ONDE ESTAMOS
+═══════════════════════════ -->
+<div class="slide" id="s4" data-footer="Imersão Ontológica — Etapa 01">
+  <div class="si g2" style="padding:0;">
+    <div class="gc gl">
+      <div class="sh"><span class="sl">Etapa 01</span><span class="sn">04</span></div>
+      <div style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;background:var(--black);color:white;border-radius:100px;margin-bottom:16px;">Em andamento</div>
+      <h2>Imersão<br>Ontológica</h2>
+      <div class="div"></div>
+      <p style="font-size:15px;line-height:1.7;color:var(--ink);">É a fase de investigação de fundamentos. Mapeamos a visão, o modelo de negócio e o contexto competitivo para identificar as tensões e lacunas estruturais que definem a gênese do projeto.</p>
+      <p style="font-size:15px;line-height:1.7;color:var(--ink);margin-top:12px;">O objetivo é extrair a substância que sustentará a singularidade da marca.</p>
+    </div>
+    <div class="gc">
+      <div style="height:58px;"></div>
+      <h4>O que já fizemos</h4>
+      <div class="rl">
+        <div class="rr">
+          <span class="rn">✓</span>
+          <span class="rt">Leitura inicial de contexto<em>Analisamos tudo que foi compartilhado nas primeiras conversas — narrativa, valores, estrutura e tensões do negócio.</em></span>
+        </div>
+        <div class="rr">
+          <span class="rn">✓</span>
+          <span class="rt">Mapeamento de hipóteses estratégicas<em>Identificamos padrões, sinais e questões centrais que precisam ser aprofundados antes de qualquer conclusão.</em></span>
+        </div>
+      </div>
+      <h4 style="margin-top:24px;">O que vem agora</h4>
+      <div class="rl">
+        <div class="rr">
+          <span class="rn" style="font-size:15px;">⏱</span>
+          <span class="rt">Ask & Handover<em>Pedimos que você reúna e compartilhe os materiais que o negócio já tem — arquivos, documentos, fotos e dados.</em></span>
+        </div>
+        <div class="rr">
+          <span class="rn" style="font-size:15px;">⏱</span>
+          <span class="rt">Questionário Paladino<em>Um questionário estruturado nas 4 camadas — respondido no seu tempo, sem pressa e sem resposta errada.</em></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════
+  05 — ESTRUTURA DA IMERSÃO
+═══════════════════════════ -->
+<div class="slide" id="s5" data-footer="Imersão Ontológica — Estrutura">
+  <div class="si">
+    <div class="sh"><span class="sl">Imersão Ontológica — Como Funciona</span><span class="sn">05</span></div>
+    <h4>3 sub-etapas em sequência</h4>
+    <p class="sm" style="max-width:640px;margin-bottom:4px;">Cada sub-etapa depende da anterior. A Síntese só acontece depois que Tese e Antítese estiverem completas.</p>
+    <div class="flow">
+      <div class="fb hi" style="position:relative;">
+        <div class="fn" style="color:rgba(255,255,255,.35);">01 — Tese – Sub-etapa atual</div>
+        <div class="ft" style="color:white;">O seu contexto</div>
+        <div class="fd" style="color:rgba(255,255,255,.55);">Coletamos tudo que o negócio traz sobre si mesmo — materiais, respostas e contexto. É a leitura do mundo a partir de dentro.</div>
+        <div style="margin-top:14px;display:flex;gap:6px;flex-wrap:wrap;"><span class="tag wh">Ask & Handover</span><span class="tag wh">Discovery</span></div>
+        <div class="arrow">→</div>
+      </div>
+      <div class="fb" style="position:relative;">
+        <div class="fn">02 — Antítese</div>
+        <div class="ft">A nossa leitura</div>
+        <div class="fd">Com o material em mãos, fazemos nossa análise interna, frameworks, cruzamento de fontes, leitura crítica. Você não precisa fazer nada nessa etapa.</div>
+        <div style="margin-top:14px;display:flex;gap:6px;flex-wrap:wrap;"><span class="tag">Análise interna</span><span class="tag">Reunião</span></div>
+        <div class="arrow">→</div>
+      </div>
+      <div class="fb" style="position:relative;">
+        <div class="fn">03 — Síntese</div>
+        <div class="ft">O reframe</div>
+        <div class="fd">O cruzamento da sua perspectiva com a nossa leitura produz algo novo — a visão do Paladino sobre o que o negócio é, o que deve ser e como deve se mover.</div>
+        <div style="margin-top:14px;display:flex;gap:6px;flex-wrap:wrap;"><span class="tag">Diagnóstico</span><span class="tag">Reunião</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════
+  06 — AS 4 CAMADAS
+═══════════════════════════ -->
+<div class="slide" id="s6" data-footer="Imersão Ontológica — As 4 Camadas">
+  <div class="si">
+    <div class="sh"><span class="sl">As 4 Camadas</span><span class="sn">06</span></div>
+    <p class="lg" style="max-width:600px;margin-bottom:4px;">Toda análise é organizada em quatro camadas.</p>
+    <p class="sm" style="margin-bottom:16px;">O Ask & Handover e o questionário de Discovery estão estruturados nessa mesma lógica. Cada camada tem um foco diferente e produz um tipo específico de entendimento.</p>
+    <div class="ltbl">
+      <div class="ll" style="background:var(--black);"><span style="color:rgba(255,255,255,.5);">01</span></div>
+      <div class="lc"><div class="lt">Ontológica</div><div class="lb">Origem, propósito, razão de existir. Os valores que orientam decisões. O que o negócio não negocia em nenhuma hipótese.</div></div>
+      <div class="ll"><span>02</span></div>
+      <div class="lc"><div class="lt">Operacional</div><div class="lb">Produtos, serviços, estrutura, equipe, processos e dependências. Como o negócio funciona na prática — e onde trava.</div></div>
+      <div class="ll" style="background:var(--mid);"><span>03</span></div>
+      <div class="lc"><div class="lt">Simbólica</div><div class="lb">Marca, identidade visual, linguagem verbal, tom de voz. Como o negócio se expressa e como é percebido.</div></div>
+      <div class="ll" style="background:var(--white);border:1px solid var(--mid);"><span>04</span></div>
+      <div class="lc"><div class="lt">Mercadológica</div><div class="lb">Mercado, concorrentes, posicionamento, receita e ameaças. Onde o negócio está e como se move no campo externo.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════
+  07 — TESE: O QUE PEDIMOS
+═══════════════════════════ -->
+<div class="slide" id="s7" data-footer="Tese — O que precisamos de você">
+  <div class="si">
+    <div class="sh"><span class="sl">Tese — Sub-etapa 01</span><span class="sn">07</span></div>
+    <div style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 12px;border:1px solid var(--black);color:var(--black);border-radius:100px;margin-bottom:20px;">O que precisamos de você</div>
+    <p class="lg" style="max-width:640px;margin-bottom:28px;">A Tese é construída a partir da sua perspectiva. São dois instrumentos — um pedido de materiais e um questionário.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--mid);border:1px solid var(--mid);">
+      <div style="background:var(--off);padding:24px 24px;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:12px;">Instrumento 01</div>
+        <div style="font-size:18px;font-weight:500;color:var(--black);margin-bottom:10px;letter-spacing:-.01em;">Ask & Handover</div>
+        <p class="sm">Pedimos que você reúna e compartilhe os materiais que o negócio já tem — arquivos de marca, documentos, fotos, dados financeiros direcionais. O que não existir, é só indicar.</p>
+        <p class="sm" style="margin-top:8px;"><strong>Formato livre:</strong> arquivos, links, fotos, texto ou áudio.</p>
+      </div>
+      <div style="background:var(--white);padding:24px 24px;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:12px;">Instrumento 02</div>
+        <div style="font-size:18px;font-weight:500;color:var(--black);margin-bottom:10px;letter-spacing:-.01em;">Questionário de Discovery</div>
+        <p class="sm">Um questionário estruturado nas 4 camadas — respondido de forma assíncrona, no seu tempo. Não existe resposta certa. Inconsistências e dúvidas são bem-vindas.</p>
+        <p class="sm" style="margin-top:8px;"><strong>Formato:</strong> Google Forms, entre 30 e 40 minutos.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════
+  08 — ASK & HANDOVER
+═══════════════════════════ -->
+<div class="slide" id="s8" data-footer="Ask & Handover — Materiais">
+  <div class="si g2" style="padding:0;">
+    <div class="gc gl">
+      <div class="sh"><span class="sl">Ask & Handover</span><span class="sn">08</span></div>
+      <h3 style="margin-bottom:16px;">Pedido de materiais existentes</h3>
+      <p class="sm" style="margin-bottom:20px;">Organizamos o pedido nas mesmas 4 camadas. O que não existir, não precisa criar — só indicar.</p>
+      <div class="rl">
+        <div class="rr"><span class="rn" style="font-size:9px;font-weight:700;">ONT</span><span class="rt" style="font-size:13px;">Textos institucionais, manifestos, visão de futuro, por que o negócio existe<em>Qualquer coisa que explique o propósito — mesmo que informal ou em rascunho.</em></span></div>
+        <div class="rr"><span class="rn" style="font-size:9px;font-weight:700;">OPE</span><span class="rt" style="font-size:13px;">Logo, cardápio, embalagens, lista de produtos, estrutura de equipe, processos documentados<em>Materiais operacionais e de comunicação — tudo que já existe.</em></span></div>
+        <div class="rr"><span class="rn" style="font-size:9px;font-weight:700;">SIM</span><span class="rt" style="font-size:13px;">Identidade visual, fotos do negócio, posts representativos, avaliações de clientes<em>Como o negócio se expressa e como é percebido — o que existe hoje.</em></span></div>
+        <div class="rr"><span class="rn" style="font-size:9px;font-weight:700;">MER</span><span class="rt" style="font-size:13px;">Estrutura de receita, indicadores, planos de expansão, estrutura legal<em>Contexto de mercado e financeiro — direcional, sem necessidade de precisão.</em></span></div>
+      </div>
+    </div>
+    <div class="gc" style="justify-content:center;">
+      <div style="height:58px;"></div>
+      <h4>Acesse aqui</h4>
+      <div style="display:flex;flex-direction:column;gap:14px;margin-top:8px;">
+        <a href="https://docs.google.com/document/d/1FXMd7L-EeOLblsnzheT4A1qeiQjdv4Ke1yyIBh8qAL0/edit?usp=sharing" target="_blank" style="display:flex;align-items:center;gap:14px;padding:20px 20px;border:1px solid var(--mid);text-decoration:none;transition:border-color .15s;" onmouseover="this.style.borderColor='#1A1A18'" onmouseout="this.style.borderColor='var(--mid)'">
+          <div style="width:36px;height:36px;background:var(--black);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <div style="font-size:12px;font-weight:600;color:var(--black);letter-spacing:.02em;">Instruções detalhadas</div>
+            <div style="font-size:11px;color:var(--subtle);margin-top:2px;">Google Docs — guia completo do pedido</div>
+          </div>
+        </a>
+        <a href="https://drive.google.com/drive/folders/1vU4IGMLn0A_HNjpw4_wSLSeWMVTkzgry?usp=sharing" target="_blank" style="display:flex;align-items:center;gap:14px;padding:20px 20px;border:1px solid var(--mid);text-decoration:none;transition:border-color .15s;" onmouseover="this.style.borderColor='#1A1A18'" onmouseout="this.style.borderColor='var(--mid)'">
+          <div style="width:36px;height:36px;background:var(--black);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <div style="font-size:12px;font-weight:600;color:var(--black);letter-spacing:.02em;">Pasta para upload</div>
+            <div style="font-size:11px;color:var(--subtle);margin-top:2px;">Google Drive — envie os arquivos aqui</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════
+  09 — DISCOVERY
+═══════════════════════════ -->
+<div class="slide" id="s9" data-footer="Questionário de Discovery">
+  <div class="si g2" style="padding:0;">
+    <div class="gc gl">
+      <div class="sh"><span class="sl">Questionário de Discovery</span><span class="sn">09</span></div>
+      <h3 style="margin-bottom:16px;">Suas respostas, no seu tempo</h3>
+      <p class="sm" style="margin-bottom:20px;">O questionário está estruturado nas 4 camadas. Pode ser respondido em partes. Não existe resposta errada, inconsistências e dúvidas são parte do que precisamos enxergar.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--mid);border:1px solid var(--mid);">
+        <div style="background:var(--black);padding:14px 16px;"><div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:6px;">01</div><div style="font-size:13px;font-weight:500;color:white;">Ontológica</div><div style="font-size:11px;font-weight:300;color:rgba(255,255,255,.5);margin-top:4px;">Propósito e inegociáveis</div></div>
+        <div style="background:var(--off);padding:14px 16px;"><div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:6px;">02</div><div style="font-size:13px;font-weight:500;color:var(--black);">Operacional</div><div style="font-size:11px;font-weight:300;color:var(--ink);margin-top:4px;">Estrutura e fricções</div></div>
+        <div style="background:var(--off);padding:14px 16px;"><div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:6px;">03</div><div style="font-size:13px;font-weight:500;color:var(--black);">Simbólica</div><div style="font-size:11px;font-weight:300;color:var(--ink);margin-top:4px;">Expressão e percepção</div></div>
+        <div style="background:var(--off);padding:14px 16px;"><div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:6px;">04</div><div style="font-size:13px;font-weight:500;color:var(--black);">Mercadológica</div><div style="font-size:11px;font-weight:300;color:var(--ink);margin-top:4px;">Posição e ameaças</div></div>
+      </div>
+    </div>
+    <div class="gc" style="justify-content:center;">
+      <div style="height:58px;"></div>
+      <h4>Acesse aqui</h4>
+      <a href="https://forms.gle/HZUXBSgZuWYh9tJa9" target="_blank" style="display:flex;align-items:center;gap:14px;padding:20px 20px;border:1px solid var(--mid);text-decoration:none;transition:border-color .15s;margin-top:8px;" onmouseover="this.style.borderColor='#1A1A18'" onmouseout="this.style.borderColor='var(--mid)'">
+        <div style="width:36px;height:36px;background:var(--black);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="white" stroke-width="1.5"/><path d="M8 12h8M8 8h8M8 16h5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:600;color:var(--black);letter-spacing:.02em;">Questionário de Discovery</div>
+          <div style="font-size:11px;color:var(--subtle);margin-top:2px;">Google Forms — responda no seu tempo</div>
+        </div>
+      </a>
+      <div style="margin-top:24px;padding:18px 20px;background:var(--off);border:1px solid var(--mid);">
+        <p class="sm" style="font-size:12px;"><strong>Estimativa:</strong> 30 a 40 minutos. Pode ser feito em partes. Ao terminar, não revise para parecer mais coerente — as contradições são parte do processo.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════
+  10 — ANTÍTESE
+═══════════════════════════ -->
+<div class="slide" id="s10" data-footer="Antítese — Sub-etapa 02">
+  <div class="si g2" style="padding:0;">
+    <div class="gc gl">
+      <div class="sh"><span class="sl">Antítese — Sub-etapa 02</span><span class="sn">10</span></div>
+      <div style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 12px;border:1px solid var(--mid);color:var(--subtle);border-radius:100px;margin-bottom:20px;">Fase interna — Paladino</div>
+      <h2 style="margin-bottom:20px;">Nossa análise<br>do negócio</h2>
+      <p style="font-size:15px;line-height:1.7;color:var(--ink);">Depois que o material e as respostas chegarem, o Paladino faz sua análise interna. Esta etapa é totalmente nossa, você não precisa fazer nada além de esperar.</p>
+      <p style="font-size:15px;line-height:1.7;color:var(--ink);margin-top:12px;">Cruzamos o que você trouxe com frameworks estratégicos, pesquisa de mercado e nossa leitura crítica. O resultado é a posição do Paladino sobre o que o negócio é e o que precisa mudar.</p>
+    </div>
+    <div class="gc">
+      <div style="height:58px;"></div>
+      <h4>O que acontece nessa fase</h4>
+      <div class="rl">
+        <div class="rr"><span class="rn">—</span><span class="rt" style="font-size:13px;">Cruzamento dos materiais do Ask & Handover com as respostas do Discovery</span></div>
+        <div class="rr"><span class="rn">—</span><span class="rt" style="font-size:13px;">Aplicação de frameworks estratégicos por camada</span></div>
+        <div class="rr"><span class="rn">—</span><span class="rt" style="font-size:13px;">Análise de mercado e referências do segmento</span></div>
+        <div class="rr"><span class="rn">—</span><span class="rt" style="font-size:13px;">Identificação das tensões centrais e do problema real</span></div>
+        <div class="rr"><span class="rn">—</span><span class="rt" style="font-size:13px;">Preparação da apresentação para a Reunião 01</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════
+  11 — REUNIÃO 01: TESE + ANTÍTESE
+═══════════════════════════ -->
+<div class="slide" id="s11" data-footer="Touchpoint 01 — Reunião de Tese + Antítese">
+  <div class="si">
+    <div class="sh"><span class="sl">Touchpoint 01</span><span class="sn">11</span></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;">
+      <div>
+        <div class="tp-badge">Reunião 01</div>
+        <h2 style="margin-bottom:20px;">Tese +<br>Antítese</h2>
+        <p style="font-size:15px;line-height:1.7;color:var(--ink);">O Paladino apresenta o que coletamos e o que nossa análise revelou. Tensões são nomeadas, hipóteses apresentadas, lacunas identificadas.</p>
+        <p style="font-size:15px;line-height:1.7;color:var(--ink);margin-top:12px;">Esta não é uma entrega — é uma conversa. Você reage, valida, corrige o que precisar. O objetivo é chegar juntos a uma leitura honesta do negócio antes de qualquer conclusão.</p>
+      </div>
+      <div>
+        <h4>O que essa reunião não é</h4>
+        <div class="rl">
+          <div class="rr"><span class="rn">×</span><span class="rt" style="font-size:13px;">Não é uma apresentação de soluções<em>Ainda não temos respostas — temos perguntas bem formuladas.</em></span></div>
+          <div class="rr"><span class="rn">×</span><span class="rt" style="font-size:13px;">Não é um diagnóstico final<em>É o início da conversa estratégica, não o fim dela.</em></span></div>
+          <div class="rr"><span class="rn">×</span><span class="rt" style="font-size:13px;">Não é uma avaliação do negócio<em>É uma leitura estruturada — que você vai ajudar a calibrar.</em></span></div>
+        </div>
+        <div style="margin-top:20px;padding:16px 18px;background:var(--off);border:1px solid var(--mid);">
+          <p class="sm"><strong>Formato:</strong> Google Meet, aproximadamente 90 minutos. Vídeo do Paladino + espaço para feedback e conversa.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════
+  12 — SÍNTESE
+═══════════════════════════ -->
+<div class="slide" id="s12" data-footer="Síntese — Sub-etapa 03">
+  <div class="si g2" style="padding:0;">
+    <div class="gc gl" style="background:var(--black);">
+      <div class="sh"><span class="sl" style="color:rgba(255,255,255,.28);">Síntese — Sub-etapa 03</span><span class="sn" style="color:rgba(255,255,255,.28);">12</span></div>
+      <h2 style="color:white;margin-bottom:20px;">O reframe.<br>A visão Paladino.</h2>
+      <p style="font-size:15px;line-height:1.7;color:rgba(255,255,255,.55);">A Síntese é o produto do cruzamento entre o que você trouxe e o que nós lemos. Não é a soma dos dois — é algo novo. É a definição estrutural do que o negócio é, o que deve ser e como deve se mover.</p>
+      <p style="font-size:15px;line-height:1.7;color:rgba(255,255,255,.55);margin-top:12px;">É o encerramento da Imersão Ontológica e o ponto de partida para a Formulação Estratégica.</p>
+    </div>
+    <div class="gc">
+      <div style="height:58px;"></div>
+      <h4>O que a Síntese produz</h4>
+      <div class="rl">
+        <div class="rr"><span class="rn" style="font-size:9px;font-weight:700;">ONT</span><span class="rt" style="font-size:13px;">Definição do que o negócio é — o que é central, o que é extensível e o que não pertence ao sistema</span></div>
+        <div class="rr"><span class="rn" style="font-size:9px;font-weight:700;">OPE</span><span class="rt" style="font-size:13px;">Clareza sobre o que está estruturado, o que está frágil e o que precisa ser resolvido antes de escalar</span></div>
+        <div class="rr"><span class="rn" style="font-size:9px;font-weight:700;">SIM</span><span class="rt" style="font-size:13px;">A direção simbólica — o que a marca comunica hoje versus o que deveria comunicar</span></div>
+        <div class="rr"><span class="rn" style="font-size:9px;font-weight:700;">MER</span><span class="rt" style="font-size:13px;">O território que o negócio pode reivindicar de forma crível — onde há espaço real de posicionamento</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════
+  13 — REUNIÃO 02: SÍNTESE
+═══════════════════════════ -->
+<div class="slide" id="s13" data-footer="Touchpoint 02 — Reunião de Síntese">
+  <div class="si">
+    <div class="sh"><span class="sl">Touchpoint 02</span><span class="sn">13</span></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;">
+      <div>
+        <div class="tp-badge">Reunião 02</div>
+        <h2 style="margin-bottom:20px;">Apresentação<br>da Síntese</h2>
+        <p style="font-size:15px;line-height:1.7;color:var(--ink);">Apresentamos a visão Paladino completa sobre o Galo Cinza — o diagnóstico por camada, as direções estratégicas e o que isso significa para o próximo passo.</p>
+        <p style="font-size:15px;line-height:1.7;color:var(--ink);margin-top:12px;">Esta é a entrega intelectual da Imersão Ontológica. Com ela aprovada, avançamos juntos para a Formulação Estratégica.</p>
+      </div>
+      <div>
+        <h4>O que essa reunião encerra</h4>
+        <div class="rl">
+          <div class="rr"><span class="rn">✓</span><span class="rt" style="font-size:13px;">A fase de descoberta e diagnóstico<em>Tudo que precisava ser entendido antes de construir está mapeado.</em></span></div>
+          <div class="rr"><span class="rn">✓</span><span class="rt" style="font-size:13px;">A leitura compartilhada entre Paladino e Galo Cinza<em>As duas perspectivas convergidas em uma visão comum.</em></span></div>
+          <div class="rr"><span class="rn">✓</span><span class="rt" style="font-size:13px;">A base para a Formulação Estratégica<em>O que vem a seguir começa aqui.</em></span></div>
+        </div>
+        <div style="margin-top:20px;padding:16px 18px;background:var(--off);border:1px solid var(--mid);">
+          <p class="sm"><strong>Formato:</strong> Google Meet, aproximadamente 60 minutos. Apresentação do Paladino + alinhamento e aprovação de direção.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════
+  14 — PRÓXIMOS PASSOS
+═══════════════════════════ -->
+<div class="slide" id="s14" data-footer="Próximos Passos — Imersão Ontológica">
+  <div class="si">
+    <div class="sh"><span class="sl">Próximos Passos</span><span class="sn">14</span></div>
+    <h4>O que acontece a partir de agora</h4>
+    <div class="nsgrid">
+      <div class="ns">
+        <div class="nsn">Passo 01 — Você</div>
+        <div class="nst">Ask & Handover</div>
+        <div class="nsd">Acesse as instruções detalhadas e compartilhe os materiais que o negócio já tem. Sem pressa — o importante é ser completo.</div>
+        <a href="https://docs.google.com/document/d/1FXMd7L-EeOLblsnzheT4A1qeiQjdv4Ke1yyIBh8qAL0/edit?usp=sharing" target="_blank">Instruções →</a>
+        <a href="https://drive.google.com/drive/folders/1vU4IGMLn0A_HNjpw4_wSLSeWMVTkzgry?usp=sharing" target="_blank" style="margin-top:6px;">Upload →</a>
+      </div>
+      <div class="ns">
+        <div class="nsn">Passo 02 — Você</div>
+        <div class="nst">Questionário de Discovery</div>
+        <div class="nsd">Responda o questionário nas 4 camadas. Pode ser feito em partes, no seu ritmo. Respostas honestas valem mais do que respostas organizadas.</div>
+        <a href="https://forms.gle/HZUXBSgZuWYh9tJa9" target="_blank">Acessar formulário →</a>
+      </div>
+      <div class="ns" style="background:var(--off);">
+        <div class="nsn">Passos 03 e 04 — Paladino</div>
+        <div class="nst">Análise + Reuniões</div>
+        <div class="nsd">Com os materiais em mãos, fazemos a análise interna e agendamos as duas reuniões — Tese + Antítese, e depois a Síntese.</div>
+        <div style="margin-top:auto;padding-top:14px;border-top:1px solid var(--mid);">
+          <p class="sm" style="font-size:11px;">As reuniões são agendadas assim que os instrumentos estiverem respondidos.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════
+  15 — FECHAMENTO
+═══════════════════════════ -->
+<div class="slide dk" id="s15">
+  <div style="width:100%;height:100%;padding:52px 64px;display:grid;grid-template-rows:auto 1fr auto;">
+    <div style="display:flex;justify-content:space-between;">
+      <span class="sl" style="color:rgba(255,255,255,.28);">Paladino × Galo Cinza</span>
+      <span class="sn" style="color:rgba(255,255,255,.28);">15</span>
+    </div>
+    <div style="display:flex;flex-direction:column;justify-content:center;">
+      <h2 style="color:white;font-size:48px;max-width:680px;line-height:1.0;margin-bottom:24px;">O trabalho começa<br>com clareza.<br>A clareza começa aqui.</h2>
+      <p style="font-size:16px;font-weight:300;color:rgba(255,255,255,.5);max-width:480px;line-height:1.65;">Qualquer dúvida sobre os instrumentos ou o processo, estamos disponíveis pelo grupo do WhatsApp.</p>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);">
+      <span data-logo="white" data-h="14"></span>
+      <div style="display:flex;gap:24px;align-items:center;">
+        <span style="font-size:11px;color:rgba(255,255,255,.28);">chaparro@paladino.inc</span>
+        <span style="font-size:11px;color:rgba(255,255,255,.28);">anuschek@paladino.inc</span>
+        <span style="font-size:11px;color:rgba(255,255,255,.28);">@paladino.inc</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+let cur = 0, tot = slides.length;
+function show(n) {
+  slides[cur].classList.remove('active');
+  cur = ((n % tot) + tot) % tot;
+  slides[cur].classList.add('active');
+  document.getElementById('ctr').textContent = `${cur+1} / ${tot}`;
+}
+function next() { show(cur+1); }
+function prev() { show(cur-1); }
+document.addEventListener('keydown', e => {
+  if (e.key==='ArrowRight'||e.key==='ArrowDown') next();
+  if (e.key==='ArrowLeft'||e.key==='ArrowUp') prev();
+});
+</script>
+</body>
+</html>
