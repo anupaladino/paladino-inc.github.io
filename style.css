@@ -149,12 +149,20 @@ body{
     transform: translateY(0);
   }
 
-  .statement__headline,
-  .statement__subhead{
-    max-width: 8.8ch;
-    white-space: normal;
-    line-height: 0.92;
-  }
+.statement__headline,
+.statement__subhead{
+  max-width: 8.8ch;
+  white-space: normal;
+}
+
+.statement__headline{
+  line-height: 0.88;
+  margin-bottom: 14px;
+}
+
+.statement__subhead{
+  line-height: 0.96;
+}
 
   .footer{
     gap: 4px;
