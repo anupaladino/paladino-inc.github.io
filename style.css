@@ -8,8 +8,7 @@
 
   --logo-w: clamp(150px, 14vw, 240px);
 
-  --headline-size: clamp(52px, 7.05vw, 131px);
-  --subhead-size: clamp(38px, 5.9vw, 108px);
+  --statement-size: clamp(52px, 7.05vw, 131px);
 
   --footer-size: clamp(12px, 1vw, 16px);
 }
@@ -73,19 +72,18 @@ body{
 .statement__headline,
 .statement__subhead{
   display: block;
+  font-size: var(--statement-size);
   letter-spacing: -0.055em;
   white-space: nowrap;
 }
 
 .statement__headline{
-  font-size: var(--headline-size);
   font-weight: 700;
   line-height: 0.86;
   margin-bottom: 10px;
 }
 
 .statement__subhead{
-  font-size: var(--subhead-size);
   font-weight: 300;
   line-height: 0.9;
 }
@@ -116,8 +114,7 @@ body{
 
 @media (max-width: 1100px){
   :root{
-    --headline-size: clamp(48px, 7.6vw, 82px);
-    --subhead-size: clamp(38px, 6.6vw, 72px);
+    --statement-size: clamp(48px, 7.6vw, 82px);
   }
 
   .statement__headline,
@@ -144,8 +141,7 @@ body{
 
     --logo-w: 138px;
 
-    --headline-size: clamp(46px, 14.5vw, 82px);
-    --subhead-size: clamp(34px, 11.5vw, 64px);
+    --statement-size: clamp(46px, 14.5vw, 82px);
 
     --footer-size: 13px;
   }
