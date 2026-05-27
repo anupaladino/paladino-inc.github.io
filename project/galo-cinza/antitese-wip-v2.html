@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paladino × Galo Cinza — Diagnóstico</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #1A1A18;
+  --white: #F8F7F4;
+  --off:   #F0EEE9;
+  --mid:   #E2DED7;
+  --subtle:#A8A49C;
+  --ink:   #5C5850;
+  --warm:  #8B6F47;
+  --W: 1280px;
+  --H: 720px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+/* MOBILE WARNING */
+.mobile-warning {
+  display:none; position:fixed; inset:0; background:#1A1A18; z-index:9999;
+  flex-direction:column; align-items:center; justify-content:center;
+  padding:40px 32px; text-align:center;
+}
+.mobile-warning .mw-label { font-size:10px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.3); margin-bottom:16px; }
+.mobile-warning h2 { font-size:26px; font-weight:500; color:#F8F7F4; line-height:1.1; letter-spacing:-.02em; margin-bottom:16px; }
+.mobile-warning p { font-size:14px; font-weight:300; color:rgba(255,255,255,.45); line-height:1.65; max-width:280px; }
+.mobile-warning .mw-divider { width:32px; height:1px; background:rgba(255,255,255,.12); margin:24px auto; }
+.mobile-warning .mw-contact { font-size:12px; font-weight:400; color:rgba(255,255,255,.25); letter-spacing:.03em; }
+@media (max-width:900px) {
+  .mobile-warning { display:flex; }
+  .nav { display:none; }
+}
+
+body {
+  font-family:"DM Sans", sans-serif;
+  background:#C8C5BE;
+  display:flex; flex-direction:column; align-items:center;
+  padding:48px 20px; gap:20px;
+}
+
+/* NAV */
+.nav {
+  position:fixed; top:18px; right:22px; z-index:200;
+  display:flex; gap:6px; align-items:center;
+  background:rgba(26,26,24,.10); backdrop-filter:blur(10px);
+  padding:7px 14px; border-radius:100px;
+}
+.nav button {
+  background:none; border:none; cursor:pointer;
+  font-family:"DM Sans",sans-serif; font-size:13px; font-weight:500;
+  color:var(--black); padding:3px 8px; border-radius:5px; transition:background .15s;
+}
+.nav button:hover { background:rgba(26,26,24,.08); }
+.nav .ctr { font-size:11px; color:var(--ink); width:44px; text-align:center; letter-spacing:.03em; }
+
+/* SLIDE */
+.slide {
+  width:var(--W); height:var(--H);
+  background:var(--white);
+  position:relative; overflow:hidden; flex-shrink:0;
+  display:none; animation:fu .25s ease;
+}
+.slide.active { display:flex; }
+@keyframes fu { from { opacity:.7; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+/* LAYOUT */
+.si { width:100%; height:100%; display:flex; flex-direction:column; padding:52px 64px 68px; }
+.g2 { display:grid; grid-template-columns:1fr 1fr; padding:0; }
+.gc { padding:52px 64px 68px; display:flex; flex-direction:column; }
+.gl { border-right:1px solid var(--mid); }
+
+/* CHROME */
+.sh { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:44px; }
+.sl { font-size:10px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--subtle); }
+.sn { font-size:10px; color:var(--subtle); letter-spacing:.05em; }
+
+/* FOOTER */
+.bb {
+  position:absolute; bottom:0; left:0; right:0; height:50px;
+  border-top:1px solid var(--mid);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 64px; background:var(--white);
+}
+.bb span { font-size:11px; color:var(--subtle); letter-spacing:.03em; }
+.bb svg { height:13px; width:auto; display:block; }
+.dk .bb { background:var(--black); border-color:rgba(255,255,255,.08); }
+.dk .bb span { color:rgba(255,255,255,.25); }
+
+/* TYPE */
+h1 { font-size:72px; font-weight:500; line-height:.95; letter-spacing:-.03em; color:var(--black); }
+h2 { font-size:44px; font-weight:500; line-height:1.0; letter-spacing:-.025em; color:var(--black); }
+h3 { font-size:24px; font-weight:500; line-height:1.15; letter-spacing:-.01em; color:var(--black); }
+h4 { font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--subtle); margin-bottom:18px; }
+p { font-size:15px; font-weight:300; line-height:1.65; color:var(--ink); }
+p.lg { font-size:20px; font-weight:300; line-height:1.5; color:var(--black); }
+p.sm { font-size:13px; font-weight:300; line-height:1.6; color:var(--ink); }
+strong { font-weight:500; color:var(--black); }
+
+/* DARK */
+.dk { background:var(--black) !important; }
+.dk .sl, .dk .sn { color:rgba(255,255,255,.28) !important; }
+.dk h1,.dk h2,.dk h3 { color:var(--white) !important; }
+.dk p,.dk p.lg,.dk p.sm { color:rgba(255,255,255,.5) !important; }
+.dk h4 { color:rgba(255,255,255,.35) !important; }
+.dk strong { color:var(--white) !important; }
+.dk .div { background:rgba(255,255,255,.1) !important; }
+
+/* COMPONENTS */
+.tag { display:inline-block; font-size:10px; font-weight:600; letter-spacing:.09em; text-transform:uppercase; padding:4px 10px; border:1px solid var(--mid); border-radius:100px; color:var(--ink); }
+.tag.bk { border-color:var(--black); color:var(--black); }
+.tag.wh { border-color:rgba(255,255,255,.3); color:rgba(255,255,255,.6); }
+.div { width:36px; height:1px; background:var(--mid); margin:24px 0; }
+
+/* ROWS */
+.rl { display:flex; flex-direction:column; }
+.rr { display:grid; grid-template-columns:26px 1fr; gap:12px; padding:14px 0; border-bottom:1px solid var(--mid); align-items:start; }
+.rr:first-child { border-top:1px solid var(--mid); }
+.rn { font-size:11px; color:var(--subtle); padding-top:2px; }
+.rt { font-size:14px; font-weight:300; color:var(--black); line-height:1.45; }
+.rt em { font-style:normal; font-size:12px; color:var(--ink); display:block; margin-top:3px; }
+
+/* 4-STAGE MACRO */
+.macro { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--mid); border:1px solid var(--mid); margin-top:20px; }
+.mc { background:var(--white); padding:22px 20px; }
+.mc.act { background:var(--black); }
+.mc .mn { font-size:10px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; margin-bottom:10px; color:var(--subtle); }
+.mc.act .mn { color:rgba(255,255,255,.35); }
+.mc .mt { font-size:16px; font-weight:500; line-height:1.2; margin-bottom:8px; color:var(--black); }
+.mc.act .mt { color:white; }
+.mc .md { font-size:12px; font-weight:300; line-height:1.55; color:var(--ink); }
+.mc.act .md { color:rgba(255,255,255,.55); }
+
+/* TENSION CARDS */
+.tgrid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--mid); border:1px solid var(--mid); margin-top:20px; }
+.tc { background:var(--white); padding:24px 22px; position:relative; cursor:pointer; transition:background .15s; }
+.tc:hover { background:var(--off); }
+.tc.open { background:var(--off); }
+.tc-bar { position:absolute; top:0; left:0; width:3px; height:100%; }
+.tc.t1 .tc-bar { background:#C05F5F; }
+.tc.t2 .tc-bar { background:#B87E4A; }
+.tc.t3 .tc-bar { background:#4A7FA8; }
+.tc.t4 .tc-bar { background:var(--subtle); }
+.tc-tag { font-size:9px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; margin-bottom:10px; display:flex; align-items:center; gap:6px; }
+.tc.t1 .tc-tag { color:#C05F5F; }
+.tc.t2 .tc-tag { color:#B87E4A; }
+.tc.t3 .tc-tag { color:#4A7FA8; }
+.tc.t4 .tc-tag { color:var(--subtle); }
+.tc-title { font-size:16px; font-weight:500; color:var(--black); margin-bottom:8px; line-height:1.2; letter-spacing:-.01em; }
+.tc-summary { font-size:13px; font-weight:300; color:var(--ink); line-height:1.55; }
+.tc-detail { display:none; margin-top:14px; padding-top:14px; border-top:1px solid var(--mid); }
+.tc.open .tc-detail { display:block; }
+.tc-detail p { font-size:12px; font-weight:300; color:var(--ink); line-height:1.6; margin-bottom:8px; }
+.tc-impl { background:var(--white); border:1px solid var(--mid); padding:12px 14px; margin-top:10px; }
+.tc-impl .ti-label { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--subtle); margin-bottom:6px; }
+.tc-impl .ti-body { font-size:12px; font-weight:300; color:var(--ink); line-height:1.55; }
+.tc-hint { font-size:10px; color:var(--subtle); margin-top:10px; }
+.tc.open .tc-hint { display:none; }
+
+/* FRAMEWORK ACCORDION */
+.flist { display:flex; flex-direction:column; gap:1px; background:var(--mid); border:1px solid var(--mid); margin-top:20px; }
+.fi { background:var(--white); overflow:hidden; }
+.fi-head { display:grid; grid-template-columns:28px 1fr auto; gap:16px; padding:18px 22px; cursor:pointer; transition:background .15s; align-items:center; }
+.fi-head:hover { background:var(--off); }
+.fi.open .fi-head { background:var(--off); }
+.fi-num { font-size:10px; font-weight:600; color:var(--subtle); letter-spacing:.05em; }
+.fi-title { font-size:15px; font-weight:500; color:var(--black); letter-spacing:-.01em; }
+.fi-resolves { font-size:11px; font-weight:300; color:var(--subtle); margin-top:2px; }
+.fi-resolves strong { font-weight:500; color:var(--ink); }
+.fi-tog { font-size:16px; color:var(--subtle); transition:transform .25s, color .15s; line-height:1; }
+.fi.open .fi-tog { transform:rotate(45deg); color:var(--black); }
+.fi-body { display:none; padding:0 22px 22px 66px; border-top:1px solid var(--mid); }
+.fi.open .fi-body { display:block; }
+.fi-cols { display:grid; grid-template-columns:1fr 1fr 1fr; gap:24px; margin-top:20px; }
+.fi-col-label { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--subtle); margin-bottom:8px; }
+.fi-col-body { font-size:12px; font-weight:300; color:var(--ink); line-height:1.6; }
+.fi-col-body ul { list-style:none; padding:0; }
+.fi-col-body ul li { padding:5px 0; border-bottom:1px solid var(--mid); font-size:12px; display:flex; gap:8px; }
+.fi-col-body ul li::before { content:'→'; color:var(--subtle); flex-shrink:0; }
+.fi-note { background:var(--off); border:1px solid var(--mid); padding:14px 16px; margin-top:16px; display:grid; grid-template-columns:auto 1fr; gap:12px; }
+.fi-note-label { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--subtle); white-space:nowrap; padding-top:2px; }
+.fi-note-body { font-size:12px; font-weight:300; color:var(--ink); line-height:1.6; }
+
+/* SIGNALS */
+.sgrid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1px; background:var(--mid); border:1px solid var(--mid); margin-top:20px; }
+.sc { background:var(--white); padding:22px 20px; }
+.sc-type { font-size:9px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; margin-bottom:14px; display:flex; align-items:center; gap:6px; }
+.sc-type.ok { color:#5A8F6A; }
+.sc-type.open { color:#B87E4A; }
+.sc-type.absent { color:#C05F5F; }
+.sc-type::before { content:''; display:inline-block; width:5px; height:5px; border-radius:50%; background:currentColor; }
+.sl-item { padding:10px 0; border-bottom:1px solid var(--mid); }
+.sl-item:last-child { border-bottom:none; }
+.sl-item .sli-title { font-size:13px; font-weight:500; color:var(--black); margin-bottom:3px; }
+.sl-item .sli-body { font-size:12px; font-weight:300; color:var(--ink); line-height:1.5; }
+
+/* CROSS ANALYSIS */
+.cgrid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--mid); border:1px solid var(--mid); margin-top:20px; }
+.cc { background:var(--white); padding:22px; }
+.cc-head { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid var(--mid); }
+.cc-source { font-size:10px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--subtle); }
+.cc-badge { font-size:9px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; padding:3px 8px; border-radius:100px; white-space:nowrap; flex-shrink:0; }
+.cc-badge.ok   { color:#5A8F6A; background:rgba(90,143,106,.1); border:1px solid rgba(90,143,106,.25); }
+.cc-badge.comp { color:#4A7FA8; background:rgba(74,127,168,.1); border:1px solid rgba(74,127,168,.25); }
+.cc-badge.div  { color:#C05F5F; background:rgba(192,95,95,.1);  border:1px solid rgba(192,95,95,.25); }
+.cc-item { padding:10px 0; border-bottom:1px solid var(--mid); }
+.cc-item:last-child { border-bottom:none; }
+.cc-item-title { font-size:13px; font-weight:500; color:var(--black); margin-bottom:3px; }
+.cc-item-body { font-size:12px; font-weight:300; color:var(--ink); line-height:1.55; }
+
+/* STATS ROW */
+.stats { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--mid); border:1px solid var(--mid); margin-bottom:24px; }
+.stat { background:var(--white); padding:18px 20px; }
+.stat-val { font-size:32px; font-weight:500; letter-spacing:-.03em; color:var(--black); line-height:1; margin-bottom:6px; }
+.stat-lbl { font-size:11px; font-weight:300; color:var(--subtle); line-height:1.4; }
+
+/* NEXT STEPS */
+.nsgrid { display:grid; grid-template-columns:repeat(5,1fr); gap:1px; background:var(--mid); border:1px solid var(--mid); margin-top:20px; }
+.ns { background:var(--white); padding:20px 18px; display:flex; flex-direction:column; }
+.ns .ns-num { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--subtle); margin-bottom:8px; }
+.ns .ns-title { font-size:14px; font-weight:500; color:var(--black); margin-bottom:6px; line-height:1.2; letter-spacing:-.01em; }
+.ns .ns-body { font-size:11px; font-weight:300; color:var(--ink); line-height:1.55; flex:1; }
+.ns .ns-status { margin-top:12px; padding-top:10px; border-top:1px solid var(--mid); }
+.ns-pill { display:inline-block; font-size:9px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; padding:3px 8px; border-radius:100px; }
+.ns-pill.now   { background:var(--black); color:white; }
+.ns-pill.wait  { background:var(--off); color:var(--subtle); border:1px solid var(--mid); }
+.ns-pill.pend  { color:#B87E4A; background:rgba(184,126,74,.1); border:1px solid rgba(184,126,74,.25); }
+
+/* SYNTHESIS */
+.sy-block { padding:32px; background:var(--off); border:1px solid var(--mid); margin-bottom:1px; }
+.sy-label { font-size:9px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--subtle); margin-bottom:12px; }
+.sy-statement { font-size:20px; font-weight:500; color:var(--black); line-height:1.3; letter-spacing:-.01em; margin-bottom:12px; max-width:640px; }
+.sy-body { font-size:13px; font-weight:300; color:var(--ink); line-height:1.7; max-width:600px; }
+
+/* TOOLTIP HOVER HELPER */
+.hov { cursor:default; }
+</style>
+</head>
+<body>
+
+<div class="mobile-warning">
+  <div class="mw-label">Paladino × Galo Cinza</div>
+  <h2>Este material foi desenvolvido para desktop.</h2>
+  <p>Para uma experiência completa, acesse pelo computador.</p>
+  <div class="mw-divider"></div>
+  <div class="mw-contact">paladino.inc</div>
+</div>
+
+<div class="nav">
+  <button onclick="prev()">←</button>
+  <span class="ctr" id="ctr">1 / 14</span>
+  <button onclick="next()">→</button>
+</div>
+
+<script>
+function logo(fill='#1A1A18', h=13) {
+  const paths = `<path d="M40.87,51.69h-22.84l-1.2,1.2v31.25l-1.2,1.2H1.2l-1.2-1.2V2.4l1.2-1.2h39.67c16.83,0,28.85,8.41,28.85,25.24s-12.02,25.24-28.85,25.24ZM40.87,15.63h-22.84l-1.2,1.2v19.23l1.2,1.2h22.84c7.21,0,12.02-2.4,12.02-10.82s-4.81-10.82-12.02-10.82Z" fill="${fill}"/><path d="M161.67,85.34h-10.82l-1.2-1.2-6.01-15.63-2.4-1.2h-30.05l-2.4,1.2-6.01,15.63-1.2,1.2h-10.82l-1.2-1.2v-12.02L117.2,2.4l1.2-1.2h15.63l1.2,1.2,27.65,69.72v12.02l-1.2,1.2ZM126.81,22.84h-1.2l-10.82,28.85,1.2,1.2h20.43l1.2-1.2-10.82-28.85Z" fill="${fill}"/><path d="M253.43,85.34h-54.09l-1.2-1.2V2.4l1.2-1.2h14.42l1.2,1.2v67.31l1.2,1.2h37.26l1.2,1.2v12.02l-1.2,1.2Z" fill="${fill}"/><path d="M355.4,85.34h-10.82l-1.2-1.2-6.01-15.63-2.4-1.2h-30.05l-2.4,1.2-6.01,15.63-1.2,1.2h-10.82l-1.2-1.2v-12.02L310.93,2.4l1.2-1.2h15.63l1.2,1.2,27.65,69.72v12.02l-1.2,1.2ZM320.55,22.84h-1.2l-10.82,28.85,1.2,1.2h20.43l1.2-1.2-10.82-28.85Z" fill="${fill}"/><path d="M454.25,12.24c-7.4-7.36-17.83-11.04-31.28-11.04h-29.86l-1.23,1.23v81.68l1.23,1.23h29.86c13.54,0,23.99-3.66,31.35-10.98,7.36-7.32,11.04-17.66,11.04-31.03s-3.7-23.73-11.1-31.09ZM441.17,64.02c-4.44,4.49-11.23,6.73-20.37,6.73h-10.83l-1.23-1.23V17.03l1.23-1.23h10.83c9.14,0,15.93,2.24,20.37,6.73,4.44,4.49,6.66,11.38,6.66,20.69s-2.22,16.33-6.66,20.81Z" fill="${fill}"/><path d="M519.7,2.43v81.68l-1.23,1.23h-14.42l-1.23-1.23V2.43l1.23-1.23h14.42l1.23,1.23Z" fill="${fill}"/><path d="M636.52,1.2h-14.42l-1.23,1.23v53.83h-1.13l-34.79-54.08c-.64-.35-1.16-.63-1.8-.98h-18.16l-1.23,1.23v81.68l1.23,1.23h14.42l1.23-1.23V27.85h1.13l36.56,56.51c.64.35,1.16.63,1.8.98h16.38l1.23-1.23V2.43l-1.23-1.23Z" fill="${fill}"/><path d="M694.49,81.25c-6.3-3.53-11.09-8.54-14.36-15.05-3.28-6.51-4.91-14.17-4.91-22.99s1.64-16.48,4.91-22.99c3.28-6.51,8.06-11.5,14.36-14.99,6.3-3.48,13.86-5.23,22.68-5.23s16.25,1.76,22.55,5.29c6.3,3.53,11.09,8.55,14.36,15.05,3.28,6.51,4.91,14.13,4.91,22.86s-1.64,16.48-4.91,22.99c-3.28,6.51-8.06,11.53-14.36,15.05-6.3,3.53-13.82,5.29-22.55,5.29s-16.38-1.76-22.68-5.29ZM735.31,64.56c4.11-4.91,6.17-12.03,6.17-21.35s-2.06-16.31-6.17-21.23c-4.12-4.91-10.16-7.37-18.14-7.37s-14.05,2.46-18.2,7.37c-4.16,4.91-6.24,11.99-6.24,21.23s2.06,16.44,6.17,21.35c4.11,4.91,10.2,7.37,18.27,7.37s14.02-2.46,18.14-7.37Z" fill="${fill}"/>`;
+  return `<svg style="height:${h}px;width:auto;display:block;" viewBox="0 0 758.99 86.54" fill="none" xmlns="http://www.w3.org/2000/svg">${paths}</svg>`;
+}
+function footer(label, dark=false) {
+  return `<div class="bb">${logo(dark?'white':'#1A1A18')}<span>${label}</span></div>`;
+}
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('[data-footer]').forEach(el => {
+    const dark = el.classList.contains('dk');
+    el.insertAdjacentHTML('beforeend', footer(el.dataset.footer, dark));
+  });
+  document.querySelectorAll('[data-logo]').forEach(el => {
+    const fill = el.dataset.logo === 'white' ? 'white' : '#1A1A18';
+    const h = parseInt(el.dataset.h) || 13;
+    el.outerHTML = logo(fill, h);
+  });
+});
+</script>
+
+<!-- ═══════════════ 01 — CAPA ═══════════════ -->
+<div class="slide dk" id="s1">
+  <div style="width:100%;height:100%;padding:52px 64px;display:grid;grid-template-rows:auto 1fr auto;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+      <span data-logo="white" data-h="14"></span>
+      <div style="text-align:right;">
+        <div style="font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.28);">Uso Interno</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.2);margin-top:4px;letter-spacing:.03em;">05.05.2026</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;justify-content:center;">
+      <div style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:20px;">Imersão Ontológica — Diagnóstico</div>
+      <h1 style="color:white;font-size:64px;line-height:.95;max-width:600px;margin-bottom:24px;">O Galo<br>Cinza.</h1>
+      <p style="font-size:16px;font-weight:300;color:rgba(255,255,255,.45);max-width:460px;line-height:1.65;">Mapeamento de tensões, cross-analysis e instrumentos de trabalho para a fase de formulação estratégica.</p>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);">
+      <span style="font-size:11px;color:rgba(255,255,255,.25);">Etapa 01 de 04 — Em andamento</span>
+      <div style="display:flex;gap:24px;">
+        <span style="font-size:11px;color:rgba(255,255,255,.25);">chaparro@paladino.inc</span>
+        <span style="font-size:11px;color:rgba(255,255,255,.25);">anuschek@paladino.inc</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ 02 — ONDE ESTAMOS ═══════════════ -->
+<div class="slide" id="s2" data-footer="Imersão Ontológica — Etapa 01">
+  <div class="si">
+    <div class="sh"><span class="sl">Contexto</span><span class="sn">02</span></div>
+    <h4>4 etapas — posição atual</h4>
+    <p class="sm" style="max-width:600px;margin-bottom:4px;">Este documento cobre o trabalho interno da Etapa 01. O diagnóstico aqui produzido alimenta a Formulação Estratégica.</p>
+    <div class="macro">
+      <div class="mc act">
+        <div class="mn">01 — Atual</div>
+        <div class="mt">Imersão<br>Ontológica</div>
+        <div class="md">Formulário respondido. Cross-analysis concluída. Tensões mapeadas. Instrumentos definidos. Handover pendente.</div>
+      </div>
+      <div class="mc">
+        <div class="mn">02</div>
+        <div class="mt">Formulação<br>Estratégica</div>
+        <div class="md">Proposta de valor, arquitetura de portfólio, identidade conceitual. Começa após aprovação da síntese.</div>
+      </div>
+      <div class="mc">
+        <div class="mn">03</div>
+        <div class="mt">Estruturação<br>Simbólica</div>
+        <div class="md">Tipografia, cor, forma, tom de voz. Estratégia traduzida em sistema de linguagem.</div>
+      </div>
+      <div class="mc">
+        <div class="mn">04</div>
+        <div class="mt">Ativação<br>Sistêmica</div>
+        <div class="md">Diretrizes, autonomia operacional, preservação da integridade ao longo do tempo.</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--mid);border:1px solid var(--mid);margin-top:1px;">
+      <div style="background:var(--off);padding:14px 18px;">
+        <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:6px;">Materiais recebidos</div>
+        <p class="sm">Formulário de discovery respondido. Transcrições das reuniões 01 e 02. Output GPT Chaparro. Notas reunião 05.05.</p>
+      </div>
+      <div style="background:var(--off);padding:14px 18px;">
+        <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:6px;">Pendente</div>
+        <p class="sm">Ask & Handover — nenhum material enviado para a pasta designada. Push realizado em 05.05. Aguardando retorno.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ 03 — CROSS-ANALYSIS ═══════════════ -->
+<div class="slide" id="s3" data-footer="Cross-Analysis — Claude × GPT">
+  <div class="si">
+    <div class="sh"><span class="sl">Cross-Analysis</span><span class="sn">03</span></div>
+    <h4>Leitura cruzada — Claude + GPT Chaparro</h4>
+    <p class="sm" style="max-width:640px;margin-bottom:4px;">Dois modelos, mesmo material, leituras independentes. O que converge é sinal forte. O que complementa adiciona camada. O que diverge exige decisão.</p>
+    <div class="cgrid">
+      <div class="cc">
+        <div class="cc-head">
+          <div class="cc-source">Convergência</div>
+          <div class="cc-badge ok">Confirmado</div>
+        </div>
+        <div class="cc-item">
+          <div class="cc-item-title">O limitador não é Porto Alegre</div>
+          <div class="cc-item-body">Ambas as leituras chegaram ao mesmo diagnóstico: o teto é estrutural. A demanda existe — o modelo não está desenhado para capturá-la.</div>
+        </div>
+        <div class="cc-item">
+          <div class="cc-item-title">O diferencial mais profundo é invisível</div>
+          <div class="cc-item-body">Filosofia de produção, rigor com insumos, intenção no processo — nada disso chega ao cliente no primeiro contato.</div>
+        </div>
+        <div class="cc-item">
+          <div class="cc-item-title">Congelados como vetor real de escala</div>
+          <div class="cc-item-body">Vende tudo que produz sem esforço comercial. Único braço com demanda confirmada que pode crescer sem o restaurante físico.</div>
+        </div>
+      </div>
+      <div class="cc">
+        <div class="cc-head">
+          <div class="cc-source">Divergência</div>
+          <div class="cc-badge div">Requer decisão</div>
+        </div>
+        <div class="cc-item">
+          <div class="cc-item-title">Zona de conforto vs. critério implícito</div>
+          <div class="cc-item-body">GPT diagnosticou "zona de conforto". Chaparro discordou — e tem razão em parte. Gabriel não está inerte. A leitura mais precisa: ele tem um critério implícito sobre o que pode escalar, mas esse critério nunca foi formalizado. Cada decisão de crescimento depende do instinto caso a caso. O projeto precisa transformar esse critério em protocolo.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ 04 — CROSS COMPLEMENTOS ═══════════════ -->
+<div class="slide" id="s4" data-footer="Cross-Analysis — Complementos">
+  <div class="si">
+    <div class="sh"><span class="sl">Cross-Analysis</span><span class="sn">04</span></div>
+    <h4>O que cada leitura adicionou</h4>
+    <div class="cgrid">
+      <div class="cc">
+        <div class="cc-head">
+          <div class="cc-source">GPT (Chaparro)</div>
+          <div class="cc-badge comp">Adiciona camada</div>
+        </div>
+        <div class="cc-item">
+          <div class="cc-item-title">Arquétipo do fundador: Guardião</div>
+          <div class="cc-item-body">Útil não como rótulo, mas como chave de decisão. Gabriel não tem aversão a crescimento — tem aversão a crescimento que ameace a integridade do que construiu. O framework de expansão precisa ser construído em torno da sua psicologia, não contra ela.</div>
+        </div>
+        <div class="cc-item">
+          <div class="cc-item-title">Ética como produto não operacionalizado</div>
+          <div class="cc-item-body">"O mercado não tem simplicidade nem honestidade" é uma posição de força. Enquanto não tiver linguagem e estrutura, continua declaração — não diferencial competitivo.</div>
+        </div>
+      </div>
+      <div class="cc">
+        <div class="cc-head">
+          <div class="cc-source">Claude (Anu)</div>
+          <div class="cc-badge comp">Adiciona camada</div>
+        </div>
+        <div class="cc-item">
+          <div class="cc-item-title">Angela como ausência ativa</div>
+          <div class="cc-item-body">Co-fundadora presente em todas as reuniões. Ausente no formulário inteiro. Qualquer narrativa de origem que não endereça isso vai ter um buraco.</div>
+        </div>
+        <div class="cc-item">
+          <div class="cc-item-title">Instituto — motivação real é fiscal</div>
+          <div class="cc-item-body">Nas reuniões, surge como missão. No formulário, desaparece. Na conversa interna de hoje: motivação central é tributária. Decisão: Instituto sai da arquitetura de marca como frente prioritária.</div>
+        </div>
+        <div class="cc-item">
+          <div class="cc-item-title">Inimigo em branco = ponto cego</div>
+          <div class="cc-item-body">Não responder quem é o inimigo do negócio não é ausência de resposta — é a resposta. Um negócio estável sem ameaça percebida opera sem vigilância estratégica.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ 05 — TENSÕES ═══════════════ -->
+<div class="slide" id="s5" data-footer="Tensões — Imersão Ontológica">
+  <div class="si">
+    <div class="sh"><span class="sl">Tensões Centrais</span><span class="sn">05</span></div>
+    <h4>4 pontos de desalinhamento — clique para expandir</h4>
+    <p class="sm" style="max-width:640px;margin-bottom:4px;">Identificados a partir do formulário, das reuniões e da cross-analysis. Cada tensão tem uma implicação direta para o projeto.</p>
+    <div class="tgrid">
+      <div class="tc t1" onclick="toggleTension(this)">
+        <div class="tc-bar"></div>
+        <div class="tc-tag">T1 — Ontológica</div>
+        <div class="tc-title">Rigor que se chama de simplicidade</div>
+        <div class="tc-summary">Gabriel descreve o negócio como simples e honesto. Opera com 80% orgânicos, água ultrafiltrada, curadoria de energia no cozimento. Isso não é simplicidade — é rigor.</div>
+        <div class="tc-detail">
+          <p>A contradição está no auto-conceito. Qualquer negócio que se posicione como "simples" cria expectativa de acessibilidade. Qualquer negócio que opere com esse nível de exigência cria expectativa de profundidade e distinção. Os dois podem coexistir — mas precisam ser nomeados com precisão.</p>
+          <div class="tc-impl">
+            <div class="ti-label">Implicação</div>
+            <div class="ti-body">Qualquer posicionamento construído sobre "simplicidade" vai criar o território errado. A palavra certa ainda precisa ser encontrada — é o trabalho central do Instrumento 01.</div>
+          </div>
+        </div>
+        <div class="tc-hint">↓ expandir</div>
+      </div>
+      <div class="tc t2" onclick="toggleTension(this)">
+        <div class="tc-bar"></div>
+        <div class="tc-tag">T2 — Estratégica</div>
+        <div class="tc-title">Demanda reprimida vs. teto geográfico</div>
+        <div class="tc-summary">Ele acredita que o limitador é Porto Alegre. Mas 6k clientes/mês sem marketing e congelados vendendo tudo que produz apontam para um limitador interno, não externo.</div>
+        <div class="tc-detail">
+          <p>O teto geográfico só faz sentido se o modelo já tiver sido testado além da capacidade atual. Não foi. A estagnação de 2025/2026 acontece sem canal de produto escalável, sem estratégia de distribuição para congelados, sem presença além do almoço físico.</p>
+          <div class="tc-impl">
+            <div class="ti-label">Implicação</div>
+            <div class="ti-body">A antítese precisa destruir essa hipótese com dados e exemplos concretos — e mostrar o que o Galo Cinza tem que outros negócios similares não tinham quando escalaram.</div>
+          </div>
+        </div>
+        <div class="tc-hint">↓ expandir</div>
+      </div>
+      <div class="tc t3" onclick="toggleTension(this)">
+        <div class="tc-bar"></div>
+        <div class="tc-tag">T3 — Perceptual</div>
+        <div class="tc-title">Diferencial invisível no primeiro contato</div>
+        <div class="tc-summary">Clientes chegam porque a comida é boa. Só depois descobrem a filosofia por trás. O que diferencia o negócio de forma fundamental chega tarde — ou não chega.</div>
+        <div class="tc-detail">
+          <p>Gabriel identificou isso com clareza: "as pessoas ficam sabendo porque ouviram falar, ou nem sabem de verdade." A percepção de primeiro contato é "boa comida". A de cliente antigo é "único lugar onde confio no que estou comendo". O gap entre os dois é enorme.</p>
+          <div class="tc-impl">
+            <div class="ti-label">Implicação</div>
+            <div class="ti-body">A Estruturação Simbólica precisa codificar o diferencial de forma que ele seja legível antes de qualquer palavra — em embalagem, nome de produto, linguagem, ponto de venda.</div>
+          </div>
+        </div>
+        <div class="tc-hint">↓ expandir</div>
+      </div>
+      <div class="tc t4" onclick="toggleTension(this)">
+        <div class="tc-bar"></div>
+        <div class="tc-tag">T4 — Latente</div>
+        <div class="tc-title">Instituto como ausência no formulário</div>
+        <div class="tc-summary">Nas reuniões, o Instituto ocupava grande energia. No formulário estruturado, não aparece uma vez. Motivação confirmada internamente: fiscal, não de missão.</div>
+        <div class="tc-detail">
+          <p>Angela era a âncora emocional do Instituto. Raquel trouxe energia nova, mas numa direção diferente. O escopo está em redefinição permanente. Nada disso está estruturado como extensão coerente da marca.</p>
+          <div class="tc-impl">
+            <div class="ti-label">Implicação</div>
+            <div class="ti-body">Instituto sai da arquitetura de marca como elemento central. Se existir, existe como estrutura fiscal com identidade subordinada — não como segundo organismo de marca. Confirmar com Gabriel antes da antítese.</div>
+          </div>
+        </div>
+        <div class="tc-hint">↓ expandir</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ 06 — INSTRUMENTOS INTRO ═══════════════ -->
+<div class="slide" id="s6" data-footer="Instrumentos de Trabalho">
+  <div class="si g2" style="padding:0;">
+    <div class="gc gl" style="background:var(--black);justify-content:center;">
+      <div class="sh"><span class="sl" style="color:rgba(255,255,255,.28);">Instrumentos</span><span class="sn" style="color:rgba(255,255,255,.28);">06</span></div>
+      <h2 style="color:white;font-size:38px;line-height:1.05;margin-bottom:20px;">Quatro instrumentos.<br>Criados para<br>este diagnóstico.</h2>
+      <p style="font-size:14px;font-weight:300;color:rgba(255,255,255,.45);line-height:1.7;max-width:340px;">Não são frameworks de mercado adaptados. Cada um nasce de uma tensão específica identificada no Galo Cinza — e tem um modo de uso, uma pergunta e um output definidos.</p>
+    </div>
+    <div class="gc" style="justify-content:center;gap:0;">
+      <div style="height:58px;"></div>
+      <div style="display:flex;flex-direction:column;gap:1px;background:var(--mid);border:1px solid var(--mid);">
+        <div style="background:var(--white);padding:16px 20px;display:grid;grid-template-columns:32px 1fr auto;gap:12px;align-items:center;">
+          <div style="font-size:10px;font-weight:700;color:var(--subtle);">01</div>
+          <div>
+            <div style="font-size:13px;font-weight:500;color:var(--black);">Território por Oposição</div>
+            <div style="font-size:11px;font-weight:300;color:var(--subtle);margin-top:2px;">Resolve T1 + T3</div>
+          </div>
+          <div style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:100px;background:var(--off);color:var(--subtle);white-space:nowrap;">Preenchido por nós</div>
+        </div>
+        <div style="background:var(--white);padding:16px 20px;display:grid;grid-template-columns:32px 1fr auto;gap:12px;align-items:center;">
+          <div style="font-size:10px;font-weight:700;color:var(--subtle);">02</div>
+          <div>
+            <div style="font-size:13px;font-weight:500;color:var(--black);">Arquitetura de Portfólio</div>
+            <div style="font-size:11px;font-weight:300;color:var(--subtle);margin-top:2px;">Resolve T2</div>
+          </div>
+          <div style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:100px;background:var(--off);color:var(--subtle);white-space:nowrap;">Preenchido por nós</div>
+        </div>
+        <div style="background:var(--white);padding:16px 20px;display:grid;grid-template-columns:32px 1fr auto;gap:12px;align-items:center;">
+          <div style="font-size:10px;font-weight:700;color:var(--subtle);">03</div>
+          <div>
+            <div style="font-size:13px;font-weight:500;color:var(--black);">Critério de Expansão</div>
+            <div style="font-size:11px;font-weight:300;color:var(--subtle);margin-top:2px;">Resolve T2 + arquétipo</div>
+          </div>
+          <div style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:100px;background:var(--black);color:white;white-space:nowrap;">Sessão ao vivo</div>
+        </div>
+        <div style="background:var(--white);padding:16px 20px;display:grid;grid-template-columns:32px 1fr auto;gap:12px;align-items:center;">
+          <div style="font-size:10px;font-weight:700;color:var(--subtle);">04</div>
+          <div>
+            <div style="font-size:13px;font-weight:500;color:var(--black);">Mapa de Percepção</div>
+            <div style="font-size:11px;font-weight:300;color:var(--subtle);margin-top:2px;">Resolve T3</div>
+          </div>
+          <div style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:100px;background:var(--off);color:var(--subtle);white-space:nowrap;">Preenchido por nós</div>
+        </div>
+      </div>
+      <div style="margin-top:12px;padding:12px 14px;background:var(--off);border:1px solid var(--mid);">
+        <p class="sm" style="font-size:11px;"><strong>Modo de uso:</strong> Os instrumentos 01, 02 e 04 são preenchidos internamente e apresentados como hipótese. Gabriel reage. O 03 é construído ao vivo — no churrasco ou na reunião da antítese.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ 07 — INSTRUMENTO 01 ═══════════════ -->
+<div class="slide" id="s7" data-footer="Instrumento 01 — Território por Oposição">
+  <div class="si">
+    <div class="sh">
+      <span class="sl">Instrumento 01</span>
+      <span class="sn">07</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;height:calc(100% - 80px);">
+
+      <!-- LEFT: header + map -->
+      <div style="display:flex;flex-direction:column;">
+        <div style="margin-bottom:20px;">
+          <h3 style="font-size:22px;letter-spacing:-.01em;margin-bottom:4px;">Território por Oposição</h3>
+          <p class="sm">Resolve <strong>T1 + T3</strong> — O que é o Galo Cinza se não é nenhum dos dois extremos que ele rejeita?</p>
+        </div>
+
+        <!-- POSITIONING MAP -->
+        <div style="flex:1;position:relative;border:1px solid var(--mid);background:var(--off);">
+          <!-- axis labels -->
+          <div style="position:absolute;top:50%;left:10px;transform:translateY(-50%);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);writing-mode:vertical-rl;transform:translateY(-50%) rotate(180deg);">Consciência de processo</div>
+          <div style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);">Alcance de mercado</div>
+
+          <!-- quadrant lines -->
+          <div style="position:absolute;top:50%;left:0;right:0;height:1px;background:var(--mid);"></div>
+          <div style="position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--mid);"></div>
+
+          <!-- POLO 1: natureba militante — top left -->
+          <div style="position:absolute;top:14%;left:8%;text-align:center;">
+            <div style="width:80px;height:80px;border-radius:50%;background:rgba(168,164,156,.15);border:1px dashed var(--mid);display:flex;align-items:center;justify-content:center;margin:0 auto 6px;">
+              <span style="font-size:9px;font-weight:600;color:var(--subtle);text-align:center;line-height:1.3;padding:4px;">Nicho<br>Militante</span>
+            </div>
+            <div style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--subtle);">Rejeita</div>
+          </div>
+
+          <!-- POLO 2: popular industrial — bottom right -->
+          <div style="position:absolute;bottom:18%;right:8%;text-align:center;">
+            <div style="width:80px;height:80px;border-radius:50%;background:rgba(168,164,156,.15);border:1px dashed var(--mid);display:flex;align-items:center;justify-content:center;margin:0 auto 6px;">
+              <span style="font-size:9px;font-weight:600;color:var(--subtle);text-align:center;line-height:1.3;padding:4px;">Volume<br>Industrial</span>
+            </div>
+            <div style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--subtle);">Rejeita</div>
+          </div>
+
+          <!-- GALO CINZA — top right, the unclaimed territory -->
+          <div style="position:absolute;top:12%;right:10%;text-align:center;">
+            <div style="width:96px;height:96px;border-radius:50%;background:var(--black);display:flex;align-items:center;justify-content:center;margin:0 auto 6px;box-shadow:0 4px 24px rgba(0,0,0,.18);">
+              <span style="font-size:9px;font-weight:700;color:white;text-align:center;line-height:1.4;padding:4px;">Galo<br>Cinza</span>
+            </div>
+            <div style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--black);">Território</div>
+          </div>
+
+          <!-- territory label -->
+          <div style="position:absolute;bottom:30%;left:50%;transform:translateX(-50%);text-align:center;background:white;border:1px solid var(--mid);padding:8px 14px;white-space:nowrap;">
+            <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:3px;">Território a nomear</div>
+            <div style="font-size:12px;font-weight:500;color:var(--black);">Rigor que parece simples</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: output + note -->
+      <div style="display:flex;flex-direction:column;gap:0;">
+        <div style="flex:1;display:flex;flex-direction:column;gap:1px;background:var(--mid);border:1px solid var(--mid);">
+          <div style="background:var(--white);padding:18px 20px;">
+            <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:8px;">Pergunta central</div>
+            <p class="sm">Se o Galo Cinza não é saudável-militante e não é popular-industrial — <strong>o que é?</strong> Qual território ele ocupa que ainda não tem nome?</p>
+          </div>
+          <div style="background:var(--white);padding:18px 20px;">
+            <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:8px;">Hipótese de território</div>
+            <p class="sm">Um negócio que opera com o rigor de quem leva o processo a sério — mas sem o discurso militante. <strong>A sofisticação está no fazer, não no falar.</strong></p>
+          </div>
+          <div style="background:var(--white);padding:18px 20px;">
+            <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:8px;">Referência de posicionamento</div>
+            <p class="sm">Roberta Sudbrack ocupa "cozinha brasileira como ato intelectual" — não saudável, não popular. O Galo Cinza tem algo análogo. A linguagem atual ("simples e honesto") não captura isso.</p>
+          </div>
+          <div style="background:var(--white);padding:18px 20px;">
+            <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:8px;">Output esperado</div>
+            <p class="sm">Um território nomeado que Gabriel reconhece sem precisar explicar. Base para todas as decisões de expressão — produto, espaço, comunicação.</p>
+          </div>
+        </div>
+        <div style="margin-top:1px;padding:12px 14px;background:var(--off);border:1px solid var(--mid);">
+          <p class="sm" style="font-size:11px;"><strong>Modo:</strong> Preenchido por nós. Apresentado como hipótese. Gabriel valida, corrige ou nomeia.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ 08 — INSTRUMENTO 02 ═══════════════ -->
+<div class="slide" id="s8" data-footer="Instrumento 02 — Arquitetura de Portfólio">
+  <div class="si">
+    <div class="sh">
+      <span class="sl">Instrumento 02</span>
+      <span class="sn">08</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;height:calc(100% - 80px);">
+
+      <!-- LEFT -->
+      <div style="display:flex;flex-direction:column;">
+        <div style="margin-bottom:20px;">
+          <h3 style="font-size:22px;letter-spacing:-.01em;margin-bottom:4px;">Arquitetura de Portfólio</h3>
+          <p class="sm">Resolve <strong>T2</strong> — Qual frente cresce sem diluir? O que é âncora, motor ou extensão?</p>
+        </div>
+
+        <!-- PORTFOLIO DIAGRAM -->
+        <div style="flex:1;display:flex;flex-direction:column;gap:1px;background:var(--mid);border:1px solid var(--mid);">
+
+          <!-- ÂNCORA -->
+          <div style="background:var(--black);padding:16px 20px;display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;">
+            <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);writing-mode:vertical-rl;transform:rotate(180deg);">Âncora</div>
+            <div>
+              <div style="font-size:15px;font-weight:500;color:white;margin-bottom:4px;">Restaurante — Almoço</div>
+              <div style="font-size:11px;font-weight:300;color:rgba(255,255,255,.45);">Origem, credibilidade, prova viva da filosofia. Não escala — sustenta tudo.</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.35);">6k/mês</div>
+              <div style="font-size:9px;font-weight:300;color:rgba(255,255,255,.25);">sem marketing</div>
+            </div>
+          </div>
+
+          <!-- MOTOR -->
+          <div style="background:var(--white);padding:16px 20px;display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;border-left:3px solid var(--black);">
+            <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);writing-mode:vertical-rl;transform:rotate(180deg);">Motor</div>
+            <div>
+              <div style="font-size:15px;font-weight:500;color:var(--black);margin-bottom:4px;">Congelados</div>
+              <div style="font-size:11px;font-weight:300;color:var(--ink);">Escala sem o restaurante. Ao crescer, aumenta visibilidade da marca-mãe. Demanda confirmada — vende tudo que produz.</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;background:var(--black);color:white;border-radius:100px;">Prioridade</div>
+            </div>
+          </div>
+
+          <!-- EXTENSÃO 1 -->
+          <div style="background:var(--white);padding:14px 20px;display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;">
+            <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);writing-mode:vertical-rl;transform:rotate(180deg);">Extensão</div>
+            <div>
+              <div style="font-size:14px;font-weight:500;color:var(--black);margin-bottom:2px;">Eventos + Sobremesas</div>
+              <div style="font-size:11px;font-weight:300;color:var(--ink);">Potencial existe. Depende de estrutura que ainda não existe. Papel: reforçar o posicionamento, não escalar.</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border:1px solid var(--mid);color:var(--subtle);border-radius:100px;">Secundário</div>
+            </div>
+          </div>
+
+          <!-- FORA DO SISTEMA -->
+          <div style="background:var(--off);padding:14px 20px;display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;">
+            <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);writing-mode:vertical-rl;transform:rotate(180deg);">Fora</div>
+            <div>
+              <div style="font-size:14px;font-weight:500;color:var(--subtle);margin-bottom:2px;">Instituto — forma atual</div>
+              <div style="font-size:11px;font-weight:300;color:var(--subtle);">Não cresce sem o restaurante. Não fortalece o restaurante ao crescer. Motivação é fiscal. Fora da arquitetura de marca.</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border:1px solid var(--mid);color:var(--subtle);border-radius:100px;">A revisar</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div style="display:flex;flex-direction:column;gap:0;">
+        <div style="flex:1;display:flex;flex-direction:column;gap:1px;background:var(--mid);border:1px solid var(--mid);">
+          <div style="background:var(--white);padding:18px 20px;">
+            <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:8px;">As três perguntas do instrumento</div>
+            <div class="rl">
+              <div class="rr" style="padding:10px 0;">
+                <span class="rn">A</span>
+                <span class="rt" style="font-size:12px;">O que pode crescer <strong>sem</strong> o restaurante?</span>
+              </div>
+              <div class="rr" style="padding:10px 0;">
+                <span class="rn">B</span>
+                <span class="rt" style="font-size:12px;">O que <strong>só</strong> existe com o restaurante?</span>
+              </div>
+              <div class="rr" style="padding:10px 0;">
+                <span class="rn">C</span>
+                <span class="rt" style="font-size:12px;">O que, ao crescer, <strong>fortalece</strong> o restaurante?</span>
+              </div>
+            </div>
+          </div>
+          <div style="background:var(--white);padding:18px 20px;">
+            <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:8px;">Output esperado</div>
+            <p class="sm">Cada frente com papel definido no sistema. Não uma lista de produtos — uma arquitetura onde cada elemento serve o conjunto.</p>
+          </div>
+        </div>
+        <div style="margin-top:1px;padding:12px 14px;background:var(--off);border:1px solid var(--mid);">
+          <p class="sm" style="font-size:11px;"><strong>Modo:</strong> Preenchido por nós com hipótese. Gabriel confirma, questiona ou reposiciona cada frente.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ 09 — INSTRUMENTO 03 ═══════════════ -->
+<div class="slide" id="s9" data-footer="Instrumento 03 — Critério de Expansão">
+  <div class="si">
+    <div class="sh">
+      <span class="sl">Instrumento 03</span>
+      <span class="sn">09</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;height:calc(100% - 80px);">
+
+      <!-- LEFT -->
+      <div style="display:flex;flex-direction:column;">
+        <div style="margin-bottom:20px;">
+          <h3 style="font-size:22px;letter-spacing:-.01em;margin-bottom:4px;">Critério de Expansão</h3>
+          <p class="sm">Resolve <strong>T2 + arquétipo</strong> — Formalizar o que hoje existe só como instinto do fundador.</p>
+        </div>
+
+        <!-- PROTOCOL VISUAL -->
+        <div style="flex:1;display:flex;flex-direction:column;gap:1px;background:var(--mid);border:1px solid var(--mid);">
+          <div style="background:var(--off);padding:14px 20px;">
+            <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:6px;">Protocolo — 4 condições</div>
+            <p class="sm" style="font-size:11px;">Qualquer nova frente deve cumprir todos os critérios abaixo para ser considerada coerente com o sistema.</p>
+          </div>
+          <div style="background:var(--white);padding:16px 20px;display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start;">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--black);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;flex-shrink:0;">1</div>
+            <div>
+              <div style="font-size:13px;font-weight:500;color:var(--black);margin-bottom:2px;">Preserva o padrão de produção</div>
+              <div style="font-size:11px;font-weight:300;color:var(--ink);">O nível de exigência com insumos e processo é mantido — independente do canal ou formato.</div>
+            </div>
+          </div>
+          <div style="background:var(--white);padding:16px 20px;display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start;">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--black);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;flex-shrink:0;">2</div>
+            <div>
+              <div style="font-size:13px;font-weight:500;color:var(--black);margin-bottom:2px;">Não requer presença do fundador</div>
+              <div style="font-size:11px;font-weight:300;color:var(--ink);">Opera com coerência sem depender de Gabriel para cada decisão — o processo garante a qualidade.</div>
+            </div>
+          </div>
+          <div style="background:var(--white);padding:16px 20px;display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start;">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--black);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;flex-shrink:0;">3</div>
+            <div>
+              <div style="font-size:13px;font-weight:500;color:var(--black);margin-bottom:2px;">Reforça o posicionamento central</div>
+              <div style="font-size:11px;font-weight:300;color:var(--ink);">Ao existir, torna o território do Galo Cinza mais claro — não cria ambiguidade sobre o que o negócio é.</div>
+            </div>
+          </div>
+          <div style="background:var(--white);padding:16px 20px;display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start;">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--black);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;flex-shrink:0;">4</div>
+            <div>
+              <div style="font-size:13px;font-weight:500;color:var(--black);margin-bottom:2px;">Tem modelo de operação definível</div>
+              <div style="font-size:11px;font-weight:300;color:var(--ink);">Pode ser descrito como processo — não depende exclusivamente de talento ou sensibilidade individual.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div style="display:flex;flex-direction:column;gap:1px;background:var(--mid);border:1px solid var(--mid);">
+        <div style="background:var(--off);padding:16px 20px;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:6px;">Teste — segunda unidade descartada</div>
+          <p class="sm" style="font-size:11px;">Gabriel descartou a abertura de segunda unidade por desalinhamento. Ao aplicar o protocolo, qual critério falhou?</p>
+        </div>
+        <div style="background:var(--white);padding:16px 20px;flex:1;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:12px;">Aplicação — frentes atuais</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:grid;grid-template-columns:1fr repeat(4,20px);gap:8px;align-items:center;padding:8px 10px;background:var(--off);">
+              <div style="font-size:10px;font-weight:600;color:var(--subtle);letter-spacing:.06em;text-transform:uppercase;">Frente</div>
+              <div style="font-size:9px;font-weight:700;color:var(--subtle);text-align:center;">1</div>
+              <div style="font-size:9px;font-weight:700;color:var(--subtle);text-align:center;">2</div>
+              <div style="font-size:9px;font-weight:700;color:var(--subtle);text-align:center;">3</div>
+              <div style="font-size:9px;font-weight:700;color:var(--subtle);text-align:center;">4</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr repeat(4,20px);gap:8px;align-items:center;padding:8px 10px;border-bottom:1px solid var(--mid);">
+              <div style="font-size:12px;font-weight:500;color:var(--black);">Restaurante</div>
+              <div style="text-align:center;font-size:11px;color:#5A8F6A;">✓</div>
+              <div style="text-align:center;font-size:11px;color:#5A8F6A;">✓</div>
+              <div style="text-align:center;font-size:11px;color:#5A8F6A;">✓</div>
+              <div style="text-align:center;font-size:11px;color:#5A8F6A;">✓</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr repeat(4,20px);gap:8px;align-items:center;padding:8px 10px;border-bottom:1px solid var(--mid);">
+              <div style="font-size:12px;font-weight:500;color:var(--black);">Congelados</div>
+              <div style="text-align:center;font-size:11px;color:#5A8F6A;">✓</div>
+              <div style="text-align:center;font-size:11px;color:#5A8F6A;">✓</div>
+              <div style="text-align:center;font-size:11px;color:#5A8F6A;">✓</div>
+              <div style="text-align:center;font-size:11px;color:#5A8F6A;">✓</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr repeat(4,20px);gap:8px;align-items:center;padding:8px 10px;border-bottom:1px solid var(--mid);">
+              <div style="font-size:12px;font-weight:500;color:var(--black);">2ª unidade</div>
+              <div style="text-align:center;font-size:11px;color:#5A8F6A;">✓</div>
+              <div style="text-align:center;font-size:11px;color:#C05F5F;">?</div>
+              <div style="text-align:center;font-size:11px;color:#C05F5F;">?</div>
+              <div style="text-align:center;font-size:11px;color:#C05F5F;">?</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr repeat(4,20px);gap:8px;align-items:center;padding:8px 10px;">
+              <div style="font-size:12px;font-weight:500;color:var(--subtle);">Instituto</div>
+              <div style="text-align:center;font-size:11px;color:#C05F5F;">?</div>
+              <div style="text-align:center;font-size:11px;color:#C05F5F;">?</div>
+              <div style="text-align:center;font-size:11px;color:#C05F5F;">?</div>
+              <div style="text-align:center;font-size:11px;color:#C05F5F;">?</div>
+            </div>
+          </div>
+        </div>
+        <div style="background:var(--off);padding:12px 14px;">
+          <p class="sm" style="font-size:11px;"><strong>Modo:</strong> Sessão ao vivo com Gabriel. Os critérios acima são hipótese — ele os valida, rejeita ou reformula. Os "?" são preenchidos em conjunto.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ 10 — INSTRUMENTO 04 ═══════════════ -->
+<div class="slide" id="s10" data-footer="Instrumento 04 — Mapa de Percepção">
+  <div class="si">
+    <div class="sh">
+      <span class="sl">Instrumento 04</span>
+      <span class="sn">10</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;height:calc(100% - 80px);">
+
+      <!-- LEFT -->
+      <div style="display:flex;flex-direction:column;">
+        <div style="margin-bottom:20px;">
+          <h3 style="font-size:22px;letter-spacing:-.01em;margin-bottom:4px;">Mapa de Percepção</h3>
+          <p class="sm">Resolve <strong>T3</strong> — Em qual momento o cliente percebe o que diferencia o Galo Cinza?</p>
+        </div>
+
+        <!-- PERCEPTION MAP -->
+        <div style="flex:1;display:flex;flex-direction:column;gap:1px;background:var(--mid);border:1px solid var(--mid);">
+
+          <!-- HEADER ROW -->
+          <div style="display:grid;grid-template-columns:100px 1fr 1fr 1fr;gap:1px;background:var(--mid);">
+            <div style="background:var(--off);padding:10px 12px;"></div>
+            <div style="background:var(--off);padding:10px 12px;text-align:center;">
+              <div style="font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--subtle);">1º Contato</div>
+            </div>
+            <div style="background:var(--off);padding:10px 12px;text-align:center;">
+              <div style="font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--subtle);">Recorrente</div>
+            </div>
+            <div style="background:var(--black);padding:10px 12px;text-align:center;">
+              <div style="font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.5);">Cliente Antigo</div>
+            </div>
+          </div>
+
+          <!-- VISIBLE -->
+          <div style="display:grid;grid-template-columns:100px 1fr 1fr 1fr;gap:1px;background:var(--mid);">
+            <div style="background:var(--off);padding:12px;display:flex;align-items:center;">
+              <div style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--subtle);">Visível</div>
+            </div>
+            <div style="background:var(--white);padding:12px;">
+              <p class="sm" style="font-size:11px;">Espaço, cardápio, preço. "Parece um bom restaurante."</p>
+            </div>
+            <div style="background:var(--white);padding:12px;">
+              <p class="sm" style="font-size:11px;">Consistência. Mesmo padrão toda semana. Equipe estável.</p>
+            </div>
+            <div style="background:var(--black);padding:12px;">
+              <p style="font-size:11px;font-weight:300;color:rgba(255,255,255,.6);">Processo. Entende que há um sistema por trás.</p>
+            </div>
+          </div>
+
+          <!-- PERCEIVED -->
+          <div style="display:grid;grid-template-columns:100px 1fr 1fr 1fr;gap:1px;background:var(--mid);">
+            <div style="background:var(--off);padding:12px;display:flex;align-items:center;">
+              <div style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--subtle);">Percebido</div>
+            </div>
+            <div style="background:var(--white);padding:12px;">
+              <p class="sm" style="font-size:11px;">"A comida é boa." Nada além disso.</p>
+            </div>
+            <div style="background:var(--white);padding:12px;">
+              <p class="sm" style="font-size:11px;">"Aqui é diferente." Começa a entender, mas não sabe nomear.</p>
+            </div>
+            <div style="background:var(--black);padding:12px;">
+              <p style="font-size:11px;font-weight:300;color:rgba(255,255,255,.6);">"Único lugar onde confio no que estou comendo."</p>
+            </div>
+          </div>
+
+          <!-- GAP -->
+          <div style="display:grid;grid-template-columns:100px 1fr 1fr 1fr;gap:1px;background:var(--mid);">
+            <div style="background:var(--off);padding:12px;display:flex;align-items:center;">
+              <div style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#C05F5F;">Gap</div>
+            </div>
+            <div style="background:#fff5f5;padding:12px;border-top:2px solid #C05F5F;">
+              <p class="sm" style="font-size:11px;color:#C05F5F;font-weight:500;">Máximo. O diferencial é completamente opaco.</p>
+            </div>
+            <div style="background:#fffaf5;padding:12px;border-top:2px solid #B87E4A;">
+              <p class="sm" style="font-size:11px;color:#B87E4A;font-weight:500;">Médio. Percebe mas não consegue articular.</p>
+            </div>
+            <div style="background:var(--black);padding:12px;border-top:2px solid rgba(90,143,106,.6);">
+              <p style="font-size:11px;font-weight:500;color:rgba(90,143,106,.9);">Mínimo. Convicção total — mas levou tempo demais.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div style="display:flex;flex-direction:column;gap:0;">
+        <div style="flex:1;display:flex;flex-direction:column;gap:1px;background:var(--mid);border:1px solid var(--mid);">
+          <div style="background:var(--white);padding:18px 20px;">
+            <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:8px;">O problema central</div>
+            <p class="sm">A percepção máxima — <strong>"único lugar onde confio no que estou comendo"</strong> — só chega depois de muito tempo de frequência. Às vezes não chega.</p>
+            <p class="sm" style="margin-top:8px;">O diferencial mais profundo do negócio é invisível no ponto de maior oportunidade: o primeiro contato.</p>
+          </div>
+          <div style="background:var(--white);padding:18px 20px;">
+            <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:8px;">Diagnóstico do gap</div>
+            <div class="rl">
+              <div class="rr" style="padding:8px 0;">
+                <span class="rn" style="color:#C05F5F;">×</span>
+                <span class="rt" style="font-size:12px;">O espaço físico não comunica o padrão de insumos</span>
+              </div>
+              <div class="rr" style="padding:8px 0;">
+                <span class="rn" style="color:#C05F5F;">×</span>
+                <span class="rt" style="font-size:12px;">O cardápio não traduz a filosofia de produção</span>
+              </div>
+              <div class="rr" style="padding:8px 0;">
+                <span class="rn" style="color:#C05F5F;">×</span>
+                <span class="rt" style="font-size:12px;">A embalagem dos congelados não carrega a distinção</span>
+              </div>
+            </div>
+          </div>
+          <div style="background:var(--white);padding:18px 20px;">
+            <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:8px;">Output esperado</div>
+            <p class="sm">Identificar onde o gap é mais custoso e mais fácil de fechar. Guia as decisões de expressão simbólica — o que precisa ser dito, onde e em qual momento da jornada.</p>
+          </div>
+        </div>
+        <div style="margin-top:1px;padding:12px 14px;background:var(--off);border:1px solid var(--mid);">
+          <p class="sm" style="font-size:11px;"><strong>Modo:</strong> Hipótese preenchida por nós. Gabriel corrige com base na experiência real com os clientes dele.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ 11 — SINAIS ═══════════════ -->
+<div class="slide" id="s11" data-footer="Sinais — Leitura do Formulário">
+  <div class="si">
+    <div class="sh"><span class="sl">Sinais do Material</span><span class="sn">11</span></div>
+    <h4>Confirmado / Em aberto / Ausente mas presente</h4>
+    <p class="sm" style="max-width:640px;margin-bottom:4px;">Leitura organizada das respostas do formulário. O que está claro, o que precisa de aprofundamento e o que é sinal pelo silêncio.</p>
+    <div class="sgrid">
+      <div class="sc">
+        <div class="sc-type ok">Confirmado</div>
+        <div class="sl-item">
+          <div class="sli-title">Identidade operacional sólida</div>
+          <div class="sli-body">Sabe o que é, o que não é, o que jamais fará. Raro em 10 anos de operação.</div>
+        </div>
+        <div class="sl-item">
+          <div class="sli-title">Demanda sem esforço comercial</div>
+          <div class="sli-body">6k clientes/mês e congelados vendendo tudo que produz. Zero marketing ativo em nenhum dos dois.</div>
+        </div>
+        <div class="sl-item">
+          <div class="sli-title">Processo como vantagem real</div>
+          <div class="sli-body">Transição de Angela foi invisível para os clientes. Processo supera dependência de pessoas-chave.</div>
+        </div>
+        <div class="sl-item">
+          <div class="sli-title">Rejeição clara dos dois extremos</div>
+          <div class="sli-body">Natureba militante e popular-industrial. O território do meio está ocupado — mas ainda sem nome.</div>
+        </div>
+        <div class="sl-item">
+          <div class="sli-title">Referência de qualidade precisa</div>
+          <div class="sli-body">Cita Roberta Sudbrack. Não cita nomes de aspiração de escala. Dado sobre o que ele valoriza.</div>
+        </div>
+      </div>
+      <div class="sc">
+        <div class="sc-type open">Em aberto</div>
+        <div class="sl-item">
+          <div class="sli-title">O que quebrou na segunda unidade</div>
+          <div class="sli-body">Descartou por desalinhamento, não por falta de recurso. O critério implícito precisa ser extraído ao vivo.</div>
+        </div>
+        <div class="sl-item">
+          <div class="sli-title">Crença de escala nacional</div>
+          <div class="sli-body">Afirma que funcionaria em qualquer lugar do Brasil. Crença grande, sem evidência ainda. Precisa ser testada.</div>
+        </div>
+        <div class="sl-item">
+          <div class="sli-title">Status real do Instituto hoje</div>
+          <div class="sli-body">Última versão conhecida: abril. Escopo em redefinição. Confirmar antes da antítese.</div>
+        </div>
+        <div class="sl-item">
+          <div class="sli-title">Inimigo do negócio</div>
+          <div class="sli-body">Campo em branco no formulário. "Mercado desonesto" surgiu na conversa — genérico demais para ser operacional.</div>
+        </div>
+      </div>
+      <div class="sc">
+        <div class="sc-type absent">Ausente — mas presente</div>
+        <div class="sl-item">
+          <div class="sli-title">Angela</div>
+          <div class="sli-body">Co-fundadora. Ainda assina os cardápios. Ausente do formulário inteiro. Qualquer narrativa de origem com esse buraco vai falhar.</div>
+        </div>
+        <div class="sl-item">
+          <div class="sli-title">Instituto Galo Cinza</div>
+          <div class="sli-body">Ocupou grande espaço nas duas primeiras reuniões. Desapareceu completamente das respostas estruturadas. Isso é informação.</div>
+        </div>
+        <div class="sl-item">
+          <div class="sli-title">Concorrência</div>
+          <div class="sli-body">Admite não acompanhar. Não menciona nenhum concorrente em campo algum. Ponto cego que a antítese precisa mapear.</div>
+        </div>
+        <div class="sl-item">
+          <div class="sli-title">Handover</div>
+          <div class="sli-body">Nenhum material enviado à pasta designada. A ausência de documentação é ela mesma um dado sobre como o negócio opera.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ 12 — SÍNTESE ═══════════════ -->
+<div class="slide" id="s12" data-footer="Síntese — Leitura Central">
+  <div class="si g2" style="padding:0;">
+    <div class="gc gl" style="background:var(--black);">
+      <div class="sh"><span class="sl" style="color:rgba(255,255,255,.28);">Síntese</span><span class="sn" style="color:rgba(255,255,255,.28);">12</span></div>
+      <div style="margin-bottom:20px;">
+        <div style="display:inline-block;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 12px;border:1px solid rgba(255,255,255,.2);border-radius:100px;color:rgba(255,255,255,.4);margin-bottom:16px;">Leitura central</div>
+      </div>
+      <h2 style="color:white;font-size:36px;line-height:1.1;margin-bottom:20px;">O ativo mais difícil<br>de construir<br>já existe.</h2>
+      <p style="font-size:15px;line-height:1.7;color:rgba(255,255,255,.5);">O Galo Cinza tem convicção operacional real. Sabe quem é. Opera com exigência que é tudo menos comum. Tem demanda sem pedir. Isso não se constrói em projeto nenhum — é o ponto de partida.</p>
+      <p style="font-size:15px;line-height:1.7;color:rgba(255,255,255,.5);margin-top:12px;">O que falta é a estrutura que torna essa convicção legível, escalável e defensável — fora do restaurante, fora de Porto Alegre, fora do instinto do fundador.</p>
+    </div>
+    <div class="gc">
+      <div style="height:58px;"></div>
+      <h4>O que a antítese precisa fazer</h4>
+      <div class="rl">
+        <div class="rr">
+          <span class="rn">01</span>
+          <span class="rt"><strong>Destruir o teto geográfico com dados</strong><em>Mostrar negócios com a mesma filosofia que escalaram — e o que o Galo Cinza tem que eles não tinham.</em></span>
+        </div>
+        <div class="rr">
+          <span class="rn">02</span>
+          <span class="rt"><strong>Nomear o território que ele já ocupa</strong><em>Não como provocação — como reconhecimento de algo que ele já faz mas ainda não consegue dizer.</em></span>
+        </div>
+        <div class="rr">
+          <span class="rn">03</span>
+          <span class="rt"><strong>Mostrar onde valor está sendo deixado na mesa</strong><em>Congelados sem canal, diferencial sem expressão, critério de expansão sem protocolo.</em></span>
+        </div>
+        <div class="rr">
+          <span class="rn">04</span>
+          <span class="rt"><strong>Levar as perguntas abertas ao vivo</strong><em>Angela, Instituto, segunda unidade descartada. Não por formulário — no churrasco ou na antítese.</em></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ 13 — PRÓXIMOS PASSOS ═══════════════ -->
+<div class="slide" id="s13" data-footer="Próximos Passos">
+  <div class="si">
+    <div class="sh"><span class="sl">Próximos Passos</span><span class="sn">13</span></div>
+    <h4>Sequência de ações — semana 05.05</h4>
+    <p class="sm" style="max-width:600px;margin-bottom:4px;">Ordenadas por prioridade. Os materiais do handover, quando chegarem, somam contexto — não são pré-requisito para avançar.</p>
+    <div class="nsgrid">
+      <div class="ns">
+        <div class="ns-num">Ação 01</div>
+        <div class="ns-title">Sprint de antítese</div>
+        <div class="ns-body">Construir o keynote da antítese com base nas 4 tensões. Referências, casos, dados. Não esperar o handover.</div>
+        <div class="ns-status"><span class="ns-pill now">Hoje / amanhã</span></div>
+      </div>
+      <div class="ns">
+        <div class="ns-num">Ação 02</div>
+        <div class="ns-title">Push no handover</div>
+        <div class="ns-body">Marco Anu enviou mensagem ao Gabriel em 05.05. Aguardando materiais na pasta designada.</div>
+        <div class="ns-status"><span class="ns-pill pend">Aguardando</span></div>
+      </div>
+      <div class="ns">
+        <div class="ns-num">Ação 03</div>
+        <div class="ns-title">Perguntas de double-click</div>
+        <div class="ns-body">Angela, Instituto, segunda unidade. Não criar reunião separada — levar para a apresentação da antítese ou para o churrasco.</div>
+        <div class="ns-status"><span class="ns-pill wait">Na antítese</span></div>
+      </div>
+      <div class="ns">
+        <div class="ns-num">Ação 04</div>
+        <div class="ns-title">Churrasco com Gabriel</div>
+        <div class="ns-body">Ambiente informal. Conversas que não cabem em formulário. Marco Anu coordena agendamento — semana que vem.</div>
+        <div class="ns-status"><span class="ns-pill wait">Agendar</span></div>
+      </div>
+      <div class="ns">
+        <div class="ns-num">Ação 05</div>
+        <div class="ns-title">Apresentação da antítese</div>
+        <div class="ns-body">Keynote + mundo de referência + onde o Galo Cinza se posiciona + o que está sendo deixado na mesa. Quinta ou sexta.</div>
+        <div class="ns-status"><span class="ns-pill wait">A definir</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ 14 — FECHAMENTO ═══════════════ -->
+<div class="slide dk" id="s14">
+  <div style="width:100%;height:100%;padding:52px 64px;display:grid;grid-template-rows:auto 1fr auto;">
+    <div style="display:flex;justify-content:space-between;">
+      <span class="sl" style="color:rgba(255,255,255,.28);">Paladino × Galo Cinza</span>
+      <span class="sn" style="color:rgba(255,255,255,.28);">14</span>
+    </div>
+    <div style="display:flex;flex-direction:column;justify-content:center;">
+      <h2 style="color:white;font-size:48px;max-width:620px;line-height:1.0;margin-bottom:24px;">O diagnóstico está feito.<br>A antítese começa agora.</h2>
+      <p style="font-size:16px;font-weight:300;color:rgba(255,255,255,.45);max-width:460px;line-height:1.65;">Quando os materiais do handover chegarem, este documento é atualizado. As hipóteses de trabalho dos instrumentos serão refinadas.</p>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);">
+      <span data-logo="white" data-h="14"></span>
+      <div style="display:flex;gap:24px;align-items:center;">
+        <span style="font-size:11px;color:rgba(255,255,255,.25);">chaparro@paladino.inc</span>
+        <span style="font-size:11px;color:rgba(255,255,255,.25);">anuschek@paladino.inc</span>
+        <span style="font-size:11px;color:rgba(255,255,255,.25);">@paladino.inc</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+let cur = 0, tot = slides.length;
+
+function show(n) {
+  slides[cur].classList.remove('active');
+  cur = ((n % tot) + tot) % tot;
+  slides[cur].classList.add('active');
+  document.getElementById('ctr').textContent = `${cur+1} / ${tot}`;
+}
+function next() { show(cur+1); }
+function prev() { show(cur-1); }
+document.addEventListener('keydown', e => {
+  if (e.key==='ArrowRight'||e.key==='ArrowDown') next();
+  if (e.key==='ArrowLeft'||e.key==='ArrowUp') prev();
+});
+
+function toggleTension(card) { card.classList.toggle('open'); }
+function toggleFw(head) { head.parentElement.classList.toggle('open'); }
+</script>
+</body>
+</html>
