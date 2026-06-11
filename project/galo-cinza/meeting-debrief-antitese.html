@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paladino — Análise Interna · Antítese Galo Cinza</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #1A1A18;
+  --white: #F8F7F4;
+  --off:   #F0EEE9;
+  --mid:   #E2DED7;
+  --subtle:#A8A49C;
+  --ink:   #5C5850;
+  --warm:  #8B6F47;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html, body {
+  width:100%; height:100%; overflow:hidden;
+  font-family:"DM Sans", sans-serif;
+  background:var(--black);
+}
+
+.mobile-warning {
+  display:none; position:fixed; inset:0; background:#1A1A18; z-index:9999;
+  flex-direction:column; align-items:center; justify-content:center;
+  padding:40px 32px; text-align:center;
+}
+.mobile-warning .mw-label { font-size:10px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.3); margin-bottom:16px; }
+.mobile-warning h2 { font-size:26px; font-weight:500; color:#F8F7F4; line-height:1.1; letter-spacing:-.02em; margin-bottom:16px; }
+.mobile-warning p { font-size:14px; font-weight:300; color:rgba(255,255,255,.45); line-height:1.65; max-width:280px; }
+.mobile-warning .mw-divider { width:32px; height:1px; background:rgba(255,255,255,.12); margin:24px auto; }
+.mobile-warning .mw-contact { font-size:12px; font-weight:400; color:rgba(255,255,255,.25); letter-spacing:.03em; }
+@media (max-width:900px) {
+  .mobile-warning { display:flex; }
+  .nav { display:none; }
+}
+
+.nav {
+  position:fixed; top:18px; right:22px; z-index:200;
+  display:flex; gap:6px; align-items:center;
+  background:rgba(26,26,24,.15); backdrop-filter:blur(10px);
+  padding:7px 14px; border-radius:100px;
+}
+.nav button {
+  background:none; border:none; cursor:pointer;
+  font-family:"DM Sans",sans-serif; font-size:13px; font-weight:500;
+  color:#fff; padding:3px 8px; border-radius:5px; transition:background .15s;
+}
+.nav button:hover { background:rgba(255,255,255,.12); }
+.nav .ctr { font-size:11px; color:rgba(255,255,255,.55); width:48px; text-align:center; letter-spacing:.03em; }
+
+/* FULLSCREEN SLIDES */
+.slide {
+  position:fixed; inset:0;
+  width:100vw; height:100vh;
+  background:var(--white);
+  display:none;
+  animation:fu .22s ease;
+}
+.slide.active { display:flex; }
+@keyframes fu { from { opacity:.6; } to { opacity:1; } }
+
+.si { width:100%; height:100%; display:flex; flex-direction:column; padding:48px 64px 80px; overflow:hidden; }
+.si-scroll { flex:1; overflow-y:auto; overflow-x:hidden; }
+.si-scroll::-webkit-scrollbar { width:4px; }
+.si-scroll::-webkit-scrollbar-track { background:transparent; }
+.si-scroll::-webkit-scrollbar-thumb { background:var(--mid); border-radius:2px; }
+.g2 { display:grid; grid-template-columns:1fr 1fr; padding:0; width:100%; height:100%; }
+.gc { padding:48px 64px 80px; display:flex; flex-direction:column; overflow:hidden; }
+.gc-scroll { flex:1; overflow-y:auto; overflow-x:hidden; }
+.gc-scroll::-webkit-scrollbar { width:4px; }
+.gc-scroll::-webkit-scrollbar-track { background:transparent; }
+.gc-scroll::-webkit-scrollbar-thumb { background:var(--mid); border-radius:2px; }
+.gl { border-right:1px solid var(--mid); }
+
+.sh { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:36px; flex-shrink:0; }
+.sl { font-size:10px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--subtle); }
+.sn { font-size:10px; color:var(--subtle); letter-spacing:.05em; }
+
+.bb {
+  position:absolute; bottom:0; left:0; right:0; height:46px;
+  border-top:1px solid var(--mid);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 64px; background:var(--white); z-index:10;
+}
+.bb span { font-size:11px; color:var(--subtle); letter-spacing:.03em; }
+.bb svg { height:13px; width:auto; display:block; }
+.dk .bb { background:var(--black); border-color:rgba(255,255,255,.08); }
+.dk .bb span { color:rgba(255,255,255,.25); }
+
+h1 { font-size:72px; font-weight:500; line-height:.95; letter-spacing:-.03em; color:var(--black); }
+h2 { font-size:44px; font-weight:500; line-height:1.0; letter-spacing:-.025em; color:var(--black); }
+h3 { font-size:24px; font-weight:500; line-height:1.15; letter-spacing:-.01em; color:var(--black); }
+h4 { font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--subtle); margin-bottom:18px; }
+p { font-size:15px; font-weight:300; line-height:1.65; color:var(--ink); }
+p.lg { font-size:20px; font-weight:300; line-height:1.5; color:var(--black); }
+p.sm { font-size:13px; font-weight:300; line-height:1.6; color:var(--ink); }
+strong { font-weight:500; color:var(--black); }
+
+.dk { background:var(--black) !important; }
+.dk .sl, .dk .sn { color:rgba(255,255,255,.28) !important; }
+.dk h1,.dk h2,.dk h3 { color:var(--white) !important; }
+.dk p,.dk p.lg,.dk p.sm { color:rgba(255,255,255,.5) !important; }
+.dk h4 { color:rgba(255,255,255,.35) !important; }
+.dk strong { color:var(--white) !important; }
+.dk .div-line { background:rgba(255,255,255,.1) !important; }
+
+.tag { display:inline-block; font-size:10px; font-weight:600; letter-spacing:.09em; text-transform:uppercase; padding:4px 10px; border:1px solid var(--mid); border-radius:100px; color:var(--ink); }
+.tag.bk { border-color:var(--black); color:var(--black); }
+.tag.wh { border-color:rgba(255,255,255,.3); color:rgba(255,255,255,.6); }
+.tag.int { border-color:rgba(255,255,255,.2); color:rgba(255,255,255,.4); background:rgba(255,255,255,.06); }
+.div-line { width:36px; height:1px; background:var(--mid); margin:24px 0; }
+
+/* ROW LIST */
+.rl { display:flex; flex-direction:column; }
+.rr { display:grid; grid-template-columns:26px 1fr; gap:12px; padding:14px 0; border-bottom:1px solid var(--mid); align-items:start; }
+.rr:first-child { border-top:1px solid var(--mid); }
+.rn { font-size:11px; color:var(--subtle); padding-top:2px; }
+.rt { font-size:14px; font-weight:300; color:var(--black); line-height:1.45; }
+.rt em { font-style:normal; font-size:12px; color:var(--ink); display:block; margin-top:3px; }
+
+/* GRID CELLS */
+.cgrid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--mid); border:1px solid var(--mid); margin-top:20px; }
+.cc { background:var(--white); padding:22px; }
+.cc-head { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid var(--mid); }
+.cc-label { font-size:10px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--subtle); }
+.cc-badge { font-size:9px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; padding:3px 8px; border-radius:100px; white-space:nowrap; flex-shrink:0; }
+.cc-badge.ok   { color:#5A8F6A; background:rgba(90,143,106,.1); border:1px solid rgba(90,143,106,.25); }
+.cc-badge.warn { color:#B87E4A; background:rgba(184,126,74,.1); border:1px solid rgba(184,126,74,.25); }
+.cc-badge.crit { color:#C05F5F; background:rgba(192,95,95,.1);  border:1px solid rgba(192,95,95,.25); }
+.cc-badge.new  { color:#4A7FA8; background:rgba(74,127,168,.1); border:1px solid rgba(74,127,168,.25); }
+.cc-item { padding:10px 0; border-bottom:1px solid var(--mid); }
+.cc-item:last-child { border-bottom:none; }
+.cc-item-title { font-size:13px; font-weight:500; color:var(--black); margin-bottom:3px; }
+.cc-item-body { font-size:12px; font-weight:300; color:var(--ink); line-height:1.55; }
+
+/* 3-COL GRID */
+.tgrid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1px; background:var(--mid); border:1px solid var(--mid); margin-top:20px; }
+.tgrid3 .cc { padding:20px; }
+
+/* SIGNAL GRID */
+.sgrid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1px; background:var(--mid); border:1px solid var(--mid); margin-top:20px; }
+.sc { background:var(--white); padding:22px 20px; }
+.sc-type { font-size:9px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; margin-bottom:14px; display:flex; align-items:center; gap:6px; }
+.sc-type.ok     { color:#5A8F6A; }
+.sc-type.warn   { color:#B87E4A; }
+.sc-type.crit   { color:#C05F5F; }
+.sc-type::before { content:''; display:inline-block; width:5px; height:5px; border-radius:50%; background:currentColor; }
+.sl-item { padding:10px 0; border-bottom:1px solid var(--mid); }
+.sl-item:last-child { border-bottom:none; }
+.sl-item .sli-title { font-size:13px; font-weight:500; color:var(--black); margin-bottom:3px; }
+.sl-item .sli-body { font-size:12px; font-weight:300; color:var(--ink); line-height:1.5; }
+
+/* DECISION CARDS */
+.dcards { display:flex; flex-direction:column; gap:1px; background:var(--mid); border:1px solid var(--mid); margin-top:20px; }
+.dcard { background:var(--white); display:grid; grid-template-columns:52px 1fr 1fr; }
+.dcard-num { padding:20px; display:flex; align-items:flex-start; justify-content:center; border-right:1px solid var(--mid); }
+.dcard-num span { font-size:20px; font-weight:500; color:var(--subtle); letter-spacing:-.02em; }
+.dcard-main { padding:18px 20px; border-right:1px solid var(--mid); }
+.dcard-risk { padding:18px 20px; background:var(--off); }
+.dcard-title { font-size:14px; font-weight:500; color:var(--black); margin-bottom:5px; letter-spacing:-.01em; line-height:1.2; }
+.dcard-body { font-size:12px; font-weight:300; color:var(--ink); line-height:1.55; }
+.dcard-risk-label { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#C05F5F; margin-bottom:6px; }
+
+/* DELIVERABLES */
+.dlgrid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1px; background:var(--mid); border:1px solid var(--mid); margin-top:20px; }
+.dl { background:var(--white); padding:20px; }
+.dl-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid var(--mid); }
+.dl-label { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+.dl-label.mand { color:#C05F5F; }
+.dl-label.rec  { color:#B87E4A; }
+.dl-label.opt  { color:var(--subtle); }
+.dl-item { padding:9px 0; border-bottom:1px solid var(--mid); font-size:12px; font-weight:300; color:var(--ink); line-height:1.5; display:flex; gap:8px; }
+.dl-item:last-child { border-bottom:none; }
+.dl-item::before { content:'→'; color:var(--subtle); flex-shrink:0; font-size:11px; margin-top:1px; }
+
+/* SYNTHESIS SECTIONS */
+.sy-list { display:flex; flex-direction:column; gap:1px; background:var(--mid); border:1px solid var(--mid); margin-top:20px; }
+.sy-row { background:var(--white); display:grid; grid-template-columns:32px 220px 1fr 160px; align-items:stretch; }
+.sy-row-num { padding:18px 0 18px 18px; display:flex; align-items:flex-start; }
+.sy-row-num span { font-size:11px; font-weight:600; color:var(--subtle); }
+.sy-row-title { padding:18px 20px; border-right:1px solid var(--mid); display:flex; flex-direction:column; justify-content:flex-start; }
+.sy-row-title strong { font-size:14px; font-weight:500; color:var(--black); display:block; margin-bottom:4px; line-height:1.2; }
+.sy-row-title span { font-size:11px; font-weight:300; color:var(--ink); line-height:1.4; }
+.sy-row-body { padding:18px 20px; font-size:12px; font-weight:300; color:var(--ink); line-height:1.6; border-right:1px solid var(--mid); }
+.sy-row-dec { padding:18px; background:var(--off); font-size:11px; font-weight:300; color:var(--ink); line-height:1.55; }
+.sy-row-dec strong { font-size:10px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--subtle); display:block; margin-bottom:5px; }
+
+/* OPORTUNIDADE ACCORDION */
+.olist { display:flex; flex-direction:column; gap:1px; background:var(--mid); border:1px solid var(--mid); margin-top:20px; }
+.oi { background:var(--white); overflow:hidden; }
+.oi-head { display:grid; grid-template-columns:100px 1fr auto; gap:16px; padding:16px 22px; cursor:pointer; transition:background .15s; align-items:center; }
+.oi-head:hover { background:var(--off); }
+.oi.open .oi-head { background:var(--off); }
+.oi-cat { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--subtle); }
+.oi-title { font-size:14px; font-weight:500; color:var(--black); letter-spacing:-.01em; }
+.oi-tog { font-size:14px; color:var(--subtle); transition:transform .25s; }
+.oi.open .oi-tog { transform:rotate(45deg); color:var(--black); }
+.oi-body { display:none; padding:0 22px 20px 22px; border-top:1px solid var(--mid); }
+.oi.open .oi-body { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:20px; padding-top:16px; }
+.oi-col-label { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--subtle); margin-bottom:6px; }
+.oi-col-body { font-size:12px; font-weight:300; color:var(--ink); line-height:1.6; }
+
+/* INTERNAL BADGE */
+.int-badge {
+  display:inline-flex; align-items:center; gap:5px;
+  font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  padding:3px 10px; border-radius:100px;
+  background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.15);
+  color:rgba(255,255,255,.35);
+}
+.int-badge::before { content:''; width:4px; height:4px; border-radius:50%; background:rgba(255,255,255,.4); }
+
+/* STATS */
+.stats { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--mid); border:1px solid var(--mid); margin-bottom:24px; }
+.stat { background:var(--white); padding:18px 20px; }
+.stat-val { font-size:32px; font-weight:500; letter-spacing:-.03em; color:var(--black); line-height:1; margin-bottom:6px; }
+.stat-lbl { font-size:11px; font-weight:300; color:var(--subtle); line-height:1.4; }
+
+/* IMPLICIT/EXPLICIT */
+.ifeed { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--mid); border:1px solid var(--mid); margin-top:20px; }
+.if-col { background:var(--white); padding:22px; }
+.if-head { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid var(--mid); }
+.if-head.expl { color:#5A8F6A; }
+.if-head.impl { color:#4A7FA8; }
+.if-item { padding:11px 0; border-bottom:1px solid var(--mid); }
+.if-item:last-child { border-bottom:none; }
+.if-item-who { font-size:9px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--subtle); margin-bottom:4px; }
+.if-item-text { font-size:13px; font-weight:300; color:var(--ink); line-height:1.55; }
+.if-item-text strong { color:var(--black); }
+
+/* HYPOTHESIS */
+.hlist { display:flex; flex-direction:column; gap:1px; background:var(--mid); border:1px solid var(--mid); margin-top:20px; }
+.hi { background:var(--white); display:grid; grid-template-columns:3px 1fr; }
+.hi.ok   { }
+.hi.warn { }
+.hi.drop { }
+.hi.new  { }
+.hi-bar { width:3px; }
+.hi.ok   .hi-bar { background:#5A8F6A; }
+.hi.warn .hi-bar { background:#B87E4A; }
+.hi.drop .hi-bar { background:#C05F5F; }
+.hi.new  .hi-bar { background:#4A7FA8; }
+.hi-inner { padding:18px 20px; }
+.hi-status { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; margin-bottom:6px; display:flex; align-items:center; gap:6px; }
+.hi.ok   .hi-status { color:#5A8F6A; }
+.hi.warn .hi-status { color:#B87E4A; }
+.hi.drop .hi-status { color:#C05F5F; }
+.hi.new  .hi-status { color:#4A7FA8; }
+.hi-title { font-size:14px; font-weight:500; color:var(--black); margin-bottom:5px; letter-spacing:-.01em; }
+.hi-body { font-size:12px; font-weight:300; color:var(--ink); line-height:1.6; max-width:700px; }
+
+</style>
+</head>
+<body>
+
+<div class="mobile-warning">
+  <div class="mw-label">Paladino — Uso Interno</div>
+  <h2>Desenvolvido para desktop.</h2>
+  <p>Acesse pelo computador para visualização completa.</p>
+  <div class="mw-divider"></div>
+  <div class="mw-contact">paladino.inc</div>
+</div>
+
+<div class="nav">
+  <button onclick="prev()">←</button>
+  <span class="ctr" id="ctr">1 / 10</span>
+  <button onclick="next()">→</button>
+</div>
+
+<script>
+function logo(fill='#1A1A18', h=13) {
+  const paths = `<path d="M40.87,51.69h-22.84l-1.2,1.2v31.25l-1.2,1.2H1.2l-1.2-1.2V2.4l1.2-1.2h39.67c16.83,0,28.85,8.41,28.85,25.24s-12.02,25.24-28.85,25.24ZM40.87,15.63h-22.84l-1.2,1.2v19.23l1.2,1.2h22.84c7.21,0,12.02-2.4,12.02-10.82s-4.81-10.82-12.02-10.82Z" fill="${fill}"/><path d="M161.67,85.34h-10.82l-1.2-1.2-6.01-15.63-2.4-1.2h-30.05l-2.4,1.2-6.01,15.63-1.2,1.2h-10.82l-1.2-1.2v-12.02L117.2,2.4l1.2-1.2h15.63l1.2,1.2,27.65,69.72v12.02l-1.2,1.2ZM126.81,22.84h-1.2l-10.82,28.85,1.2,1.2h20.43l1.2-1.2-10.82-28.85Z" fill="${fill}"/><path d="M253.43,85.34h-54.09l-1.2-1.2V2.4l1.2-1.2h14.42l1.2,1.2v67.31l1.2,1.2h37.26l1.2,1.2v12.02l-1.2,1.2Z" fill="${fill}"/><path d="M355.4,85.34h-10.82l-1.2-1.2-6.01-15.63-2.4-1.2h-30.05l-2.4,1.2-6.01,15.63-1.2,1.2h-10.82l-1.2-1.2v-12.02L310.93,2.4l1.2-1.2h15.63l1.2,1.2,27.65,69.72v12.02l-1.2,1.2ZM320.55,22.84h-1.2l-10.82,28.85,1.2,1.2h20.43l1.2-1.2-10.82-28.85Z" fill="${fill}"/><path d="M454.25,12.24c-7.4-7.36-17.83-11.04-31.28-11.04h-29.86l-1.23,1.23v81.68l1.23,1.23h29.86c13.54,0,23.99-3.66,31.35-10.98,7.36-7.32,11.04-17.66,11.04-31.03s-3.7-23.73-11.1-31.09ZM441.17,64.02c-4.44,4.49-11.23,6.73-20.37,6.73h-10.83l-1.23-1.23V17.03l1.23-1.23h10.83c9.14,0,15.93,2.24,20.37,6.73,4.44,4.49,6.66,11.38,6.66,20.69s-2.22,16.33-6.66,20.81Z" fill="${fill}"/><path d="M519.7,2.43v81.68l-1.23,1.23h-14.42l-1.23-1.23V2.43l1.23-1.23h14.42l1.23,1.23Z" fill="${fill}"/><path d="M636.52,1.2h-14.42l-1.23,1.23v53.83h-1.13l-34.79-54.08c-.64-.35-1.16-.63-1.8-.98h-18.16l-1.23,1.23v81.68l1.23,1.23h14.42l1.23-1.23V27.85h1.13l36.56,56.51c.64.35,1.16.63,1.8.98h16.38l1.23-1.23V2.43l-1.23-1.23Z" fill="${fill}"/><path d="M694.49,81.25c-6.3-3.53-11.09-8.54-14.36-15.05-3.28-6.51-4.91-14.17-4.91-22.99s1.64-16.48,4.91-22.99c3.28-6.51,8.06-11.5,14.36-14.99,6.3-3.48,13.86-5.23,22.68-5.23s16.25,1.76,22.55,5.29c6.3,3.53,11.09,8.55,14.36,15.05,3.28,6.51,4.91,14.13,4.91,22.86s-1.64,16.48-4.91,22.99c-3.28,6.51-8.06,11.53-14.36,15.05-6.3,3.53-13.82,5.29-22.55,5.29s-16.38-1.76-22.68-5.29ZM735.31,64.56c4.11-4.91,6.17-12.03,6.17-21.35s-2.06-16.31-6.17-21.23c-4.12-4.91-10.16-7.37-18.14-7.37s-14.05,2.46-18.2,7.37c-4.16,4.91-6.24,11.99-6.24,21.23s2.06,16.44,6.17,21.35c4.11,4.91,10.2,7.37,18.27,7.37s14.02-2.46,18.14-7.37Z" fill="${fill}"/>`;
+  return `<svg style="height:${h}px;width:auto;display:block;" viewBox="0 0 758.99 86.54" fill="none" xmlns="http://www.w3.org/2000/svg">${paths}</svg>`;
+}
+function footer(label, dark=false) {
+  return `<div class="bb">${logo(dark?'white':'#1A1A18')}<span>${label}</span></div>`;
+}
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('[data-footer]').forEach(el => {
+    const dark = el.classList.contains('dk');
+    el.insertAdjacentHTML('beforeend', footer(el.dataset.footer, dark));
+  });
+  document.querySelectorAll('[data-logo]').forEach(el => {
+    const fill = el.dataset.logo === 'white' ? 'white' : '#1A1A18';
+    const h = parseInt(el.dataset.h) || 13;
+    el.outerHTML = logo(fill, h);
+  });
+});
+</script>
+
+<!-- ═══════ 01 — CAPA ═══════ -->
+<div class="slide active dk" id="s1">
+  <div style="width:100%;height:100%;padding:52px 64px;display:grid;grid-template-rows:auto 1fr auto;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+      <span data-logo="white" data-h="14"></span>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span class="int-badge">Uso Interno</span>
+        <span style="font-size:10px;color:rgba(255,255,255,.2);letter-spacing:.03em;">10.06.2026</span>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;justify-content:center;">
+      <div style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:20px;">Análise Estratégica da Reunião — Antítese</div>
+      <h1 style="color:white;font-size:64px;line-height:.95;max-width:640px;margin-bottom:24px;">O que<br>aconteceu<br>de fato.</h1>
+      <p style="font-size:16px;font-weight:300;color:rgba(255,255,255,.4);max-width:500px;line-height:1.65;">Diagnóstico da reunião, feedback implícito, mapa de oportunidades, avaliação das hipóteses, estrutura da síntese e decisões críticas.</p>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);">
+      <span style="font-size:11px;color:rgba(255,255,255,.2);">Galo Cinza — Imersão Ontológica</span>
+      <div style="display:flex;gap:24px;">
+        <span style="font-size:11px;color:rgba(255,255,255,.2);">chaparro@paladino.inc</span>
+        <span style="font-size:11px;color:rgba(255,255,255,.2);">anuschek@paladino.inc</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 02 — DIAGNÓSTICO DA REUNIÃO ═══════ -->
+<div class="slide" id="s2" data-footer="Análise Interna · 10.06.2026">
+  <div class="g2" style="width:100%;height:100%;">
+    <div class="gc gl">
+      <div class="sh">
+        <span class="sl">01 — Diagnóstico</span>
+        <span class="sn">O que funcionou</span>
+      </div>
+      <div class="rl">
+        <div class="rr">
+          <span class="rn">+</span>
+          <div class="rt"><strong>Validação sem resistência</strong><em>As quatro tensões foram absorvidas sem fricção. Gabriel não contestou nenhum ponto. Em um fundador intuitivo, ausência de resistência ao diagnóstico vale mais do que aprovação verbal.</em></div>
+        </div>
+        <div class="rr">
+          <span class="rn">+</span>
+          <div class="rt"><strong>Rodrigo como catalisador externo</strong><em>Funcionou como espelho de mercado. Validou percepções, trouxe analogias de outros setores, empurrou conceitos para aplicações práticas sem questionar fundamentos.</em></div>
+        </div>
+        <div class="rr">
+          <span class="rn">+</span>
+          <div class="rt"><strong>Instrumento 03 foi adotado ao vivo</strong><em>O critério de expansão foi construído junto e imediatamente usado para testar ideias durante a própria reunião. Isso confirma que a estrutura é operável.</em></div>
+        </div>
+        <div class="rr">
+          <span class="rn">+</span>
+          <div class="rt"><strong>Pivô de "congelados" para "conveniência ética"</strong><em>Momento de maior clareza estratégica da reunião. Deslocou o produto de categoria genérica para território próprio — e abriu o portfólio para um nível diferente de conversa.</em></div>
+        </div>
+      </div>
+    </div>
+    <div class="gc">
+      <div class="sh">
+        <span class="sl">01 — Diagnóstico</span>
+        <span class="sn">O que falhou + pivôs</span>
+      </div>
+      <div class="rl">
+        <div class="rr">
+          <span class="rn">−</span>
+          <div class="rt"><strong>Brainstorming de produto engoliu a estratégia</strong><em>Depois dos congelados, a reunião virou laboratório de ideia. O território ainda indefinido ficou para trás enquanto todo mundo já executava mentalmente.</em></div>
+        </div>
+        <div class="rr">
+          <span class="rn">−</span>
+          <div class="rt"><strong>"Cozinha Ética" não foi testada como território</strong><em>O entusiasmo coletivo silenciou a fricção necessária. Ninguém perguntou se o termo é proprietário, se outro player já ocupa, se funciona como posição defensável.</em></div>
+        </div>
+        <div class="rr">
+          <span class="rn">−</span>
+          <div class="rt"><strong>Instituto Galo Cinza: ausência total</strong><em>Não foi mencionado nem uma vez em 1h18min. Isso não é coincidência. É dado estratégico. A Síntese precisa resolver isso explicitamente.</em></div>
+        </div>
+        <div class="rr">
+          <span class="rn">→</span>
+          <div class="rt"><strong>Pivô que mudou a direção</strong><em>Rodrigo + entrega corporativa. A ideia funcionou como prova de conceito imediata de que escala sem nova unidade é possível. Desbloqueou a conversa sobre crescimento de forma concreta.</em></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 03 — FEEDBACK IMPLÍCITO ═══════ -->
+<div class="slide" id="s3" data-footer="Análise Interna · 10.06.2026">
+  <div class="si">
+    <div class="sh">
+      <span class="sl">02 — Feedback Implícito</span>
+      <span class="sn">O que não foi dito mas foi comunicado</span>
+    </div>
+    <div class="ifeed">
+      <div class="if-col">
+        <div class="if-head expl">Explícito — dito diretamente</div>
+        <div class="if-item">
+          <div class="if-item-who">Gabriel</div>
+          <div class="if-item-text">"É organizar para expandir." — Confirma que o bloqueio não é filosófico. É estrutural. Ele quer crescer.</div>
+        </div>
+        <div class="if-item">
+          <div class="if-item-who">Gabriel</div>
+          <div class="if-item-text">"Cada vez que a gente conversa fico mais empolgado." — Validação direta do processo e do caminho traçado.</div>
+        </div>
+        <div class="if-item">
+          <div class="if-item-who">Rodrigo</div>
+          <div class="if-item-text">Entusiasmo explícito com marmitas corporativas e sous-vide. Ele vê potencial de parceria em produto, não em posicionamento.</div>
+        </div>
+        <div class="if-item">
+          <div class="if-item-who">Chaparro</div>
+          <div class="if-item-text">"Esses congelados são a nossa geladeira ou um business de milhões?" — A pergunta mais alta-consequência da reunião. Ficou sem resposta.</div>
+        </div>
+      </div>
+      <div class="if-col">
+        <div class="if-head impl">Implícito — lido nas entrelinhas</div>
+        <div class="if-item">
+          <div class="if-item-who">Gabriel → silêncio estratégico</div>
+          <div class="if-item-text">Não contestou nenhuma das quatro tensões. Em um fundador que construiu tudo no instinto, isso é <strong>aprovação forte</strong> — ele reconhece o diagnóstico como verdadeiro.</div>
+        </div>
+        <div class="if-item">
+          <div class="if-item-who">Gabriel → linguagem reveladora</div>
+          <div class="if-item-text">Ao descrever o produto como "simples" por 10 anos, ele revelou que <strong>falta linguagem, não identidade</strong>. O trabalho de naming vai ser rápido de aprovar.</div>
+        </div>
+        <div class="if-item">
+          <div class="if-item-who">Ausência do Instituto</div>
+          <div class="if-item-text">Zero menções em 1h18min. Ou foi deliberadamente evitado, ou <strong>não ocupa mais espaço real na cabeça do fundador</strong>. Precisa ser resolvido na Síntese.</div>
+        </div>
+        <div class="if-item">
+          <div class="if-item-who">Temas recorrentes não resolvidos</div>
+          <div class="if-item-text"><strong>3 temas circularam sem fechar:</strong> tensão escala vs. controle de qualidade, invisibilidade do diferencial, e o papel real dos congelados. Todos precisam de resolução na Síntese.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 04 — MAPA DE OPORTUNIDADES ═══════ -->
+<div class="slide" id="s4" data-footer="Análise Interna · 10.06.2026">
+  <div class="si">
+    <div class="sh">
+      <span class="sl">03 — Mapa de Oportunidades</span>
+      <span class="sn">Clique para expandir cada oportunidade</span>
+    </div>
+    <div class="olist">
+
+      <div class="oi" id="oi1">
+        <div class="oi-head" onclick="toggleOi('oi1')">
+          <span class="oi-cat">Posicionamento</span>
+          <span class="oi-title">Território "Cozinha Ética" — e o adjetivo "Afetiva"</span>
+          <span class="oi-tog">+</span>
+        </div>
+        <div class="oi-body">
+          <div><div class="oi-col-label">Origem</div><div class="oi-col-body">Emergiu ao vivo durante a discussão sobre o espaço entre nicho militante e volume industrial.</div></div>
+          <div><div class="oi-col-label">Relevância</div><div class="oi-col-body">Alta. Primeiro candidato a território nomeável. Define o eixo de todas as decisões de comunicação, produto e parceria.</div></div>
+          <div><div class="oi-col-label">Impacto</div><div class="oi-col-body">Base para todas as decisões de expressão. Sem território aprovado, a Fase 02 não tem eixo.</div></div>
+          <div><div class="oi-col-label">Dependência crítica</div><div class="oi-col-body">"Ética" é amplo e pode ser reivindicado por outros. Precisa ser testado antes de adotado — não pode entrar na Síntese como achado de reunião.</div></div>
+        </div>
+      </div>
+
+      <div class="oi" id="oi2">
+        <div class="oi-head" onclick="toggleOi('oi2')">
+          <span class="oi-cat">Portfólio</span>
+          <span class="oi-title">Congelados como negócio, não como produto</span>
+          <span class="oi-tog">+</span>
+        </div>
+        <div class="oi-body">
+          <div><div class="oi-col-label">Origem</div><div class="oi-col-body">Chaparro ao vivo: "É só a nossa geladeira ou é um business de milhões?" Pergunta ficou sem resposta.</div></div>
+          <div><div class="oi-col-label">Relevância</div><div class="oi-col-body">Altíssima. A decisão sobre o papel dos congelados muda posicionamento, comunicação, investimento e estrutura operacional.</div></div>
+          <div><div class="oi-col-label">Impacto</div><div class="oi-col-body">Se tratados como negócio: requerem marca própria, canal de distribuição, estratégia independente do restaurante.</div></div>
+          <div><div class="oi-col-label">Dependência crítica</div><div class="oi-col-body">Decisão que precisa ser tomada ANTES da Síntese, não dentro dela. Pré-requisito para arquitetura de portfólio.</div></div>
+        </div>
+      </div>
+
+      <div class="oi" id="oi3">
+        <div class="oi-head" onclick="toggleOi('oi3')">
+          <span class="oi-cat">Novos Negócios</span>
+          <span class="oi-title">MVP de entrega corporativa (Carlos Gomes)</span>
+          <span class="oi-tog">+</span>
+        </div>
+        <div class="oi-body">
+          <div><div class="oi-col-label">Origem</div><div class="oi-col-body">Rodrigo + Chaparro. Ideia de refeições para escritórios da região sem nova unidade física.</div></div>
+          <div><div class="oi-col-label">Relevância</div><div class="oi-col-body">Alta. Única frente com modelo de execução imediata definido na reunião. Teste de escala sem nova unidade.</div></div>
+          <div><div class="oi-col-label">Impacto</div><div class="oi-col-body">+20% receita com a mesma cozinha. Prova de conceito do posicionamento fora do restaurante.</div></div>
+          <div><div class="oi-col-label">Dependência crítica</div><div class="oi-col-body">Embalagem, sistema de pedido simples (não requer app), logística leve. Paladino define o brief — não executa o produto.</div></div>
+        </div>
+      </div>
+
+      <div class="oi" id="oi4">
+        <div class="oi-head" onclick="toggleOi('oi4')">
+          <span class="oi-cat">Comunicação</span>
+          <span class="oi-title">Tornar o rigor visível — anti-marketing de serviço</span>
+          <span class="oi-tog">+</span>
+        </div>
+        <div class="oi-body">
+          <div><div class="oi-col-label">Origem</div><div class="oi-col-body">Gap de percepção entre cliente novo ("boa comida") e cliente antigo ("único lugar onde confio no que como").</div></div>
+          <div><div class="oi-col-label">Relevância</div><div class="oi-col-body">Alta. Alavanca de conversão mais direta disponível sem mudança de produto.</div></div>
+          <div><div class="oi-col-label">Impacto</div><div class="oi-col-body">Aumenta percepção de valor e justifica ticket. O diferencial que hoje chega "tarde" passa a ser legível no primeiro contato.</div></div>
+          <div><div class="oi-col-label">Dependência crítica</div><div class="oi-col-body">Decisão de formato: visual, verbal, espacial ou combinação. Requer produção de conteúdo com padrão específico.</div></div>
+        </div>
+      </div>
+
+      <div class="oi" id="oi5">
+        <div class="oi-head" onclick="toggleOi('oi5')">
+          <span class="oi-cat">Espaço Físico</span>
+          <span class="oi-title">Arquitetura como comunicação + dilema acústico</span>
+          <span class="oi-tog">+</span>
+        </div>
+        <div class="oi-body">
+          <div><div class="oi-col-label">Origem</div><div class="oi-col-body">Chaparro tratou as paredes como "canvas". Discussão sobre acústica revelou um dilema real: mais conforto = mais tempo de permanência = menos rotatividade.</div></div>
+          <div><div class="oi-col-label">Relevância</div><div class="oi-col-body">Alta. O espaço não comunica o diferencial atualmente. Resolve parcialmente o gap de percepção sem depender de canal digital.</div></div>
+          <div><div class="oi-col-label">Impacto</div><div class="oi-col-body">Depende do modelo de negócio: se o objetivo é volume, mais conforto prejudica. Se o objetivo é experiência e ticket, conforto é investimento.</div></div>
+          <div><div class="oi-col-label">Dependência crítica</div><div class="oi-col-body">Projeto com arquiteto. Paladino define o brief estratégico, não executa. A decisão sobre o dilema acústico precisa vir antes.</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 05 — AVALIAÇÃO DAS HIPÓTESES ═══════ -->
+<div class="slide" id="s5" data-footer="Análise Interna · 10.06.2026">
+  <div class="si">
+    <div class="sh">
+      <span class="sl">04 — Avaliação das Hipóteses</span>
+      <span class="sn">Fortalecidas · Revisão necessária · A resolver · Nova</span>
+    </div>
+    <div class="si-scroll">
+    <div class="hlist">
+      <div class="hi ok">
+        <div class="hi-bar"></div>
+        <div class="hi-inner">
+          <div class="hi-status">Fortalecida</div>
+          <div class="hi-title">H1 — O Galo Cinza não é um restaurante. É uma filosofia alimentar em prática.</div>
+          <div class="hi-body">Chaparro demonstrou ao vivo que o valor está na entrega ética, não no sabor. Gabriel não contestou. Rodrigo corroborou. A hipótese está madura para se tornar afirmação estratégica na Síntese — sem "hipótese", sem "proposta". Afirmação.</div>
+        </div>
+      </div>
+      <div class="hi ok">
+        <div class="hi-bar"></div>
+        <div class="hi-inner">
+          <div class="hi-status">Fortalecida</div>
+          <div class="hi-title">H5 — O problema é falta de estrutura, não falta de identidade.</div>
+          <div class="hi-body">"É organizar para expandir." — essa frase de Gabriel é a confirmação mais direta possível. O negócio sabe o que é. Não sabe como operar essa identidade em outros formatos.</div>
+        </div>
+      </div>
+      <div class="hi warn">
+        <div class="hi-bar"></div>
+        <div class="hi-inner">
+          <div class="hi-status">Revisão necessária</div>
+          <div class="hi-title">H2 — O ativo real é a confiança acumulada ao longo do tempo.</div>
+          <div class="hi-body">Correta, mas incompleta. O ativo não é "confiança genérica" — é <strong>confiança na origem e no processo</strong>. A diferença muda a comunicação: não é "você pode confiar no Galo Cinza", é "você sabe exatamente o que está comendo." Afinar antes da Síntese.</div>
+        </div>
+      </div>
+      <div class="hi warn">
+        <div class="hi-bar"></div>
+        <div class="hi-inner">
+          <div class="hi-status">Revisão necessária</div>
+          <div class="hi-title">H6 — O crescimento deve ser estruturado antes de expandido.</div>
+          <div class="hi-body">Correta em princípio, mas a reunião revelou pressão real por execução imediata (MVP corporativo). A hipótese precisa reconhecer que estruturação e ativação podem correr em paralelo — com o MVP funcionando como laboratório, não como execução prematura.</div>
+        </div>
+      </div>
+      <div class="hi drop">
+        <div class="hi-bar"></div>
+        <div class="hi-inner">
+          <div class="hi-status">A resolver — não foi endereçada</div>
+          <div class="hi-title">Instituto Galo Cinza — ausência como sinal.</div>
+          <div class="hi-body">Não há hipótese explícita sobre o Instituto na Antítese — e a reunião inteira transcorreu sem uma menção. Se ele ainda consta no escopo do Brand Guide (entregável contratado), precisa ser formalmente resolvido na Síntese. Deixar vago é risco contratual e estratégico.</div>
+        </div>
+      </div>
+      <div class="hi new">
+        <div class="hi-bar"></div>
+        <div class="hi-inner">
+          <div class="hi-status">Nova — emergiu na reunião</div>
+          <div class="hi-title">Os congelados podem ser um negócio independente, não apenas um produto do restaurante.</div>
+          <div class="hi-body">Chaparro lançou a pergunta — "é só a nossa geladeira ou é um business de milhões?" — e não foi respondida. É a hipótese de mais alta consequência gerada na reunião. A resposta muda naming, investimento, canal e arquitetura de portfólio. Precisa ser resolvida antes da Síntese, não dentro dela.</div>
+        </div>
+      </div>
+    </div>
+    </div><!-- end si-scroll -->
+  </div>
+</div>
+
+<!-- ═══════ 06 — ESTRUTURA DA SÍNTESE ═══════ -->
+<div class="slide" id="s6" data-footer="Análise Interna · 10.06.2026">
+  <div class="si">
+    <div class="sh">
+      <span class="sl">05 — Estrutura da Síntese</span>
+      <span class="sn">Ordem · Objetivo · Decisão por seção</span>
+    </div>
+    <div class="si-scroll">
+    <div class="sy-list">
+      <div class="sy-row" style="background:var(--off);">
+        <div class="sy-row-num"><span style="color:var(--subtle);font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;">Seção</span></div>
+        <div class="sy-row-title" style="border-right:1px solid var(--mid);"><span style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--subtle);">Título</span></div>
+        <div class="sy-row-body" style="border-right:1px solid var(--mid);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--subtle);display:flex;align-items:center;">Objetivo</div>
+        <div class="sy-row-dec" style="background:var(--off);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--subtle);">Decisão a tomar</div>
+      </div>
+      <div class="sy-row">
+        <div class="sy-row-num"><span>01</span></div>
+        <div class="sy-row-title"><strong>O que o Galo Cinza é — definitivamente</strong><span>Base de tudo. Vem primeiro.</span></div>
+        <div class="sy-row-body">Declarar o território nomeado como afirmação — não proposta. O fundador deve reconhecer sem precisar ser convencido.</div>
+        <div class="sy-row-dec"><strong>Decisão</strong>O nome do território. "Cozinha Ética" é candidato. Pode haver alternativas. Aprovação verbal da expressão, não apenas do conceito.</div>
+      </div>
+      <div class="sy-row">
+        <div class="sy-row-num"><span>02</span></div>
+        <div class="sy-row-title"><strong>Arquitetura de Portfólio</strong><span>Âncora, motor, extensão.</span></div>
+        <div class="sy-row-body">Resolver o papel de cada frente de negócio. Incluir congelados com decisão clara sobre escala. Não apresentar opções — apresentar a recomendação.</div>
+        <div class="sy-row-dec"><strong>Decisão</strong>Congelados: produto do restaurante ou negócio próprio? A de maior consequência de todo o projeto.</div>
+      </div>
+      <div class="sy-row">
+        <div class="sy-row-num"><span>03</span></div>
+        <div class="sy-row-title"><strong>Critério de Expansão</strong><span>Protocolo formalizado.</span></div>
+        <div class="sy-row-body">Converter o Instrumento 03 em protocolo aprovado e documentado. Dar ao fundador autonomia decisória após o projeto.</div>
+        <div class="sy-row-dec"><strong>Decisão</strong>Os 4 critérios são aceitos como são, ou precisam de ajuste? Existe algum critério adicional?</div>
+      </div>
+      <div class="sy-row">
+        <div class="sy-row-num"><span>04</span></div>
+        <div class="sy-row-title"><strong>Gap de Percepção</strong><span>Como resolver nos pontos de contato.</span></div>
+        <div class="sy-row-body">Definir onde o diferencial precisa se tornar legível: espaço físico, embalagem, digital, cardápio. Separar o que é Paladino e o que é ação do cliente.</div>
+        <div class="sy-row-dec"><strong>Decisão</strong>Quais pontos de contato são prioritários para os próximos 6 meses?</div>
+      </div>
+      <div class="sy-row">
+        <div class="sy-row-num"><span>05</span></div>
+        <div class="sy-row-title"><strong>MVP Corporativo</strong><span>Ponte entre estratégia e execução.</span></div>
+        <div class="sy-row-body">Transformar a ideia de entrega para escritórios em piloto estruturado. Definir o que Paladino entrega e o que é operação do cliente.</div>
+        <div class="sy-row-dec"><strong>Decisão</strong>Quando começa? Com quantos escritórios? Com que embalagem mínima?</div>
+      </div>
+    </div>
+    <div style="margin-top:1px;padding:14px 20px;background:var(--off);border:1px solid var(--mid);">
+      <p class="sm" style="font-size:12px;"><strong>Instituto:</strong> não como seção autônoma. Deve aparecer como resolução explícita dentro da Seção 01 ou 02 — com posição definida no sistema, ou descartado formalmente. Não pode ficar em aberto.</p>
+    </div>
+    </div><!-- end si-scroll -->
+  </div>
+</div>
+
+<!-- ═══════ 07 — ENTREGÁVEIS ═══════ -->
+<div class="slide" id="s7" data-footer="Análise Interna · 10.06.2026">
+  <div class="si">
+    <div class="sh">
+      <span class="sl">06 — Entregáveis Antes da Síntese</span>
+      <span class="sn">O que o time Paladino precisa resolver antes da próxima reunião</span>
+    </div>
+    <div class="dlgrid">
+      <div class="dl">
+        <div class="dl-head">
+          <span class="dl-label mand">Obrigatório</span>
+        </div>
+        <div class="dl-item">Definição interna do território. "Cozinha Ética" é o nome final ou existem alternativas? Chegar com uma proposta sólida, não com múltiplas opções.</div>
+        <div class="dl-item">Decisão interna sobre os congelados: produto do restaurante ou negócio próprio? Com fundamentação estratégica para apresentar como hipótese a ser aprovada.</div>
+        <div class="dl-item">Arquitetura de portfólio formalizada visualmente com papéis de âncora, motor e extensão e critérios claros por frente.</div>
+        <div class="dl-item">Posição sobre o Instituto Galo Cinza. Não pode entrar na Síntese sem recomendação clara de Paladino.</div>
+      </div>
+      <div class="dl">
+        <div class="dl-head">
+          <span class="dl-label rec">Recomendado</span>
+        </div>
+        <div class="dl-item">Brief de MVP Corporativo: naming da oferta, posicionamento, brief de embalagem. Direcionamento — não execução.</div>
+        <div class="dl-item">Análise rápida do termo "Cozinha Ética": existe outro player no Brasil que usa esse território? O termo está disponível como posição defensável?</div>
+        <div class="dl-item">Formulação de dois ou três territórios candidatos com diferenças claras — apresentar apenas um na Síntese, mas chegar com o raciocínio de escolha documentado.</div>
+      </div>
+      <div class="dl">
+        <div class="dl-head">
+          <span class="dl-label opt">Opcional</span>
+        </div>
+        <div class="dl-item">Referências visuais de espaço que materializam o território, para a discussão de arquitetura como comunicação.</div>
+        <div class="dl-item">Mapa competitivo simplificado: os dois ou três players mais próximos do território definido, para defender o posicionamento se questionado na reunião.</div>
+        <div class="dl-item">Exemplo de como o Instagram deveria funcionar no novo território — referência rápida para ancorar a discussão de comunicação na Síntese.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 08 — 5 DECISÕES CRÍTICAS ═══════ -->
+<div class="slide" id="s8" data-footer="Análise Interna · 10.06.2026">
+  <div class="si">
+    <div class="sh">
+      <span class="sl">07 — Decisões Estratégicas Prioritárias</span>
+      <span class="sn">O que deve sair da próxima reunião — sem exceção</span>
+    </div>
+    <div class="si-scroll">
+    <div class="dcards">
+      <div class="dcard">
+        <div class="dcard-num"><span>01</span></div>
+        <div class="dcard-main">
+          <div class="dcard-title">Qual é o território?</div>
+          <div class="dcard-body">A aprovação do nome e da expressão verbal que define o que o Galo Cinza é. Tudo deriva daí — portfólio, comunicação, espaço, expansão. Sem território nomeado, o projeto produz deliverables desconexos que não se sustentam como sistema.</div>
+        </div>
+        <div class="dcard-risk">
+          <div class="dcard-risk-label">Risco se não resolver</div>
+          <div class="dcard-body">A Fase 02 começa sem eixo. Cada decisão criativa será arbitrada pelo instinto do fundador, não pelo sistema. O projeto perde sua razão de existir.</div>
+        </div>
+      </div>
+      <div class="dcard">
+        <div class="dcard-num"><span>02</span></div>
+        <div class="dcard-main">
+          <div class="dcard-title">Os congelados são um produto ou um negócio?</div>
+          <div class="dcard-body">A resposta muda escala de investimento, arquitetura de marca, canal de distribuição e critério de sucesso. É a decisão de mais alta consequência do projeto — e ficou sem resposta na reunião.</div>
+        </div>
+        <div class="dcard-risk">
+          <div class="dcard-risk-label">Risco se não resolver</div>
+          <div class="dcard-body">Paladino estrutura uma coisa enquanto o fundador imagina outra. O desalinhamento vai aparecer tarde — na execução. E vai custar caro reverter.</div>
+        </div>
+      </div>
+      <div class="dcard">
+        <div class="dcard-num"><span>03</span></div>
+        <div class="dcard-main">
+          <div class="dcard-title">Qual é o papel do Instituto Galo Cinza?</div>
+          <div class="dcard-body">O Instituto aparece nos entregáveis do contrato (Brand Guide com arquitetura entre restaurante, Instituto e produtos). Se não tem papel definido, parte do deliverable contratado não tem objeto.</div>
+        </div>
+        <div class="dcard-risk">
+          <div class="dcard-risk-label">Risco se não resolver</div>
+          <div class="dcard-body">Ambiguidade contratual. Risco de dilução do posicionamento se o Instituto for tratado como frente paralela sem conexão com o território central.</div>
+        </div>
+      </div>
+      <div class="dcard">
+        <div class="dcard-num"><span>04</span></div>
+        <div class="dcard-main">
+          <div class="dcard-title">Qual é a prioridade do portfólio para os próximos 12 meses?</div>
+          <div class="dcard-body">Gabriel e Rodrigo saíram animados com pelo menos 5 frentes simultâneas. Sem hierarquia aprovada, o risco de dispersão é alto — e isso é exatamente o padrão que o projeto foi contratado para corrigir.</div>
+        </div>
+        <div class="dcard-risk">
+          <div class="dcard-risk-label">Risco se não resolver</div>
+          <div class="dcard-body">O fundador começa a executar em paralelo sem estrutura. A expansão desestruturada destroça o que o projeto está construindo.</div>
+        </div>
+      </div>
+      <div class="dcard">
+        <div class="dcard-num"><span>05</span></div>
+        <div class="dcard-main">
+          <div class="dcard-title">O MVP Corporativo começa durante o projeto ou depois?</div>
+          <div class="dcard-body">A reunião criou momentum real. Se não houver decisão de timing, o momentum se dissolve — ou, pior, Rodrigo empurra uma iniciativa não estruturada que compromete o posicionamento antes de ele ser definido.</div>
+        </div>
+        <div class="dcard-risk">
+          <div class="dcard-risk-label">Risco se não resolver</div>
+          <div class="dcard-body">A execução antecede a estratégia. O produto sai sem território, sem embalagem estratégica, sem posicionamento. Difícil de corrigir depois do lançamento.</div>
+        </div>
+      </div>
+    </div>
+    </div><!-- end si-scroll -->
+  </div>
+</div>
+
+<!-- ═══════ 09 — LEITURA FINAL ═══════ -->
+<div class="slide" id="s9" data-footer="Análise Interna · 10.06.2026">
+  <div class="g2" style="width:100%;height:100%;">
+    <div class="gc gl dk">
+      <div class="sh">
+        <span class="sl" style="color:rgba(255,255,255,.28);">08 — Leitura Final</span>
+      </div>
+      <h3 style="color:white;font-size:28px;line-height:1.1;letter-spacing:-.02em;max-width:420px;margin-bottom:24px;">O sistema existe.<br>O problema é a hierarquia.</h3>
+      <p style="color:rgba(255,255,255,.45);font-size:15px;line-height:1.7;max-width:400px;">Esta reunião confirmou o diagnóstico central: o Galo Cinza tem identidade real, acumulada, e um fundador que sabe o que não quer fazer.</p>
+      <div class="div-line" style="background:rgba(255,255,255,.1);margin:28px 0;"></div>
+      <p style="color:rgba(255,255,255,.45);font-size:15px;line-height:1.7;max-width:400px;">O risco imediato não é falta de ambição. É excesso de ideias bem-fundamentadas sem hierarquia.</p>
+    </div>
+    <div class="gc">
+      <div class="sh">
+        <span class="sl">08 — Leitura Final</span>
+        <span class="sn">O que a Síntese precisa ser</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1px;background:var(--mid);border:1px solid var(--mid);">
+        <div style="background:var(--white);padding:20px 22px;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#C05F5F;margin-bottom:8px;">Não fazer</div>
+          <div style="font-size:14px;font-weight:300;color:var(--ink);line-height:1.6;">A Síntese não pode ser uma abertura de novas possibilidades. Cada seção precisa reduzir o número de variáveis em aberto — não aumentar.</div>
+        </div>
+        <div style="background:var(--white);padding:20px 22px;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#5A8F6A;margin-bottom:8px;">Fazer</div>
+          <div style="font-size:14px;font-weight:300;color:var(--ink);line-height:1.6;">A Síntese deve ser um sistema de fechamento. Cada decisão tomada ali deve tornar tudo depois mais simples de executar, não mais debatível.</div>
+        </div>
+        <div style="background:var(--off);padding:20px 22px;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:8px;">O teste de qualidade da Síntese</div>
+          <div style="font-size:14px;font-weight:300;color:var(--ink);line-height:1.6;">Se ao final da reunião Gabriel ainda puder dizer "vou pensar" sobre qualquer um dos 5 pontos críticos, a Síntese falhou.</div>
+        </div>
+        <div style="background:var(--white);padding:20px 22px;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:8px;">Dado de processo importante</div>
+          <div style="font-size:14px;font-weight:300;color:var(--ink);line-height:1.6;">Rodrigo estará presente? Se sim, sua função precisa ser definida antes. Ele acelera execução — o que pode ser positivo ou prematuro, dependendo do que está sendo decidido.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 10 — FECHAMENTO ═══════ -->
+<div class="slide dk" id="s10">
+  <div style="width:100%;height:100%;padding:52px 64px;display:grid;grid-template-rows:auto 1fr auto;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+      <span data-logo="white" data-h="14"></span>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span class="int-badge">Uso Interno</span>
+        <span style="font-size:10px;color:rgba(255,255,255,.2);letter-spacing:.03em;">10.06.2026</span>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;justify-content:center;">
+      <div style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:20px;">Análise da Antítese — Galo Cinza</div>
+      <h2 style="color:white;font-size:52px;max-width:580px;line-height:0.95;margin-bottom:28px;letter-spacing:-.02em;">5 decisões.<br>1 próxima reunião.<br>Zero variáveis<br>em aberto.</h2>
+      <p style="font-size:15px;font-weight:300;color:rgba(255,255,255,.38);max-width:440px;line-height:1.65;">A Síntese não é uma apresentação. É o momento onde o sistema fecha ou dispersa. Chegar preparados é o único caminho.</p>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);">
+      <span style="font-size:11px;color:rgba(255,255,255,.2);">paladino.inc</span>
+      <div style="display:flex;gap:24px;align-items:center;">
+        <span style="font-size:11px;color:rgba(255,255,255,.2);">chaparro@paladino.inc</span>
+        <span style="font-size:11px;color:rgba(255,255,255,.2);">anuschek@paladino.inc</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+let cur = 0, tot = slides.length;
+
+function show(n) {
+  slides[cur].classList.remove('active');
+  cur = ((n % tot) + tot) % tot;
+  slides[cur].classList.add('active');
+  document.getElementById('ctr').textContent = `${cur+1} / ${tot}`;
+}
+function next() { show(cur+1); }
+function prev() { show(cur-1); }
+document.addEventListener('keydown', e => {
+  if (e.key==='ArrowRight'||e.key==='ArrowDown') next();
+  if (e.key==='ArrowLeft'||e.key==='ArrowUp') prev();
+});
+
+function toggleOi(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+</script>
+</body>
+</html>
