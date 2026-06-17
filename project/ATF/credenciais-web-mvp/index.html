@@ -6,249 +6,182 @@
   <title>ATF Credentials MVP</title>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700&display=swap');
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     html, body {
-      width: 100%;
-      height: 100%;
-      background: #000;
-      font-family: "Plus Jakarta Sans", sans-serif;
-      overflow: hidden;
+      width: 100%; height: 100%; background: #000;
+      font-family: "Plus Jakarta Sans", sans-serif; overflow: hidden;
     }
 
     .presentation {
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #000;
+      width: 100vw; height: 100vh; display: flex;
+      align-items: center; justify-content: center; background: #000;
     }
 
     .slide {
-      position: absolute;
-      width: 1920px;
-      height: 1080px;
-      background: #fff;
-      overflow: hidden;
-      opacity: 0;
-      transform: scale(var(--scale));
-      transform-origin: center center;
-      transition: opacity 500ms ease;
+      position: absolute; width: 1920px; height: 1080px; background: #fff;
+      overflow: hidden; opacity: 0; transform: scale(var(--scale));
+      transform-origin: center center; transition: opacity 500ms ease;
       pointer-events: none;
     }
 
-    .slide.active {
-      opacity: 1;
-      pointer-events: auto;
-      z-index: 2;
+    .slide.active { opacity: 1; pointer-events: auto; z-index: 2; }
+
+    .bg, video.motion-bg {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
     }
 
-    .bg {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+    video.motion-bg { z-index: 0; }
 
-    .logo {
-      position: absolute;
-      left: 64px;
-      top: 64px;
-      width: auto;
-      height: auto;
-    }
-
-    .symbol-bottom {
-      position: absolute;
-      left: 64px;
-      bottom: 64px;
-      width: auto;
-      height: auto;
-    }
+    .logo { position: absolute; left: 64px; top: 64px; width: auto; height: auto; }
+    .symbol-bottom { position: absolute; left: 64px; bottom: 64px; width: auto; height: auto; }
 
     .display-large {
-      position: absolute;
-      font-size: 164px;
-      line-height: 140px;
-      letter-spacing: -0.01em;
-      font-weight: 500;
-      color: #fff;
+      position: absolute; font-size: 164px; line-height: 140px;
+      letter-spacing: -0.01em; font-weight: 500; color: #fff;
     }
 
     .display-medium {
-      position: absolute;
-      font-size: 108px;
-      line-height: 110px;
-      letter-spacing: -0.01em;
-      font-weight: 700;
-      color: #fff;
+      position: absolute; font-size: 108px; line-height: 110px;
+      letter-spacing: -0.01em; font-weight: 700; color: #fff;
     }
 
-    .black {
-      color: #000;
+    .body-large {
+      position: absolute; font-size: 48px; line-height: 55px;
+      letter-spacing: -0.01em; font-weight: 600; color: #fff;
     }
 
-    .highlight {
-      position: absolute;
-      z-index: 1;
-    }
-
-    .text-layer {
-      z-index: 2;
-    }
+    .black { color: #000; }
+    .highlight { position: absolute; z-index: 1; }
+    .text-layer { position: absolute; z-index: 2; }
+    .logo-layer { position: absolute; z-index: 3; }
 
     video.logo-video {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transform: translate(-50%, -50%);
+      position: absolute; left: 50%; top: 50%; width: 100%; height: 100%;
+      object-fit: cover; transform: translate(-50%, -50%);
     }
 
-
-    /* Slide 05 Animation Test */
-
-    .slide[data-slide="5"] .slide-5-text {
-      opacity: 0;
-      transform: translateY(32px);
+    .nav-indicator {
+      position: fixed; bottom: 24px; right: 32px;
+      color: rgba(255,255,255,0.55); font-size: 13px;
+      z-index: 99; font-family: Arial, sans-serif;
     }
 
-    .slide[data-slide="5"] .slide-5-highlight {
-      opacity: 0;
-      transform: scaleX(0);
-      transform-origin: left center;
-    }
-
+    /* Slide 05 animation */
+    .slide[data-slide="5"] .slide-5-text { opacity: 0; transform: translateY(32px); }
+    .slide[data-slide="5"] .slide-5-highlight { opacity: 0; transform: scaleX(0); transform-origin: left center; }
     .slide[data-slide="5"].active .slide-5-text {
       animation: paragraphEnter 900ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
       animation-delay: 220ms;
     }
-
     .slide[data-slide="5"].active .slide-5-highlight-1 {
       animation: highlightReveal 650ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
       animation-delay: 1050ms;
     }
-
     .slide[data-slide="5"].active .slide-5-highlight-2 {
       animation: highlightReveal 650ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
       animation-delay: 1180ms;
     }
 
+    /* General animation tests */
+    .fade-up { opacity: 0; transform: translateY(36px); }
+    .slide.active .fade-up {
+      animation: paragraphEnter 850ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation-delay: 220ms;
+    }
+    .slide.active .fade-up.delay-1 { animation-delay: 360ms; }
+    .slide.active .fade-up.delay-2 { animation-delay: 520ms; }
+
+    .slide[data-slide="40"] .slide-40-highlight {
+      opacity: 0; transform: scaleX(0); transform-origin: left center;
+    }
+    .slide[data-slide="40"].active .slide-40-highlight {
+      animation: highlightReveal 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation-delay: 1050ms;
+    }
+
     @keyframes paragraphEnter {
-      from {
-        opacity: 0;
-        transform: translateY(32px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(32px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-
     @keyframes highlightReveal {
-      from {
-        opacity: 0;
-        transform: scaleX(0);
-      }
-
-      to {
-        opacity: 1;
-        transform: scaleX(1);
-      }
-    }
-
-    .nav-indicator {
-      position: fixed;
-      bottom: 24px;
-      right: 32px;
-      color: rgba(255,255,255,0.55);
-      font-size: 13px;
-      z-index: 99;
-      font-family: Arial, sans-serif;
+      from { opacity: 0; transform: scaleX(0); }
+      to { opacity: 1; transform: scaleX(1); }
     }
   </style>
 </head>
-
 <body>
   <main class="presentation">
 
-    <!-- Slide 01 -->
     <section class="slide active" data-slide="1">
-      <video
-        class="logo-video"
-        src="assets/videos/atf-logo-animation.mp4"
-        autoplay
-        muted
-        playsinline
-      ></video>
+      <video class="logo-video" src="assets/videos/atf-logo-animation.mp4" autoplay muted playsinline></video>
     </section>
 
-    <!-- Slide 02 -->
     <section class="slide" data-slide="2">
       <img class="bg" src="assets/images/slide-2-image-bg.jpg" alt="" />
       <img class="logo" src="assets/logos/logo-atf-white.svg" alt="ATF" />
-      <h1 class="display-large" style="left:51px; top:736px; width:1146px; height:280px;">
-        Fintech<br>para negócios
-      </h1>
+      <h1 class="display-large" style="left:51px; top:736px; width:1146px; height:280px;">Fintech<br>para negócios</h1>
     </section>
 
-    <!-- Slide 03 -->
     <section class="slide" data-slide="3">
       <img class="bg" src="assets/images/slide-3-image-bg.jpg" alt="" />
       <img class="symbol-bottom" src="assets/logos/symbol-atf-white.svg" alt="" />
-      <h1 class="display-medium" style="left:64px; top:375px; width:880px; height:330px;">
-        Empreender é avançar diante do incerto.
-      </h1>
+      <h1 class="display-medium" style="left:64px; top:375px; width:880px; height:330px;">Empreender é avançar diante do incerto.</h1>
     </section>
 
-    <!-- Slide 04 -->
     <section class="slide" data-slide="4">
       <img class="bg" src="assets/images/slide-4-image-bg.jpg" alt="" />
       <img class="symbol-bottom" src="assets/logos/symbol-atf-white.svg" alt="" />
-      <h1 class="display-medium" style="left:64px; top:320px; width:1066px; height:440px;">
-        E é justamente por isso que a confiança precisa estar no centro de tudo.
-      </h1>
+      <h1 class="display-medium" style="left:64px; top:320px; width:1066px; height:440px;">E é justamente por isso que a confiança precisa estar no centro de tudo.</h1>
     </section>
 
-    <!-- Slide 05 -->
     <section class="slide" data-slide="5">
       <img class="symbol-bottom" src="assets/logos/symbol-atf-black.svg" alt="" />
+      <img class="highlight slide-5-highlight slide-5-highlight-1" src="assets/text-highlight-background/text-highlight-bg-1.svg" style="left:718px; top:605px;" alt="" />
+      <img class="highlight slide-5-highlight slide-5-highlight-2" src="assets/text-highlight-background/text-highlight-bg-2.svg" style="left:50px; top:714px;" alt="" />
+      <h1 class="display-medium black text-layer slide-5-text" style="left:64px; top:265px; width:1730px; height:550px;">A ATF integra fundos, crédito e infraestrutura financeira digital para empresas que precisam crescer com critério, governança e previsibilidade.</h1>
+    </section>
 
-      <img
-        class="highlight slide-5-highlight slide-5-highlight-1"
-        src="assets/text-highlight-background/text-highlight-bg-1.svg"
-        style="left:718px; top:605px;"
-        alt=""
-      />
+    <!-- Slide 39 -->
+    <section class="slide" data-slide="39">
+      <img class="logo-layer fade-up" src="assets/logos/logo-atf-fintech-black.svg" style="left:64px; top:474px; width:1450px; height:131.79px;" alt="ATF Fintech" />
+    </section>
 
-      <img
-        class="highlight slide-5-highlight slide-5-highlight-2"
-        src="assets/text-highlight-background/text-highlight-bg-2.svg"
-        style="left:50px; top:714px;"
-        alt=""
-      />
+    <!-- Slide 40 -->
+    <section class="slide" data-slide="40">
+      <img class="logo-layer" src="assets/logos/logo-atf-fintech-black.svg" style="left:64px; top:988px; width:310.96px; height:28.2px;" alt="ATF Fintech" />
+      <img class="highlight slide-40-highlight" src="assets/text-highlight-background/text-highlight-bg-3.svg" style="left:53px; top:491px; width:1595px; height:115px;" alt="" />
+      <h1 class="display-medium black text-layer fade-up" style="left:64px; top:265px; width:1610px; height:550px;">A ATF Fintech foi construída para empresas que valorizam operação financeira com rigor, clareza e um parceiro que entende o que está em jogo.</h1>
+    </section>
 
-      <h1 class="display-medium black text-layer slide-5-text" style="left:64px; top:265px; width:1730px; height:550px;">
-        A ATF integra fundos, crédito e infraestrutura financeira digital para empresas que precisam crescer com critério, governança e previsibilidade.
-      </h1>
+    <!-- Slide 41 -->
+    <section class="slide" data-slide="41">
+      <img class="bg" src="assets/images/slide-41-image-bg.jpg" alt="" />
+      <img class="logo-layer" src="assets/logos/logo-atf-fintech-white.svg" style="left:64px; top:988px; width:310.96px; height:28.2px;" alt="ATF Fintech" />
+      <h1 class="display-medium fade-up" style="left:64px; top:375px; width:955px; height:330px;">Para negócios que precisam ir além de uma conta.</h1>
+    </section>
+
+    <!-- Slide 42 -->
+    <section class="slide" data-slide="42">
+      <img class="bg" src="assets/images/slide-42-image-bg.jpg" alt="" />
+      <img class="logo-layer" src="assets/logos/logo-atf-fintech-white.svg" style="left:64px; top:988px; width:310.96px; height:28.2px;" alt="ATF Fintech" />
+      <h1 class="display-medium fade-up" style="left:64px; top:117px; width:441px; height:100px;">Conta PJ</h1>
+      <p class="body-large fade-up delay-1" style="left:1204px; top:540px; width:602px; height:385px;">Abertura ágil e digital, com suporte a múltiplos operadores na mesma conta — para empresas que precisam de controle distribuído e segurança em cada acesso.</p>
+    </section>
+
+    <!-- Slide 43 -->
+    <section class="slide" data-slide="43" style="background:#000;">
+      <video class="motion-bg" src="assets/videos/atf-motion-slide-43-conta-pj.mp4" muted playsinline></video>
+      <img class="logo-layer" src="assets/logos/logo-atf-fintech-black.svg" style="left:64px; top:988px; width:310.96px; height:28.2px;" alt="ATF Fintech" />
+      <h1 class="display-medium black fade-up" style="left:64px; top:117px; width:441px; height:100px;">Conta PJ</h1>
+      <p class="body-large black fade-up delay-1" style="left:1204px; top:540px; width:602px; height:385px;">Abertura ágil e digital, com suporte a múltiplos operadores na mesma conta — para empresas que precisam de controle distribuído e segurança em cada acesso.</p>
     </section>
 
   </main>
 
-  <div class="nav-indicator">
-    Use ← / → para navegar
-  </div>
+  <div class="nav-indicator">Use ← / → para navegar</div>
 
   <script>
     const slides = Array.from(document.querySelectorAll('.slide'));
@@ -259,38 +192,43 @@
       document.documentElement.style.setProperty('--scale', scale);
     }
 
-    function showSlide(index) {
-      slides[current].classList.remove('active');
-
-      current = Math.max(0, Math.min(index, slides.length - 1));
-
-      slides[current].classList.add('active');
-
-      // Restart CSS animations every time the slide becomes active
-      slides[current].querySelectorAll('*').forEach((el) => {
+    function restartAnimations(slide) {
+      slide.querySelectorAll('*').forEach((el) => {
         el.style.animation = 'none';
-        el.offsetHeight; // Force reflow
+        el.offsetHeight;
         el.style.animation = '';
       });
+    }
 
-      const video = slides[current].querySelector('video');
-      if (video) {
+    function resetVideos(slide) {
+      slide.querySelectorAll('video').forEach((video) => {
+        video.pause();
+        video.currentTime = 0;
+      });
+    }
+
+    function playVideos(slide) {
+      slide.querySelectorAll('video').forEach((video) => {
         video.currentTime = 0;
         video.play();
-      }
+      });
+    }
+
+    function showSlide(index) {
+      resetVideos(slides[current]);
+      slides[current].classList.remove('active');
+      current = Math.max(0, Math.min(index, slides.length - 1));
+      slides[current].classList.add('active');
+      restartAnimations(slides[current]);
+      playVideos(slides[current]);
     }
 
     window.addEventListener('resize', setScale);
     setScale();
 
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'ArrowRight' || event.key === ' ') {
-        showSlide(current + 1);
-      }
-
-      if (event.key === 'ArrowLeft') {
-        showSlide(current - 1);
-      }
+      if (event.key === 'ArrowRight' || event.key === ' ') showSlide(current + 1);
+      if (event.key === 'ArrowLeft') showSlide(current - 1);
     });
   </script>
 </body>
