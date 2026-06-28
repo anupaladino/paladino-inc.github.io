@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATF Asset — Gestão de fundos, crédito e funding</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+/* ── TOKENS ── */
+:root {
+  --font: 'Plus Jakarta Sans', sans-serif;
+  --black: #0A0A0A;
+  --mid: #6B6560;
+  --light: #9B9590;
+  --rule: #E8E7E5;
+  --gold: #FFCD7D;
+  --page-max: 1080px;
+  --col-text: 660px;
+  --nav-h: 60px;
+  --gap-section: 120px;
+  --gap-block: 72px;
+  --gap-item: 40px;
+  --pad-x: 64px;
+}
+
+/* ── BASE ── */
+body {
+  font-family: var(--font);
+  background: #fff;
+  color: var(--black);
+  -webkit-font-smoothing: antialiased;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  height: var(--nav-h);
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--pad-x);
+}
+
+.nav-brand {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.nav-links {
+  display: flex;
+  gap: 36px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--mid);
+  letter-spacing: .01em;
+  transition: color .15s;
+}
+
+.nav-links a:hover,
+.nav-links a.active { color: var(--black); }
+
+.nav-cta {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  border: 1px solid var(--black);
+  padding: 8px 20px;
+  transition: background .15s, color .15s;
+}
+
+.nav-cta:hover {
+  background: var(--black);
+  color: #fff;
+}
+
+/* ── PAGE WRAPPER ── */
+.page {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 var(--pad-x);
+}
+
+/* ── HERO ── */
+.hero {
+  padding-top: calc(var(--nav-h) + 100px);
+  padding-bottom: 100px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.hero-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 32px;
+}
+
+.hero h1 {
+  font-size: clamp(2.6rem, 4.5vw, 4rem);
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -.025em;
+  max-width: 820px;
+  margin-bottom: 32px;
+}
+
+.hero p {
+  font-size: 1.125rem;
+  line-height: 1.65;
+  color: var(--mid);
+  max-width: var(--col-text);
+  margin-bottom: 16px;
+}
+
+.hero p:last-of-type { margin-bottom: 0; }
+
+/* ── SECTION ── */
+.section {
+  padding: var(--gap-section) 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.section:last-child { border-bottom: none; }
+
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--light);
+  margin-bottom: 40px;
+}
+
+/* ── HEADINGS ── */
+h2 {
+  font-size: clamp(1.75rem, 2.8vw, 2.4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -.02em;
+  max-width: 720px;
+  margin-bottom: 24px;
+}
+
+h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -.005em;
+  margin-bottom: 10px;
+}
+
+/* ── BODY TEXT ── */
+p {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--black);
+  max-width: var(--col-text);
+  margin-bottom: 18px;
+}
+
+p:last-child { margin-bottom: 0; }
+
+p.muted {
+  color: var(--mid);
+}
+
+p.small {
+  font-size: .875rem;
+  color: var(--light);
+}
+
+/* ── LEAD ── */
+.lead {
+  font-size: 1.125rem;
+  line-height: 1.65;
+  color: var(--mid);
+  max-width: var(--col-text);
+  margin-bottom: 20px;
+}
+
+/* ── HIGHLIGHT ── */
+mark {
+  background: var(--gold);
+  color: var(--black);
+  padding: .06em .14em .03em;
+  border-radius: 2px;
+  font-style: normal;
+}
+
+/* ── BLOCKQUOTE ── */
+blockquote {
+  margin: 48px 0;
+  padding-left: 28px;
+  border-left: 3px solid var(--gold);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.45;
+  letter-spacing: -.01em;
+  max-width: 600px;
+}
+
+/* ── LISTS ── */
+ul.list {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+ul.list li {
+  font-size: 1rem;
+  line-height: 1.65;
+  padding-left: 22px;
+  position: relative;
+  max-width: var(--col-text);
+}
+
+ul.list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--light);
+  font-weight: 600;
+}
+
+/* ── STATS ── */
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 56px;
+  margin: 48px 0;
+}
+
+.stat {}
+
+.stat-num {
+  font-size: 2.75rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -.03em;
+}
+
+.stat-label {
+  font-size: .8125rem;
+  font-weight: 500;
+  color: var(--mid);
+  margin-top: 6px;
+  letter-spacing: .02em;
+}
+
+/* ── TWO COLUMN ── */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.two-col-wide {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+/* ── PRODUCT ITEM ── */
+.product-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-item {
+  padding: 36px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.product-item:first-child { padding-top: 0; }
+.product-item:last-child  { border-bottom: none; }
+
+.product-item h3 { margin-bottom: 8px; }
+
+.product-item p  { margin-bottom: 0; }
+
+/* ── PROCESS STEPS ── */
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 40px;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 24px;
+  padding: 32px 0;
+  border-bottom: 1px solid var(--rule);
+  align-items: start;
+}
+
+.step:last-child { border-bottom: none; }
+
+.step-num {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -.02em;
+  color: var(--rule);
+  padding-top: 3px;
+}
+
+.step-body h3  { margin-top: 0; margin-bottom: 6px; }
+.step-body p   { margin-bottom: 0; color: var(--mid); }
+
+/* ── CTA BLOCK ── */
+.cta-block {
+  padding: var(--gap-section) 0;
+}
+
+.cta-block h2  { max-width: 600px; margin-bottom: 24px; }
+.cta-block p   { margin-bottom: 32px; }
+
+.btn {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 14px 32px;
+  border: 1.5px solid var(--black);
+  transition: background .15s, color .15s;
+}
+
+.btn:hover {
+  background: var(--black);
+  color: #fff;
+}
+
+.btn-filled {
+  background: var(--black);
+  color: #fff;
+}
+
+.btn-filled:hover {
+  background: #222;
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--rule);
+  padding: 40px var(--pad-x);
+  max-width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.footer-brand {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.footer-links {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  font-size: 12px;
+  color: var(--mid);
+  font-weight: 500;
+}
+
+.footer-copy {
+  font-size: 11px;
+  color: var(--light);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  :root {
+    --pad-x: 32px;
+    --gap-section: 80px;
+  }
+  .two-col, .two-col-wide { grid-template-columns: 1fr; gap: 48px; }
+  .stats { gap: 36px; }
+  .hero h1 { font-size: clamp(2rem, 6vw, 3rem); }
+}
+
+@media (max-width: 600px) {
+  :root { --pad-x: 20px; }
+  .nav-links { display: none; }
+  .stats { flex-direction: column; gap: 28px; }
+}
+
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand">
+    <img src="logos/logo-atf-black.svg" alt="ATF" style="height:22px;width:auto;display:block;">
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="asset.html" class="active">Asset</a></li>
+    <li><a href="fintech.html">Fintech</a></li>
+    <li><a href="sobre.html">Quem Somos</a></li>
+  </ul>
+  <a href="#contato" class="nav-cta">Abra sua conta</a>
+</nav>
+
+
+<!-- HERO -->
+<div class="page">
+  <div class="hero">
+    <img src="logos/logo-atf-asset-black.svg" alt="ATF Asset" style="height:20px;width:auto;display:block;margin-bottom:40px;opacity:0.75;">
+    <h1>Gestão de fundos, crédito e funding para negócios que pensam à frente.</h1>
+    <p class="lead">O ATF Asset reúne as estruturas financeiras de maior complexidade e impacto estratégico. Para empresas que precisam de mais do que uma linha de crédito: precisam de um parceiro que entenda a operação e estruture junto.</p>
+
+    <div class="stats" style="margin-top: 56px;">
+      <div class="stat">
+        <p class="stat-num">30 anos</p>
+        <p class="stat-label">de mercado</p>
+      </div>
+      <div class="stat">
+        <p class="stat-num">20 anos</p>
+        <p class="stat-label">estruturando FIDCs</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- COMO ATUA -->
+<div class="page">
+  <div class="section">
+    <div class="two-col-wide">
+      <div>
+        <h2>Presença ativa em cada etapa do fundo.</h2>
+      </div>
+      <div>
+        <p>A ATF atua de forma próxima e estratégica, da modelagem inicial ao acompanhamento diário, com rigor técnico, adequação regulatória e participação ativa nas decisões que movem cada fundo.</p>
+        <p class="muted">Não delegamos a operação. Estamos dentro dela.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- FUNDOS -->
+<div class="page">
+  <div class="section">
+    <h2>Gestão de Fundos</h2>
+    <p class="muted">Estruturamos e gerimos fundos com visão de longo prazo, rigor técnico e proximidade operacional.</p>
+
+    <div class="product-list" style="margin-top: 56px;">
+
+      <div class="product-item">
+        <h3>FIDC Monocedente</h3>
+        <p>Para redes de varejo que querem captar com base em seus próprios recebíveis, sem depender de terceiros. A estrutura permite diferimento tributário, maior prazo para o cliente e independência financeira de longo prazo.</p>
+        <blockquote style="margin: 28px 0 0;">Converta seu crediário em capital — sem depender de terceiros.</blockquote>
+      </div>
+
+      <div class="product-item">
+        <h3>FIDC Fornecedor</h3>
+        <p>Para empresas ou acionistas que querem otimizar capital, oferecer linhas de crédito a fornecedores e consolidar relações comerciais sem abrir mão da previsibilidade financeira.</p>
+        <blockquote style="margin: 28px 0 0;">Fortaleça sua cadeia sem comprometer o caixa.</blockquote>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- CRÉDITO — POSTURA -->
+<div class="page">
+  <div class="section">
+    <blockquote>Para a ATF, crédito é um voto de confiança.<br>Não um produto de prateleira.</blockquote>
+    <p>Cada operação começa com escuta e análise. A estrutura que propomos é moldada ao momento e ao perfil de cada empresa, porque operar com critério protege as duas partes.</p>
+    <p class="muted">Não trabalhamos com aprovação genérica ou volumes predefinidos. Trabalhamos com entendimento.</p>
+  </div>
+</div>
+
+
+<!-- CRÉDITO — PRODUTOS -->
+<div class="page">
+  <div class="section">
+    <h2>Crédito Estruturado</h2>
+
+    <div class="product-list" style="margin-top: 56px;">
+
+      <div class="product-item">
+        <h3>Antecipação de Recebíveis</h3>
+        <p>Transforme faturamento previsto em capital disponível, sem criar novas obrigações no passivo.</p>
+      </div>
+
+      <div class="product-item">
+        <h3>Capital de Giro</h3>
+        <p>Crédito estruturado para manter o ritmo da operação nos momentos de pressão ou expansão.</p>
+      </div>
+
+      <div class="product-item">
+        <h3>CDC — Crédito Direto ao Consumidor</h3>
+        <p>Sua empresa recebe à vista. Seus clientes compram com prazo. Um mecanismo que beneficia os dois lados da relação comercial.</p>
+      </div>
+
+      <div class="product-item">
+        <h3>Risco Sacado</h3>
+        <p>Mais prazo para sua empresa, mais previsibilidade para seus fornecedores. Uma operação que fortalece relações comerciais estratégicas.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+<!-- CTA -->
+<div class="page" id="contato">
+  <div class="cta-block">
+    <h2>Pronto para estruturar<br>uma operação com critério?</h2>
+    <p class="muted">Conte o momento da sua empresa. A conversa começa por aqui.</p>
+    <a href="mailto:falecom@atf.com.br" class="btn btn-filled">Abra sua conta</a>
+  </div>
+</div>
+
+
+<footer>
+  <span class="footer-brand">
+    <img src="logos/logo-atf-black.svg" alt="ATF" style="height:16px;width:auto;display:block;">
+  </span>
+  <ul class="footer-links">
+    <li><a href="asset.html">Asset</a></li>
+    <li><a href="fintech.html">Fintech</a></li>
+    <li><a href="sobre.html">Quem Somos</a></li>
+    <li><a href="#">Governança</a></li>
+    <li><a href="#">Ajuda</a></li>
+  </ul>
+  <span class="footer-copy">IF nº 513 · Banco Central do Brasil · atf.com.br</span>
+</footer>
+
+</body>
+</html>

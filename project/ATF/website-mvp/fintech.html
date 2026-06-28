@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATF Fintech — Infraestrutura financeira digital</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+/* ── TOKENS ── */
+:root {
+  --font: 'Plus Jakarta Sans', sans-serif;
+  --black: #0A0A0A;
+  --mid: #6B6560;
+  --light: #9B9590;
+  --rule: #E8E7E5;
+  --gold: #FFCD7D;
+  --page-max: 1080px;
+  --col-text: 660px;
+  --nav-h: 60px;
+  --gap-section: 120px;
+  --gap-block: 72px;
+  --gap-item: 40px;
+  --pad-x: 64px;
+}
+
+/* ── BASE ── */
+body {
+  font-family: var(--font);
+  background: #fff;
+  color: var(--black);
+  -webkit-font-smoothing: antialiased;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  height: var(--nav-h);
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--pad-x);
+}
+
+.nav-brand {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.nav-links {
+  display: flex;
+  gap: 36px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--mid);
+  letter-spacing: .01em;
+  transition: color .15s;
+}
+
+.nav-links a:hover,
+.nav-links a.active { color: var(--black); }
+
+.nav-cta {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  border: 1px solid var(--black);
+  padding: 8px 20px;
+  transition: background .15s, color .15s;
+}
+
+.nav-cta:hover {
+  background: var(--black);
+  color: #fff;
+}
+
+/* ── PAGE WRAPPER ── */
+.page {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 var(--pad-x);
+}
+
+/* ── HERO ── */
+.hero {
+  padding-top: calc(var(--nav-h) + 100px);
+  padding-bottom: 100px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.hero-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 32px;
+}
+
+.hero h1 {
+  font-size: clamp(2.6rem, 4.5vw, 4rem);
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -.025em;
+  max-width: 820px;
+  margin-bottom: 32px;
+}
+
+.hero p {
+  font-size: 1.125rem;
+  line-height: 1.65;
+  color: var(--mid);
+  max-width: var(--col-text);
+  margin-bottom: 16px;
+}
+
+.hero p:last-of-type { margin-bottom: 0; }
+
+/* ── SECTION ── */
+.section {
+  padding: var(--gap-section) 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.section:last-child { border-bottom: none; }
+
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--light);
+  margin-bottom: 40px;
+}
+
+/* ── HEADINGS ── */
+h2 {
+  font-size: clamp(1.75rem, 2.8vw, 2.4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -.02em;
+  max-width: 720px;
+  margin-bottom: 24px;
+}
+
+h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -.005em;
+  margin-bottom: 10px;
+}
+
+/* ── BODY TEXT ── */
+p {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--black);
+  max-width: var(--col-text);
+  margin-bottom: 18px;
+}
+
+p:last-child { margin-bottom: 0; }
+
+p.muted {
+  color: var(--mid);
+}
+
+p.small {
+  font-size: .875rem;
+  color: var(--light);
+}
+
+/* ── LEAD ── */
+.lead {
+  font-size: 1.125rem;
+  line-height: 1.65;
+  color: var(--mid);
+  max-width: var(--col-text);
+  margin-bottom: 20px;
+}
+
+/* ── HIGHLIGHT ── */
+mark {
+  background: var(--gold);
+  color: var(--black);
+  padding: .06em .14em .03em;
+  border-radius: 2px;
+  font-style: normal;
+}
+
+/* ── BLOCKQUOTE ── */
+blockquote {
+  margin: 48px 0;
+  padding-left: 28px;
+  border-left: 3px solid var(--gold);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.45;
+  letter-spacing: -.01em;
+  max-width: 600px;
+}
+
+/* ── LISTS ── */
+ul.list {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+ul.list li {
+  font-size: 1rem;
+  line-height: 1.65;
+  padding-left: 22px;
+  position: relative;
+  max-width: var(--col-text);
+}
+
+ul.list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--light);
+  font-weight: 600;
+}
+
+/* ── STATS ── */
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 56px;
+  margin: 48px 0;
+}
+
+.stat {}
+
+.stat-num {
+  font-size: 2.75rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -.03em;
+}
+
+.stat-label {
+  font-size: .8125rem;
+  font-weight: 500;
+  color: var(--mid);
+  margin-top: 6px;
+  letter-spacing: .02em;
+}
+
+/* ── TWO COLUMN ── */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.two-col-wide {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+/* ── PRODUCT ITEM ── */
+.product-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-item {
+  padding: 36px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.product-item:first-child { padding-top: 0; }
+.product-item:last-child  { border-bottom: none; }
+
+.product-item h3 { margin-bottom: 8px; }
+
+.product-item p  { margin-bottom: 0; }
+
+/* ── PROCESS STEPS ── */
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 40px;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 24px;
+  padding: 32px 0;
+  border-bottom: 1px solid var(--rule);
+  align-items: start;
+}
+
+.step:last-child { border-bottom: none; }
+
+.step-num {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -.02em;
+  color: var(--rule);
+  padding-top: 3px;
+}
+
+.step-body h3  { margin-top: 0; margin-bottom: 6px; }
+.step-body p   { margin-bottom: 0; color: var(--mid); }
+
+/* ── CTA BLOCK ── */
+.cta-block {
+  padding: var(--gap-section) 0;
+}
+
+.cta-block h2  { max-width: 600px; margin-bottom: 24px; }
+.cta-block p   { margin-bottom: 32px; }
+
+.btn {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 14px 32px;
+  border: 1.5px solid var(--black);
+  transition: background .15s, color .15s;
+}
+
+.btn:hover {
+  background: var(--black);
+  color: #fff;
+}
+
+.btn-filled {
+  background: var(--black);
+  color: #fff;
+}
+
+.btn-filled:hover {
+  background: #222;
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--rule);
+  padding: 40px var(--pad-x);
+  max-width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.footer-brand {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.footer-links {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  font-size: 12px;
+  color: var(--mid);
+  font-weight: 500;
+}
+
+.footer-copy {
+  font-size: 11px;
+  color: var(--light);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  :root {
+    --pad-x: 32px;
+    --gap-section: 80px;
+  }
+  .two-col, .two-col-wide { grid-template-columns: 1fr; gap: 48px; }
+  .stats { gap: 36px; }
+  .hero h1 { font-size: clamp(2rem, 6vw, 3rem); }
+}
+
+@media (max-width: 600px) {
+  :root { --pad-x: 20px; }
+  .nav-links { display: none; }
+  .stats { flex-direction: column; gap: 28px; }
+}
+
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand">
+    <img src="logos/logo-atf-black.svg" alt="ATF" style="height:22px;width:auto;display:block;">
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="asset.html">Asset</a></li>
+    <li><a href="fintech.html" class="active">Fintech</a></li>
+    <li><a href="sobre.html">Quem Somos</a></li>
+  </ul>
+  <a href="#contato" class="nav-cta">Abra sua conta</a>
+</nav>
+
+
+<!-- HERO -->
+<div class="page">
+  <div class="hero">
+    <img src="logos/logo-atf-fintech-black.svg" alt="ATF Fintech" style="height:20px;width:auto;display:block;margin-bottom:40px;opacity:0.75;">
+    <h1>Para negócios que precisam ir além de uma conta.</h1>
+    <p class="lead">A ATF Fintech foi construída para empresas que valorizam operação financeira com rigor, clareza e um parceiro que entende o que está em jogo.</p>
+    <p class="lead">É uma infraestrutura desenvolvida internamente, operada por uma instituição regulada, pensada para empresas com volume, complexidade e exigência real.</p>
+  </div>
+</div>
+
+
+<!-- CONTA PJ -->
+<div class="page">
+  <div class="section">
+    <div class="two-col-wide">
+      <div>
+        <h2>Conta PJ</h2>
+      </div>
+      <div>
+        <p>Abertura ágil e digital, com suporte a múltiplos operadores na mesma conta. Diferentes pessoas da equipe operam com acessos distintos, cada uma com seu nível de permissão, sem abrir mão da segurança ou do controle centralizado.</p>
+        <p class="muted">Uma conta feita para a complexidade real de uma empresa, não para a simplicidade de uma pessoa física.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SEGURANÇA -->
+<div class="page">
+  <div class="section">
+    <div class="two-col-wide">
+      <div>
+        <h2>Segurança</h2>
+      </div>
+      <div>
+        <p>Complexas camadas de proteção aplicadas em cada acesso, transação e aprovação. Autenticação avançada, controle granular por perfil de usuário e rastreabilidade completa de cada operação.</p>
+        <p class="muted">Segurança não é uma funcionalidade isolada na ATF — é uma camada que atravessa toda a experiência, do login ao pagamento.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- INTERNET BANKING -->
+<div class="page">
+  <div class="section">
+    <div class="two-col-wide">
+      <div>
+        <h2>Internet Banking</h2>
+      </div>
+      <div>
+        <p>Uma plataforma pensada para ser intuitiva, visualmente clara e eficiente. Onde cada funcionalidade está onde precisa estar, sem ruído, sem fricção.</p>
+        <p class="muted">Desenvolvida internamente para responder à forma como empresas realmente operam: múltiplos usuários, aprovações em fluxo e visibilidade total sobre o caixa.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- APP ATF -->
+<div class="page">
+  <div class="section">
+    <div class="two-col-wide">
+      <div>
+        <h2>App ATF</h2>
+      </div>
+      <div>
+        <p>A mesma profundidade do Internet Banking no smartphone. Com design cuidadoso e fluidez de uso — porque gestão financeira séria não deveria exigir que você esteja na frente de um computador.</p>
+        <p class="muted">Aprovações, transferências, acompanhamento de saldo e extrato. Com a mesma camada de segurança da plataforma web.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- PIX -->
+<div class="page">
+  <div class="section">
+    <div class="two-col-wide">
+      <div>
+        <h2>Pix Empresarial</h2>
+      </div>
+      <div>
+        <p>Liquidez imediata com rastreabilidade e controle para cada transação. Para empresas com alto volume de movimentações, o Pix na ATF vem com a visibilidade e o controle que operações de maior escala exigem.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- BOLETO -->
+<div class="page">
+  <div class="section">
+    <div class="two-col-wide">
+      <div>
+        <h2>Boleto Bancário</h2>
+      </div>
+      <div>
+        <p>Emissão, gestão e conciliação integrada ao fluxo de recebimento da empresa. Para negócios que operam com boleto como meio principal de cobrança — e precisam que esse processo seja eficiente, não manual.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- PAGAMENTOS -->
+<div class="page">
+  <div class="section">
+    <div class="two-col-wide">
+      <div>
+        <h2>Pagamentos</h2>
+      </div>
+      <div>
+        <p>Processamento de pagamentos com visibilidade e controle sobre cada etapa. Agendamentos, aprovações em fluxo, comprovantes e histórico centralizados em uma interface que faz sentido.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ATENDIMENTO -->
+<div class="page">
+  <div class="section">
+    <div class="two-col-wide">
+      <div>
+        <h2>Atendimento Consultivo</h2>
+      </div>
+      <div>
+        <p>Equipe que conhece a operação e responde com contexto, não com scripts. Quando você entra em contato com a ATF, fala com alguém que entende o que está em jogo para o seu negócio.</p>
+        <p class="muted">Não terceirizamos o atendimento. Assim como não terceirizamos a tecnologia.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- TECNOLOGIA -->
+<div class="page">
+  <div class="section">
+    <blockquote>Infraestrutura própria, construída para crescer com você.</blockquote>
+    <p>A tecnologia da ATF foi desenvolvida internamente para garantir uma operação financeira segura, previsível e escalável. Cada funcionalidade nasce das necessidades reais das empresas que operam conosco e evolui junto com elas.</p>
+    <p class="muted">Não terceirizamos o núcleo do que entregamos. Quando você opera com a ATF Fintech, opera com uma estrutura que controlamos de ponta a ponta.</p>
+  </div>
+</div>
+
+
+<!-- CTA -->
+<div class="page" id="contato">
+  <div class="cta-block">
+    <h2>Pronto para operar com mais controle, clareza e segurança?</h2>
+    <a href="mailto:falecom@atf.com.br" class="btn btn-filled">Abra sua conta</a>
+  </div>
+</div>
+
+
+<footer>
+  <span class="footer-brand">
+    <img src="logos/logo-atf-black.svg" alt="ATF" style="height:16px;width:auto;display:block;">
+  </span>
+  <ul class="footer-links">
+    <li><a href="asset.html">Asset</a></li>
+    <li><a href="fintech.html">Fintech</a></li>
+    <li><a href="sobre.html">Quem Somos</a></li>
+    <li><a href="#">Governança</a></li>
+    <li><a href="#">Ajuda</a></li>
+  </ul>
+  <span class="footer-copy">IF nº 513 · Banco Central do Brasil · atf.com.br</span>
+</footer>
+
+</body>
+</html>
