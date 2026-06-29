@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Referências de Mercado — Paladino + Rottas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --branco: #FFFFFF;
+    --off-white: #F5F5F3;
+    --preto: #0D0D0D;
+    --cinza-escuro: #3D3D3D;
+    --cinza-medio: #8C8C8C;
+    --cinza-claro: #E8E8E8;
+  }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    background: #1a1a1a;
+    font-family: 'DM Sans', sans-serif;
+    overflow: hidden;
+  }
+
+  #stage {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #scaler {
+    width: 1280px;
+    height: 720px;
+    position: relative;
+    transform-origin: center center;
+  }
+
+  /* ── SLIDE BASE ── */
+  .slide {
+    position: absolute;
+    inset: 0;
+    width: 1280px;
+    height: 720px;
+    background: var(--off-white);
+    padding: 52px 88px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.22s ease;
+  }
+  .slide.ativo {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .slide.fundo-preto {
+    background: var(--preto);
+  }
+  .slide.fundo-branco {
+    background: var(--branco);
+  }
+
+  /* ── TIPOGRAFIA ── */
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--cinza-medio);
+    margin-bottom: 6px;
+  }
+  .slide.fundo-preto .eyebrow { color: #555; }
+
+  .titulo-display {
+    font-size: 64px;
+    line-height: 70px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    color: var(--preto);
+  }
+  .slide.fundo-preto .titulo-display { color: var(--branco); }
+
+  .titulo-grande {
+    font-size: 48px;
+    line-height: 56px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--preto);
+  }
+  .slide.fundo-preto .titulo-grande { color: var(--branco); }
+
+  .titulo-medio {
+    font-size: 32px;
+    line-height: 40px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--preto);
+  }
+
+  .subtitulo {
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 400;
+    color: var(--cinza-escuro);
+  }
+  .slide.fundo-preto .subtitulo { color: #999; }
+
+  .corpo {
+    font-size: 17px;
+    line-height: 27px;
+    font-weight: 400;
+    color: var(--preto);
+  }
+
+  .corpo-suporte {
+    font-size: 15px;
+    line-height: 24px;
+    font-weight: 400;
+    color: var(--cinza-escuro);
+  }
+  .slide.fundo-preto .corpo-suporte { color: #aaa; }
+
+  .label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--cinza-medio);
+    margin-bottom: 10px;
+    display: block;
+  }
+  .slide.fundo-preto .label { color: #555; }
+
+  /* ── LAYOUT ── */
+  .divider {
+    height: 1px;
+    background: var(--cinza-claro);
+    flex-shrink: 0;
+  }
+  .slide.fundo-preto .divider { background: #222; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 52px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; }
+  .grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 52px; }
+  .grid-1-2 { display: grid; grid-template-columns: 1fr 2fr; gap: 52px; }
+
+  .retranca {
+    background: var(--branco);
+    padding: 16px 22px;
+    border-left: 2px solid var(--preto);
+  }
+  .slide.fundo-preto .retranca {
+    background: #181818;
+    border-left-color: #444;
+  }
+  .retranca .corpo-suporte { font-style: italic; }
+
+  /* ── TAG DE EMPRESA ── */
+  .empresa-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--cinza-medio);
+    border: 1px solid var(--cinza-claro);
+    padding: 3px 10px;
+    margin-bottom: 14px;
+  }
+
+  /* ── BLOCO DE EMPRESA (lâminas individuais) ── */
+  .empresa-nome {
+    font-size: 48px;
+    line-height: 54px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--preto);
+    margin-bottom: 4px;
+  }
+  .empresa-arquetipo {
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 400;
+    color: var(--cinza-escuro);
+    margin-bottom: 0;
+  }
+
+  /* ── RODAPÉ ── */
+  .rodape {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid var(--cinza-claro);
+    flex-shrink: 0;
+  }
+  .slide.fundo-preto .rodape { border-top-color: #222; }
+
+  .rodape-link {
+    font-size: 11px;
+    color: var(--cinza-medio);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    border-bottom: 1px solid #ccc;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .rodape-link:hover { color: var(--preto); border-bottom-color: var(--preto); }
+
+  .rodape-texto {
+    font-size: 11px;
+    color: var(--cinza-medio);
+    letter-spacing: 0.04em;
+  }
+  .slide.fundo-preto .rodape-texto { color: #444; }
+  .slide.fundo-preto .rodape-link { color: #555; border-bottom-color: #444; }
+
+  .rodape-num {
+    font-size: 11px;
+    color: var(--cinza-medio);
+  }
+  .slide.fundo-preto .rodape-num { color: #444; }
+
+  /* ── PADRÃO CARD (lâmina 29) ── */
+  .padrao-card {
+    background: var(--branco);
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .padrao-num {
+    font-size: 28px;
+    line-height: 32px;
+    font-weight: 600;
+    color: var(--preto);
+    letter-spacing: -0.02em;
+  }
+  .padrao-titulo {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--preto);
+    line-height: 20px;
+  }
+  .padrao-sub {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--cinza-escuro);
+    line-height: 20px;
+    font-style: italic;
+  }
+
+  /* ── PILAR CARD (lâmina 31) ── */
+  .pilar-card {
+    padding: 0 0 16px;
+    border-bottom: 1px solid var(--cinza-claro);
+  }
+  .pilar-titulo {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--preto);
+    margin-bottom: 4px;
+  }
+  .pilar-desc {
+    font-size: 13px;
+    color: var(--cinza-escuro);
+    line-height: 20px;
+  }
+
+  /* ── MAPA (lâmina 30) ── */
+  .mapa-linha {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--cinza-claro);
+  }
+  .mapa-tema {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--cinza-medio);
+    min-width: 200px;
+  }
+  .mapa-refs {
+    font-size: 14px;
+    color: var(--cinza-escuro);
+    line-height: 22px;
+  }
+
+  /* ── NAV ── */
+  #nav {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: rgba(0,0,0,0.7);
+    padding: 8px 20px;
+    border-radius: 40px;
+    backdrop-filter: blur(8px);
+    z-index: 100;
+  }
+  #nav button {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    letter-spacing: 0.06em;
+    transition: background 0.15s;
+  }
+  #nav button:hover { background: rgba(255,255,255,0.12); }
+  #nav button:disabled { opacity: 0.3; cursor: default; }
+  #nav-info {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.06em;
+    min-width: 64px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div id="stage">
+ <div id="scaler">
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 0 — CAPA
+  ═══════════════════════════════════════ -->
+  <div class="slide fundo-preto ativo" id="s0">
+    <div>
+      <p class="eyebrow">Paladino + Rottas Construtora</p>
+    </div>
+    <div>
+      <h1 class="titulo-display" style="max-width:820px; margin-bottom:18px;">Referências de Mercado:<br>Território e Inspiração</h1>
+      <p class="subtitulo" style="max-width:640px;">Mid-market design living — curadoria estratégica global</p>
+      <p class="corpo-suporte" style="margin-top:16px; max-width:680px; color:#666;">Uma seleção de construtoras e incorporadoras que traduzem, cada uma à sua forma, o território onde este projeto pretende operar: morar bem, com design, inteligência e vida real.</p>
+    </div>
+    <div class="rodape">
+      <span class="rodape-texto">Confidencial</span>
+      <span class="rodape-num">0 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 1 — MAPA CONCEITUAL
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="s1">
+    <div>
+      <p class="eyebrow">O território</p>
+      <h2 class="titulo-grande" style="margin-bottom:4px;">Três mundos, um espaço em aberto.</h2>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-3" style="flex:1; align-items:start; padding-top:24px;">
+      <div>
+        <span class="label">01 — Incorporadora tradicional modernizada</span>
+        <p class="corpo-suporte">Vende imóvel, metragem, localização, segurança. Estética mais contemporânea, mas lógica de produto ainda convencional.</p>
+      </div>
+      <div>
+        <span class="label">02 — Proptech / Smart living</span>
+        <p class="corpo-suporte">Vende moradia como serviço: app, flexibilidade, digitalização, gestão, operação contínua. O imóvel como plataforma.</p>
+      </div>
+      <div>
+        <span class="label">03 — Boutique design developer</span>
+        <p class="corpo-suporte">Vende arquitetura autoral, desejo cultural, pertencimento, marca. O prédio como identidade urbana.</p>
+      </div>
+    </div>
+    <div class="retranca" style="margin-bottom:8px;">
+      <span class="label">O espaço em aberto</span>
+      <p class="corpo-suporte">A construtora que traduz o novo morar urbano brasileiro: design acessível, plantas inteligentes, serviços úteis, tecnologia discreta, estética contemporânea e vida mais simples.</p>
+    </div>
+    <div class="rodape">
+      <span class="rodape-texto">Curadoria estratégica global</span>
+      <span class="rodape-num">1 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 2 — VITACON
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="s2">
+    <div>
+      <p class="eyebrow">Brasil — São Paulo</p>
+      <h2 class="empresa-nome">Vitacon</h2>
+      <p class="empresa-arquetipo">Compact &nbsp;/&nbsp; Smart &nbsp;/&nbsp; Investidor</p>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2-1" style="flex:1; align-items:start; padding-top:22px;">
+      <div>
+        <span class="label">Síntese</span>
+        <p class="corpo-suporte" style="margin-bottom:18px;">Referência nacional em compact living como plataforma de investimento. O imóvel deixa de ser só apartamento e vira ecossistema — morar, alugar, investir, compartilhar, operar.</p>
+        <div class="retranca">
+          <span class="label">Leitura estratégica</span>
+          <p class="corpo-suporte">A Vitacon ensina o modelo, não o espírito. O imóvel como plataforma é o destino; o sentimento de casa é o caminho.</p>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:24px;">
+        <div>
+          <span class="label">O que aprender</span>
+          <p class="corpo-suporte">Produto imobiliário como plataforma. Digitalização da experiência. Eixos de mobilidade como ancoragem.</p>
+        </div>
+        <div>
+          <span class="label">O que não copiar</span>
+          <p class="corpo-suporte">Foco excessivo em investidor pode esvaziar o sentimento de lar. Mid-market design precisa de mais calor, materialidade e pertencimento.</p>
+        </div>
+      </div>
+    </div>
+    <div class="rodape">
+      <a class="rodape-link" href="https://vitacon.com.br" target="_blank">vitacon.com.br</a>
+      <span class="rodape-num">2 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 3 — HOUSI
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="s3">
+    <div>
+      <p class="eyebrow">Brasil — São Paulo</p>
+      <h2 class="empresa-nome">Housi</h2>
+      <p class="empresa-arquetipo">Moradia como serviço &nbsp;/&nbsp; Proptech</p>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2-1" style="flex:1; align-items:start; padding-top:22px;">
+      <div>
+        <span class="label">Síntese</span>
+        <p class="corpo-suporte" style="margin-bottom:18px;">Não é construtora — é o sistema operacional que transforma prédios analógicos em digitais. App, aluguel flexível, serviços embutidos, check-in digital. Presente em mais de 125 cidades brasileiras.</p>
+        <div class="retranca">
+          <span class="label">Leitura estratégica</span>
+          <p class="corpo-suporte">A camada Housi é a resposta para o que acontece depois das chaves. Para construtoras tradicionais, esse buraco é enorme.</p>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:24px;">
+        <div>
+          <span class="label">O que aprender</span>
+          <p class="corpo-suporte">A camada pós-entrega. Operação contínua como experiência. O imóvel como serviço permanente.</p>
+        </div>
+        <div>
+          <span class="label">O que não copiar</span>
+          <p class="corpo-suporte">Moradia por assinatura pode parecer transitória. Para mid-market familiar, absorver a conveniência sem perder o sentimento de casa.</p>
+        </div>
+      </div>
+    </div>
+    <div class="rodape">
+      <a class="rodape-link" href="https://housi.com" target="_blank">housi.com</a>
+      <span class="rodape-num">3 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 4 — IDEA!ZARVOS
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="s4">
+    <div>
+      <p class="eyebrow">Brasil — São Paulo</p>
+      <h2 class="empresa-nome">Idea!Zarvos</h2>
+      <p class="empresa-arquetipo">Arquitetura autoral como marca</p>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2-1" style="flex:1; align-items:start; padding-top:22px;">
+      <div>
+        <span class="label">Síntese</span>
+        <p class="corpo-suporte" style="margin-bottom:18px;">A preferida da indústria criativa. Projetos assinados por Isay Weinfeld, Marcio Kogan, FGMF, Thiago Bernardes. Transformou a incorporadora em curadora urbana — não vende apartamentos, cuida de bairros.</p>
+        <div class="retranca">
+          <span class="label">Leitura estratégica</span>
+          <p class="corpo-suporte">Para mid-market: arquitetura autoral sem complexidade excessiva — linguagem bela, modular, replicável e financeiramente viável.</p>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:24px;">
+        <div>
+          <span class="label">O que aprender</span>
+          <p class="corpo-suporte">Arquitetura como identidade de marca. Relação com bairro como proposta de valor. Térreo ativo. Galeria como canal de venda e cultura.</p>
+        </div>
+        <div>
+          <span class="label">O que não copiar</span>
+          <p class="corpo-suporte">Alto padrão paulistano com tickets de R$ 12k–R$ 50k/m². A tradução mid-market é o desafio.</p>
+        </div>
+      </div>
+    </div>
+    <div class="rodape">
+      <a class="rodape-link" href="https://ideazarvos.com.br" target="_blank">ideazarvos.com.br</a>
+      <span class="rodape-num">4 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 5 — SOMAUMA
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="s5">
+    <div>
+      <p class="eyebrow">Brasil — São Paulo</p>
+      <h2 class="empresa-nome">Somauma</h2>
+      <p class="empresa-arquetipo">Regeneração urbana &nbsp;/&nbsp; Retrofit com propósito</p>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2-1" style="flex:1; align-items:start; padding-top:22px;">
+      <div>
+        <span class="label">Síntese</span>
+        <p class="corpo-suporte" style="margin-bottom:18px;">Foco em transformação de edifícios vazios no centro histórico de São Paulo. Signatária do Pacto Global da ONU (ODS 11, 12, 13). Taxa de reciclagem de 92% nas demolições internas.</p>
+        <div class="retranca">
+          <span class="label">Leitura estratégica</span>
+          <p class="corpo-suporte">A narrativa de regeneração urbana pode ser absorvida mesmo em obra nova. Reprogramar modos de habitar é um posicionamento, não só uma operação.</p>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:24px;">
+        <div>
+          <span class="label">O que aprender</span>
+          <p class="corpo-suporte">Sustentabilidade como postura genuína, não certificação decorativa. Cidade como produto. Regeneração como narrativa de marca.</p>
+        </div>
+        <div>
+          <span class="label">O que não copiar</span>
+          <p class="corpo-suporte">Retrofit é operacionalmente complexo. A tese vale; a operação precisa ser adaptada.</p>
+        </div>
+      </div>
+    </div>
+    <div class="rodape">
+      <a class="rodape-link" href="https://somauma.com.br" target="_blank">somauma.com.br</a>
+      <span class="rodape-num">5 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 6 — MOZAK
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="s6">
+    <div>
+      <p class="eyebrow">Brasil — Rio de Janeiro</p>
+      <h2 class="empresa-nome">Mozak</h2>
+      <p class="empresa-arquetipo">Identidade local como luxury</p>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2-1" style="flex:1; align-items:start; padding-top:22px;">
+      <div>
+        <span class="label">Síntese</span>
+        <p class="corpo-suporte" style="margin-bottom:18px;">30 anos de Zona Sul carioca. Mais de 85 empreendimentos entregues. Arquitetura assinada, integração com paisagem, alma carioca como argumento de marca — não localização.</p>
+        <div class="retranca">
+          <span class="label">Leitura estratégica</span>
+          <p class="corpo-suporte">Cada cidade pode ter sua própria leitura de marca. Curitiba é precisão. Floripa é natureza. Porto Alegre é bairro e intimidade. A construtora pode vender o lugar, não só o imóvel.</p>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:24px;">
+        <div>
+          <span class="label">O que aprender</span>
+          <p class="corpo-suporte">Identidade de cidade como equity de marca. Arquitetura como integração com o entorno. Pertencimento local como proposta de valor.</p>
+        </div>
+        <div>
+          <span class="label">O que não copiar</span>
+          <p class="corpo-suporte">Exclusividade high-end de Zona Sul. Para mid-market: tirar o excesso de reserva e trazer mais acessibilidade emocional.</p>
+        </div>
+      </div>
+    </div>
+    <div class="rodape">
+      <a class="rodape-link" href="https://mozak.rio" target="_blank">mozak.rio</a>
+      <span class="rodape-num">6 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 7 — TEGRA / RIIO
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="s7">
+    <div>
+      <p class="eyebrow">Brasil — Rio de Janeiro</p>
+      <h2 class="empresa-nome">Tegra &nbsp;<span style="font-weight:300; font-size:32px; letter-spacing:0;">/ RIIO by Piero Lissoni</span></h2>
+      <p class="empresa-arquetipo">Design assinado como reposicionamento</p>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2-1" style="flex:1; align-items:start; padding-top:22px;">
+      <div>
+        <span class="label">Síntese</span>
+        <p class="corpo-suporte" style="margin-bottom:18px;">Colaboração com Lissoni & Partners (Itália) — arquitetura, interiores e paisagismo integrados. Narrativa de criatividade brasileira com elegância italiana.</p>
+        <div class="retranca">
+          <span class="label">Leitura estratégica</span>
+          <p class="corpo-suporte">Uma construtora pode criar uma assinatura de design própria — sistema replicável de fachada, interiores, amenities, paisagismo e comunicação — sem precisar de nome internacional.</p>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:24px;">
+        <div>
+          <span class="label">O que aprender</span>
+          <p class="corpo-suporte">Design como sistema integrado. Arquitetura + interiores + paisagismo como proposta única. Assinatura replicável.</p>
+        </div>
+        <div>
+          <span class="label">O que não copiar</span>
+          <p class="corpo-suporte">Assinatura internacional pode virar marketing vazio. O valor real está em traduzir design em experiência concreta: luz, planta, materiais, manutenção, silêncio.</p>
+        </div>
+      </div>
+    </div>
+    <div class="rodape">
+      <a class="rodape-link" href="https://tegra.com.br" target="_blank">tegra.com.br</a>
+      <span class="rodape-num">7 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 8 — LAGUNA
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="s8">
+    <div>
+      <p class="eyebrow">Brasil — Curitiba</p>
+      <h2 class="empresa-nome">Construtora Laguna</h2>
+      <p class="empresa-arquetipo">Premium sustentável &nbsp;/&nbsp; Imóvel-arte</p>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2-1" style="flex:1; align-items:start; padding-top:22px;">
+      <div>
+        <span class="label">Síntese</span>
+        <p class="corpo-suporte" style="margin-bottom:18px;">Desde 1996. Empresa B certificada. Integrante do WELL Portfolio — grupo com apenas 30 empresas no mundo. Primeiro residencial do Brasil com pré-certificação LEED Gold (LLUM Batel).</p>
+        <div class="retranca">
+          <span class="label">Leitura estratégica</span>
+          <p class="corpo-suporte">A Laguna mostra que sustentabilidade pode ser tratada como prestígio, não como obrigação burocrática.</p>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:24px;">
+        <div>
+          <span class="label">O que aprender</span>
+          <p class="corpo-suporte">Sustentabilidade como prestígio. Arquitetura de vanguarda como diferencial de bairro. Qualidade construtiva como promessa de marca.</p>
+        </div>
+        <div>
+          <span class="label">O que não copiar</span>
+          <p class="corpo-suporte">"Imóvel-arte" pode parecer distante do mid-market. A adaptação: design bonito, sustentável e acessível — sem aura de museu.</p>
+        </div>
+      </div>
+    </div>
+    <div class="rodape">
+      <a class="rodape-link" href="https://construtoralaguna.com.br" target="_blank">construtoralaguna.com.br</a>
+      <span class="rodape-num">8 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 9 — AG7
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="s9">
+    <div>
+      <p class="eyebrow">Brasil — Curitiba</p>
+      <h2 class="empresa-nome">AG7</h2>
+      <p class="empresa-arquetipo">Wellness Building &nbsp;/&nbsp; Luxo consciente</p>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2-1" style="flex:1; align-items:start; padding-top:22px;">
+      <div>
+        <span class="label">Síntese</span>
+        <p class="corpo-suporte" style="margin-bottom:18px;">Pioneira no conceito Building Wellness no Brasil. Projetos assinados por Arthur Casas, TRIPTYQUE e Architects Office. PACE: 160m, 44 andares, conexão com o Parque Barigui. VGV de R$ 600M no Ícaro Casa-Térrea (38 unidades, 500–1.450m²).</p>
+        <div class="retranca">
+          <span class="label">Leitura estratégica</span>
+          <p class="corpo-suporte">Wellness não precisa ser spa. Para mid-market: acústica, ventilação cruzada, luz natural, bicicletário, academia real, jardim, água filtrada — rotina mais saudável como argumento de venda.</p>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:24px;">
+        <div>
+          <span class="label">O que aprender</span>
+          <p class="corpo-suporte">Bem-estar como sistema de produto, não como amenidade adicional. Saúde como valor imobiliário.</p>
+        </div>
+        <div>
+          <span class="label">O que não copiar</span>
+          <p class="corpo-suporte">Ultra-luxo com tickets incompatíveis com mid-market. O conceito precisa ser funcionalizado e democratizado.</p>
+        </div>
+      </div>
+    </div>
+    <div class="rodape">
+      <a class="rodape-link" href="https://ag7.co" target="_blank">ag7.co</a>
+      <span class="rodape-num">9 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 10 — GT BUILDING
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="s10">
+    <div>
+      <p class="eyebrow">Brasil — Curitiba</p>
+      <h2 class="empresa-nome">GT Building</h2>
+      <p class="empresa-arquetipo">Arquitetura autoral &nbsp;/&nbsp; Sustentabilidade climática</p>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2-1" style="flex:1; align-items:start; padding-top:22px;">
+      <div>
+        <span class="label">Síntese</span>
+        <p class="corpo-suporte" style="margin-bottom:18px;">Fundada em 2017. Criadora do conceito "Climability" — adaptação de projetos às mudanças climáticas. Certificações GBC, ISO 37001, Active Score. AMÁZ: inspirado na Amazônia, com neutralização de 100% do carbono da obra.</p>
+        <div class="retranca">
+          <span class="label">Leitura estratégica</span>
+          <p class="corpo-suporte">Sustentabilidade como identidade de marca, não como selo secundário. Inovação conceitual por projeto.</p>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:24px;">
+        <div>
+          <span class="label">O que aprender</span>
+          <p class="corpo-suporte">Inteligência técnica como pilar de desejo. Cada empreendimento com conceito próprio e reconhecível.</p>
+        </div>
+        <div>
+          <span class="label">O que não copiar</span>
+          <p class="corpo-suporte">Posicionamento ancorado em alto padrão curitibano. Para mid-market, a tradução precisa simplificar sem empobrecer.</p>
+        </div>
+      </div>
+    </div>
+    <div class="rodape">
+      <a class="rodape-link" href="https://gtbuilding.com.br" target="_blank">gtbuilding.com.br</a>
+      <span class="rodape-num">10 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 11 — DIMAS
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="s11">
+    <div>
+      <p class="eyebrow">Brasil — Santa Catarina</p>
+      <h2 class="empresa-nome">Dimas Construções</h2>
+      <p class="empresa-arquetipo">Smart Living &nbsp;/&nbsp; Qualidade de vida costeira</p>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2-1" style="flex:1; align-items:start; padding-top:22px;">
+      <div>
+        <span class="label">Síntese</span>
+        <p class="corpo-suporte" style="margin-bottom:18px;">Alto padrão em Florianópolis e São José. Portfólio segmentado em Home Design, Residence Club e Smart Living — segmentação explícita por estilo de vida. Arquitetura autoral com foco em lazer e convivência.</p>
+        <div class="retranca">
+          <span class="label">Leitura estratégica</span>
+          <p class="corpo-suporte">Nomenclatura de produto como arquitetura de portfólio. Lifestyle moderno em cidade desejada. Natureza + cidade como síntese de marca.</p>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:24px;">
+        <div>
+          <span class="label">O que aprender</span>
+          <p class="corpo-suporte">Segmentação clara dentro do portfólio. Cada linha com nome, promessa e comprador próprios.</p>
+        </div>
+      </div>
+    </div>
+    <div class="rodape">
+      <a class="rodape-link" href="https://dimasconstrucoes.com.br" target="_blank">dimasconstrucoes.com.br</a>
+      <span class="rodape-num">11 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 12 — BROGNOLI
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="s12">
+    <div>
+      <p class="eyebrow">Brasil — Santa Catarina</p>
+      <h2 class="empresa-nome">Brognoli &nbsp;<span style="font-weight:300; font-size:32px;">/ Smart Living Studio 2855</span></h2>
+      <p class="empresa-arquetipo">Compacto urbano &nbsp;/&nbsp; Investimento mid-market</p>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2-1" style="flex:1; align-items:start; padding-top:22px;">
+      <div>
+        <span class="label">Síntese</span>
+        <p class="corpo-suporte" style="margin-bottom:18px;">Smart Living Studio 2855 no Itacorubi, próximo à UFSC e centros tecnológicos. D/NEX com automação predial e eficiência energética. Produto pragmático de compacto bem localizado com amenities úteis.</p>
+        <div class="retranca">
+          <span class="label">Leitura estratégica</span>
+          <p class="corpo-suporte">Argumento dual — moradia + investimento — sem precisar de luxo para se justificar. Eficiência como desejo.</p>
+        </div>
+      </div>
+      <div>
+        <span class="label">O que aprender</span>
+        <p class="corpo-suporte">Produto mid-market que não precisa de luxo para ser desejável. Localização estratégica + amenities úteis + eficiência energética como tríade de valor.</p>
+      </div>
+    </div>
+    <div class="rodape">
+      <a class="rodape-link" href="https://brognoli.com.br" target="_blank">brognoli.com.br</a>
+      <span class="rodape-num">12 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 13 — URBAN SMART LIVING
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="s13">
+    <div>
+      <p class="eyebrow">Brasil — Santa Catarina</p>
+      <h2 class="empresa-nome">Urban Smart Living</h2>
+      <p class="empresa-arquetipo">Lifestyle &nbsp;/&nbsp; Investimento &nbsp;/&nbsp; Litoral catarinense</p>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2-1" style="flex:1; align-items:start; padding-top:22px;">
+      <div>
+        <span class="label">Síntese</span>
+        <p class="corpo-suporte" style="margin-bottom:18px;">Praia Brava, Itajaí. Mais de 4.000m² de lazer, rooftop panorâmico, smart amenities. Case explícito de smart living no litoral — nome, produto e comunicação alinhados ao conceito.</p>
+        <div class="retranca">
+          <span class="label">Leitura estratégica</span>
+          <p class="corpo-suporte">SC tem território forte: praia + investimento + lifestyle + estética contemporânea. O risco de virar genérico de rooftop é real — a diferenciação precisa vir de marca e inteligência de planta.</p>
+        </div>
+      </div>
+      <div>
+        <span class="label">O que aprender</span>
+        <p class="corpo-suporte">Alinhamento entre nome, produto e comunicação. Quando tudo fala a mesma língua, o comprador entende mais rápido.</p>
+      </div>
+    </div>
+    <div class="rodape">
+      <span class="rodape-texto">Itajaí — SC</span>
+      <span class="rodape-num">13 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 14 — ABF / ÁTRIO
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="s14">
+    <div>
+      <p class="eyebrow">Brasil — Porto Alegre</p>
+      <h2 class="empresa-nome">ABF &nbsp;<span style="font-weight:300; font-size:32px;">/ Átrio Boutique Haus</span></h2>
+      <p class="empresa-arquetipo">Boutique compacto urbano</p>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2-1" style="flex:1; align-items:start; padding-top:22px;">
+      <div>
+        <span class="label">Síntese</span>
+        <p class="corpo-suporte" style="margin-bottom:18px;">Parceria com Unimed RS. Lofts de 17–23m², unidades de 22–36m², gardens. Lavanderia, market, academia, coworking. Posicionado como alinhado ao novo estilo de vida urbana — mobilidade, praticidade, conexão com a cidade.</p>
+        <div class="retranca">
+          <span class="label">Leitura estratégica</span>
+          <p class="corpo-suporte">Um dos cases brasileiros mais próximos do mid-market design + smart living. Não depende de luxo — depende de eficiência e curadoria de programa.</p>
+        </div>
+      </div>
+      <div>
+        <span class="label">O que aprender</span>
+        <p class="corpo-suporte">Inteligência de uso como argumento principal. Áreas comuns como extensão real da unidade. O prédio compensa o que o apartamento não tem.</p>
+      </div>
+    </div>
+    <div class="rodape">
+      <span class="rodape-texto">Porto Alegre — RS</span>
+      <span class="rodape-num">14 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 15 — SMART ARQUITETURA
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="s15">
+    <div>
+      <p class="eyebrow">Brasil — Porto Alegre</p>
+      <h2 class="empresa-nome">Smart Arquitetura</h2>
+      <p class="empresa-arquetipo">Atelier boutique &nbsp;/&nbsp; Escala humana</p>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2-1" style="flex:1; align-items:start; padding-top:22px;">
+      <div>
+        <span class="label">Síntese</span>
+        <p class="corpo-suporte" style="margin-bottom:18px;">Define-se como atelier de desenvolvimento imobiliário com propósito de viabilizar uma arquitetura com significado. Foco em empreendimentos de pequena escala, inserção urbana delicada, identidade por projeto.</p>
+        <div class="retranca">
+          <span class="label">Leitura estratégica</span>
+          <p class="corpo-suporte">Menos massa, mais identidade. O oposto do blocão genérico. Arquitetura como propósito, não apenas como produto.</p>
+        </div>
+      </div>
+      <div>
+        <span class="label">O que aprender</span>
+        <p class="corpo-suporte">Cada projeto com identidade própria. Escala humana como diferencial. A construtora como estúdio de arquitetura — não como fábrica de apartamentos.</p>
+      </div>
+    </div>
+    <div class="rodape">
+      <span class="rodape-texto">Porto Alegre — RS</span>
+      <span class="rodape-num">15 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 16 — MELNICK
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="s16">
+    <div>
+      <p class="eyebrow">Brasil — Porto Alegre</p>
+      <h2 class="empresa-nome">Melnick</h2>
+      <p class="empresa-arquetipo">Premium trust &nbsp;/&nbsp; Marca gaúcha consolidada</p>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2-1" style="flex:1; align-items:start; padding-top:22px;">
+      <div>
+        <span class="label">Síntese</span>
+        <p class="corpo-suporte" style="margin-bottom:18px;">Líder regional em médio e alto padrão no RS. High Garden Rio Branco: bosque de 4.000m², mata nativa. Agora com MPartners — braço de parcerias em Porto Alegre e Curitiba.</p>
+        <div class="retranca">
+          <span class="label">Leitura estratégica</span>
+          <p class="corpo-suporte">Confiança e escala como ativos de marca. Natureza integrada ao urbano como diferencial. Solidez como luxo silencioso.</p>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:24px;">
+        <div>
+          <span class="label">O que aprender</span>
+          <p class="corpo-suporte">Confiança regional como patrimônio de marca. Natureza dentro da cidade como promessa de produto.</p>
+        </div>
+        <div>
+          <span class="label">O que não copiar</span>
+          <p class="corpo-suporte">Camada autoral e jovem ainda fraca. Para mid-market de design, precisaria somar arquitetura mais contemporânea e identidade mais jovem.</p>
+        </div>
+      </div>
+    </div>
+    <div class="rodape">
+      <a class="rodape-link" href="https://melnick.com.br" target="_blank">melnick.com.br</a>
+      <span class="rodape-num">16 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 17 — PLAENGE
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="s17">
+    <div>
+      <p class="eyebrow">Brasil — Sul e Sudeste</p>
+      <h2 class="empresa-nome">Plaenge</h2>
+      <p class="empresa-arquetipo">Premium trust &nbsp;/&nbsp; Design system &nbsp;/&nbsp; Engenharia de reputação</p>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2-1" style="flex:1; align-items:start; padding-top:22px;">
+      <div>
+        <span class="label">Síntese</span>
+        <p class="corpo-suporte" style="margin-bottom:18px;">Maior construtora imobiliária de capital fechado do Brasil. Líder do Sul por 10 anos consecutivos. 515 empreendimentos entregues. Segmentação: Plaenge (alto padrão) + Vanguard (jovem/mid). Diferenciais: Seguro de Entrega, BIM 4D/5D, Plaenge Personalize, Plaenge Arch Design, Porsche Consulting.</p>
+        <div class="retranca">
+          <span class="label">Tese estratégica</span>
+          <p class="corpo-suporte">Plaenge = lastro reputacional. Vanguard = braço de modernidade. Uma arquitetura de portfólio que este projeto pode espelhar ao seu próprio modo.</p>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:24px;">
+        <div>
+          <span class="label">O que aprender</span>
+          <p class="corpo-suporte">Como transformar engenharia em marca. Como construir confiança como luxo. Design precisa de entrega; smart living precisa de reputação.</p>
+        </div>
+      </div>
+    </div>
+    <div class="rodape">
+      <a class="rodape-link" href="https://plaenge.com.br" target="_blank">plaenge.com.br</a>
+      <span class="rodape-num">17 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 18 — POCKET LIVING
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="s18">
+    <div>
+      <p class="eyebrow">Internacional — Europa &nbsp;/&nbsp; Londres</p>
+      <h2 class="empresa-nome">Pocket Living</h2>
+      <p class="empresa-arquetipo">Mid-market compacto &nbsp;/&nbsp; Design democrático</p>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2-1" style="flex:1; align-items:start; padding-top:22px;">
+      <div>
+        <span class="label">Síntese</span>
+        <p class="corpo-suporte" style="margin-bottom:18px;">Desde 2005. Apartamentos de ~38m² com 20% de desconto sobre o mercado para "city makers" — renda média, contribuição cultural e econômica. Rooftop gardens, lounges, coworking. 100% de propriedade, sem Shared Ownership.</p>
+        <div class="retranca">
+          <span class="label">Por que é a referência mais direta</span>
+          <p class="corpo-suporte">Mostra que o mid-market pode ser desejável, bem desenhado e socialmente relevante ao mesmo tempo. Design como ferramenta de acesso, não de luxo.</p>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:24px;">
+        <div>
+          <span class="label">O que aprender</span>
+          <p class="corpo-suporte">Comunidade como produto. Compacto e digno como categoria. Anti-imóvel sem alma como postura de marca.</p>
+        </div>
+      </div>
+    </div>
+    <div class="rodape">
+      <a class="rodape-link" href="https://pocketliving.com" target="_blank">pocketliving.com</a>
+      <span class="rodape-num">18 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 19 — URBAN PARTNERS / NREP
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="s19">
+    <div>
+      <p class="eyebrow">Internacional — Europa &nbsp;/&nbsp; Norte da Europa</p>
+      <h2 class="empresa-nome">Urban Partners &nbsp;<span style="font-weight:300; font-size:32px;">/ NREP</span></h2>
+      <p class="empresa-arquetipo">ESG real &nbsp;/&nbsp; Urbanismo sistêmico</p>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2-1" style="flex:1; align-items:start; padding-top:22px;">
+      <div>
+        <span class="label">Síntese</span>
+        <p class="corpo-suporte" style="margin-bottom:18px;">20 anos de histórico. UN17 Village em Copenhagen: projeto que integra os 17 ODS da ONU — materiais reaproveitados, energia renovável, reúso de água, espaços saudáveis, comunidade energética.</p>
+        <div class="retranca">
+          <span class="label">Leitura estratégica</span>
+          <p class="corpo-suporte">Sustentabilidade como sistema operacional do projeto, não como selo decorativo. Urbanismo de longo prazo como proposta de valor.</p>
+        </div>
+      </div>
+      <div>
+        <span class="label">O que aprender</span>
+        <p class="corpo-suporte">Transformar sustentabilidade em sistema operacional do projeto. Não é certificação — é decisão de projeto em cada etapa.</p>
+      </div>
+    </div>
+    <div class="rodape">
+      <a class="rodape-link" href="https://urbanpartners.com" target="_blank">urbanpartners.com</a>
+      <span class="rodape-num">19 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 20 — MVRDV
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="s20">
+    <div>
+      <p class="eyebrow">Internacional — Europa &nbsp;/&nbsp; Referência conceitual</p>
+      <h2 class="empresa-nome">MVRDV</h2>
+      <p class="empresa-arquetipo">Pesquisa de tipologia &nbsp;/&nbsp; Experimentação urbana</p>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2-1" style="flex:1; align-items:start; padding-top:22px;">
+      <div>
+        <span class="label">Síntese</span>
+        <p class="corpo-suporte" style="margin-bottom:18px;">Em 2024, catálogo de tipologias de co-living com foco em comunidade, flexibilidade e bairros mais vivos. Não é incorporadora — é referência conceitual de morfologia habitacional.</p>
+        <div class="retranca">
+          <span class="label">A pergunta central</span>
+          <p class="corpo-suporte">Quais funções da casa podem migrar para o edifício sem empobrecer a vida privada? Densidade com qualidade é possível.</p>
+        </div>
+      </div>
+      <div>
+        <span class="label">O que aprender</span>
+        <p class="corpo-suporte">Pensar a unidade e o edifício como sistema integrado. Funções compartilhadas como extensão da vida privada, não como compensação de metragem.</p>
+      </div>
+    </div>
+    <div class="rodape">
+      <a class="rodape-link" href="https://mvrdv.nl" target="_blank">mvrdv.nl</a>
+      <span class="rodape-num">20 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 21 — ECE WORK & LIVE
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="s21">
+    <div>
+      <p class="eyebrow">Internacional — Europa</p>
+      <h2 class="empresa-nome">ECE Work & Live</h2>
+      <p class="empresa-arquetipo">Moradia eficiente &nbsp;/&nbsp; Escala institucional</p>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2-1" style="flex:1; align-items:start; padding-top:22px;">
+      <div>
+        <span class="label">Síntese</span>
+        <p class="corpo-suporte" style="margin-bottom:18px;">Conceitos residenciais flexíveis, compactos e ecologicamente compatíveis em metrópoles europeias. Do aluguel subsidiado ao apartamento próprio. Moradia compacta sem perda de conforto.</p>
+        <div class="retranca">
+          <span class="label">Leitura estratégica</span>
+          <p class="corpo-suporte">Eficiência como sistema replicável. O novo morar precisa ser regulável e financeiramente viável em escala.</p>
+        </div>
+      </div>
+      <div>
+        <span class="label">O que aprender</span>
+        <p class="corpo-suporte">Compacto e eficiente sem perda de conforto. Modelo que funciona em escala institucional — não apenas em projetos boutique.</p>
+      </div>
+    </div>
+    <div class="rodape">
+      <a class="rodape-link" href="https://ece.com" target="_blank">ece.com</a>
+      <span class="rodape-num">21 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 22 — ALLOY DEVELOPMENT
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="s22">
+    <div>
+      <p class="eyebrow">Internacional — Estados Unidos &nbsp;/&nbsp; Brooklyn, NY</p>
+      <h2 class="empresa-nome">Alloy Development</h2>
+      <p class="empresa-arquetipo">Architect-led development &nbsp;/&nbsp; Agente urbano</p>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2-1" style="flex:1; align-items:start; padding-top:22px;">
+      <div>
+        <span class="label">Síntese</span>
+        <p class="corpo-suporte" style="margin-bottom:18px;">Mais de US$ 1,6 bi em projetos desde 2006. 505 State Street: primeiro arranha-céu 100% elétrico de Nova York, 441 unidades com mesmos acabamentos em todas as tipologias. The Alloy Block: escola pública, centro cultural, varejo e habitação mista.</p>
+        <div class="retranca">
+          <span class="label">Leitura estratégica</span>
+          <p class="corpo-suporte">A incorporadora como agente cultural e urbano, não apenas financeiro. Qualidade igual para todas as unidades como postura de marca.</p>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:24px;">
+        <div>
+          <span class="label">O que aprender</span>
+          <p class="corpo-suporte">Sustentabilidade radical viável em escala. O empreendimento como contribuição urbana genuína.</p>
+        </div>
+      </div>
+    </div>
+    <div class="rodape">
+      <a class="rodape-link" href="https://alloyllc.com" target="_blank">alloyllc.com</a>
+      <span class="rodape-num">22 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 23 — RAY
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="s23">
+    <div>
+      <p class="eyebrow">Internacional — Estados Unidos</p>
+      <h2 class="empresa-nome">RAY</h2>
+      <p class="empresa-arquetipo">Branded residential lifestyle &nbsp;/&nbsp; Arte + Moradia</p>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2-1" style="flex:1; align-items:start; padding-top:22px;">
+      <div>
+        <span class="label">Síntese</span>
+        <p class="corpo-suporte" style="margin-bottom:18px;">Marca residencial que integra arte, arquitetura e programação cultural ao cotidiano. Ray Phoenix: 401 unidades, 26 pavimentos, curadoria de arte, wellness, varejo no térreo. O prédio funciona quase como hotelaria + galeria + moradia.</p>
+        <div class="retranca">
+          <span class="label">Leitura estratégica</span>
+          <p class="corpo-suporte">A construtora pode virar marca de estilo de vida. Para mid-market: arte local, curadoria de bairro e espaços bonitos acessíveis — a tradução não é galeria, é identidade.</p>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:24px;">
+        <div>
+          <span class="label">O que aprender</span>
+          <p class="corpo-suporte">Marca residencial como lifestyle cultural. Programação como produto contínuo, não apenas o imóvel.</p>
+        </div>
+        <div>
+          <span class="label">O que não copiar</span>
+          <p class="corpo-suporte">Pode virar fashion demais. A tradução mid-market é identidade — não galeria.</p>
+        </div>
+      </div>
+    </div>
+    <div class="rodape">
+      <a class="rodape-link" href="https://rayresidential.com" target="_blank">rayresidential.com</a>
+      <span class="rodape-num">23 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 24 — GREYSTAR
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="s24">
+    <div>
+      <p class="eyebrow">Internacional — Global</p>
+      <h2 class="empresa-nome">Greystar</h2>
+      <p class="empresa-arquetipo">Gestão e tecnologia &nbsp;/&nbsp; Experiência do residente</p>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2-1" style="flex:1; align-items:start; padding-top:22px;">
+      <div>
+        <span class="label">Síntese</span>
+        <p class="corpo-suporte" style="margin-bottom:18px;">Operador global de multifamily. App integrado: pagamento, manutenção com fotos, comunicação com comunidade, smart home. Modelo de gestão profissional pós-entrega em múltiplas cidades.</p>
+        <div class="retranca">
+          <span class="label">Leitura estratégica</span>
+          <p class="corpo-suporte">O smart living real é operação. Manutenção, comunicação, reserva de áreas, experiência fluida. A camada invisível que decide a reputação.</p>
+        </div>
+      </div>
+      <div>
+        <span class="label">O que aprender</span>
+        <p class="corpo-suporte">A experiência pós-entrega como produto. O que acontece depois das chaves é tão importante quanto o que acontece antes.</p>
+      </div>
+    </div>
+    <div class="rodape">
+      <a class="rodape-link" href="https://greystar.com" target="_blank">greystar.com</a>
+      <span class="rodape-num">24 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 25 — NIGHTINGALE
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="s25">
+    <div>
+      <p class="eyebrow">Internacional — Austrália &nbsp;/&nbsp; Melbourne</p>
+      <h2 class="empresa-nome">Nightingale Housing</h2>
+      <p class="empresa-arquetipo">Ética radical &nbsp;/&nbsp; Casas para pessoas, não para lucro</p>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2-1" style="flex:1; align-items:start; padding-top:22px;">
+      <div>
+        <span class="label">Síntese</span>
+        <p class="corpo-suporte" style="margin-bottom:18px;">Organização sem fins lucrativos. Fundada em 2014, 11 projetos entregues. Sem garagem excessiva, sem marketing de display suite, 100% energia verde em rede embutida. Vendas por lista de espera a moradores — não investidores.</p>
+        <div class="retranca">
+          <span class="label">Leitura estratégica</span>
+          <p class="corpo-suporte">Menos ornamento, mais verdade. Sustentabilidade e acessibilidade não são opostos. Comunidade como produto principal.</p>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:24px;">
+        <div>
+          <span class="label">O que aprender</span>
+          <p class="corpo-suporte">Arquitetura honesta como diferencial de mercado. O que pode ser removido sem perda é um custo — não um padrão.</p>
+        </div>
+      </div>
+    </div>
+    <div class="rodape">
+      <a class="rodape-link" href="https://nightingalehousing.org" target="_blank">nightingalehousing.org</a>
+      <span class="rodape-num">25 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 26 — ASSEMBLE
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="s26">
+    <div>
+      <p class="eyebrow">Internacional — Austrália &nbsp;/&nbsp; Melbourne</p>
+      <h2 class="empresa-nome">Assemble</h2>
+      <p class="empresa-arquetipo">Build-to-rent &nbsp;/&nbsp; Caminho para compra</p>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2-1" style="flex:1; align-items:start; padding-top:22px;">
+      <div>
+        <span class="label">Síntese</span>
+        <p class="corpo-suporte" style="margin-bottom:18px;">Apartamentos para alugar com estabilidade de 1–5 anos e opção de compra futura. AustralianSuper investiu quase A$ 500M no modelo — aproximadamente 1.400 unidades previstas até 2027. Design cuidadoso, sustentabilidade, comunidade.</p>
+        <div class="retranca">
+          <span class="label">Leitura estratégica</span>
+          <p class="corpo-suporte">Morar primeiro, comprar depois — modelo com potencial real para a classe média urbana brasileira. Estabilidade como diferencial emocional.</p>
+        </div>
+      </div>
+      <div>
+        <span class="label">O que aprender</span>
+        <p class="corpo-suporte">Estabilidade como produto. Alugar com dignidade e trajetória de compra como proposta. Design e comunidade criam desejo sem depender de luxo.</p>
+      </div>
+    </div>
+    <div class="rodape">
+      <a class="rodape-link" href="https://assemble.com.au" target="_blank">assemble.com.au</a>
+      <span class="rodape-num">26 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 27 — ARIA
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="s27">
+    <div>
+      <p class="eyebrow">Internacional — Austrália &nbsp;/&nbsp; Brisbane</p>
+      <h2 class="empresa-nome">Aria Property Group</h2>
+      <p class="empresa-arquetipo">Design-led development &nbsp;/&nbsp; Placemaking</p>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2-1" style="flex:1; align-items:start; padding-top:22px;">
+      <div>
+        <span class="label">Síntese</span>
+        <p class="corpo-suporte" style="margin-bottom:18px;">Incorporadora privada com prêmios nacionais pela UDIA. Trellis: melhor high-rise da Austrália em 2026. Fish Lane Town Square: transformação de 39 vagas de estacionamento em espaço urbano vivo. Retail no térreo de projetos residenciais.</p>
+        <div class="retranca">
+          <span class="label">Leitura estratégica</span>
+          <p class="corpo-suporte">O empreendimento bom melhora o entorno. A construtora pode vender o prédio e o bairro em volta. O térreo como mídia de marca.</p>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:24px;">
+        <div>
+          <span class="label">O que aprender</span>
+          <p class="corpo-suporte">Placemaking como proposta de valor. O prédio que melhora a rua cria desejo antes da visita ao apartamento.</p>
+        </div>
+      </div>
+    </div>
+    <div class="rodape">
+      <a class="rodape-link" href="https://ariaproperty.com.au" target="_blank">ariaproperty.com.au</a>
+      <span class="rodape-num">27 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 28 — SMART LIVING GROUP AU
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="s28">
+    <div>
+      <p class="eyebrow">Internacional — Austrália</p>
+      <h2 class="empresa-nome">Smart Living Group</h2>
+      <p class="empresa-arquetipo">Compacto atemporal &nbsp;/&nbsp; Praticidade como proposta</p>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2-1" style="flex:1; align-items:start; padding-top:22px;">
+      <div>
+        <span class="label">Síntese</span>
+        <p class="corpo-suporte" style="margin-bottom:18px;">Desde 2012. Apartamentos atemporais que tornam a vida em apartamento mais fácil. Valores: qualidade, pesquisa, dependabilidade, desenvolvimento aspiracional.</p>
+        <div class="retranca">
+          <span class="label">Leitura estratégica</span>
+          <p class="corpo-suporte">Smart living não é tecnologia aparente — é morar com menos fricção. A promessa mais simples pode ser a mais poderosa.</p>
+        </div>
+      </div>
+      <div>
+        <span class="label">O que aprender</span>
+        <p class="corpo-suporte">Atemporalidade como posicionamento. Não seguir tendência — criar padrão. Praticidade como desejo.</p>
+      </div>
+    </div>
+    <div class="rodape">
+      <a class="rodape-link" href="https://smartlivinggroup.com.au" target="_blank">smartlivinggroup.com.au</a>
+      <span class="rodape-num">28 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 29 — 5 PADRÕES TRANSVERSAIS
+  ═══════════════════════════════════════ -->
+  <div class="slide fundo-branco" id="s29">
+    <div>
+      <p class="eyebrow">Padrões transversais</p>
+      <h2 class="titulo-grande" style="margin-bottom:4px;">5 padrões que aparecem em todos os melhores projetos.</h2>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-3" style="flex:1; align-items:start; padding-top:22px; grid-template-columns: 1fr 1fr 1fr;">
+      <div class="padrao-card">
+        <span class="padrao-num">01</span>
+        <p class="padrao-titulo">O apartamento encolhe; o edifício cresce.</p>
+        <p class="padrao-sub">Mais vida por metro quadrado.</p>
+      </div>
+      <div class="padrao-card">
+        <span class="padrao-num">02</span>
+        <p class="padrao-titulo">Smart não é gadget — é fluidez.</p>
+        <p class="padrao-sub">Tecnologia que desaparece para a vida aparecer.</p>
+      </div>
+      <div class="padrao-card">
+        <span class="padrao-num">03</span>
+        <p class="padrao-titulo">Design virou argumento de classe média aspiracional.</p>
+        <p class="padrao-sub">Design autoral, sem preço de galeria.</p>
+      </div>
+    </div>
+    <div class="grid-2" style="margin-top:16px; grid-template-columns: 1fr 1fr;">
+      <div class="padrao-card">
+        <span class="padrao-num">04</span>
+        <p class="padrao-titulo">Wellness está descendo do luxo para o mid-market.</p>
+        <p class="padrao-sub">Prédios que ajudam você a viver melhor.</p>
+      </div>
+      <div class="padrao-card">
+        <span class="padrao-num">05</span>
+        <p class="padrao-titulo">O térreo é a nova mídia.</p>
+        <p class="padrao-sub">O prédio começa antes da portaria.</p>
+      </div>
+    </div>
+    <div class="rodape">
+      <span class="rodape-texto">Curadoria estratégica global</span>
+      <span class="rodape-num">29 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 30 — MAPA DE REFERÊNCIAS
+  ═══════════════════════════════════════ -->
+  <div class="slide fundo-branco" id="s30">
+    <div>
+      <p class="eyebrow">Mapa de referências por eixo estratégico</p>
+      <h2 class="titulo-grande" style="margin-bottom:4px;">Onde cada referência ensina o quê.</h2>
+    </div>
+    <div class="divider"></div>
+    <div style="flex:1; padding-top:20px; display:flex; flex-direction:column; justify-content:center;">
+      <div class="mapa-linha">
+        <span class="mapa-tema">Compact / Smart living</span>
+        <span class="mapa-refs">Vitacon &nbsp;·&nbsp; Housi &nbsp;·&nbsp; Pocket Living &nbsp;·&nbsp; Smart Living AU</span>
+      </div>
+      <div class="mapa-linha">
+        <span class="mapa-tema">Arquitetura autoral</span>
+        <span class="mapa-refs">Idea!Zarvos &nbsp;·&nbsp; Mozak &nbsp;·&nbsp; Alloy Development &nbsp;·&nbsp; Laguna</span>
+      </div>
+      <div class="mapa-linha">
+        <span class="mapa-tema">Wellness</span>
+        <span class="mapa-refs">AG7 &nbsp;·&nbsp; Nightingale &nbsp;·&nbsp; Assemble &nbsp;·&nbsp; Aria Property Group</span>
+      </div>
+      <div class="mapa-linha">
+        <span class="mapa-tema">Confiança / Reputação</span>
+        <span class="mapa-refs">Plaenge &nbsp;·&nbsp; Melnick &nbsp;·&nbsp; Greystar</span>
+      </div>
+      <div class="mapa-linha">
+        <span class="mapa-tema">Sustentabilidade sistêmica</span>
+        <span class="mapa-refs">Somauma &nbsp;·&nbsp; GT Building &nbsp;·&nbsp; Urban Partners / NREP</span>
+      </div>
+      <div class="mapa-linha" style="border-bottom:none;">
+        <span class="mapa-tema">Marca / Lifestyle</span>
+        <span class="mapa-refs">RAY &nbsp;·&nbsp; Dimas &nbsp;·&nbsp; Tegra / Lissoni</span>
+      </div>
+    </div>
+    <div class="rodape">
+      <span class="rodape-texto">Curadoria estratégica global</span>
+      <span class="rodape-num">30 / 31</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       LÂMINA 31 — SÍNTESE ESTRATÉGICA
+  ═══════════════════════════════════════ -->
+  <div class="slide fundo-preto" id="s31">
+    <div>
+      <p class="eyebrow">Síntese estratégica</p>
+      <h2 class="titulo-grande" style="margin-bottom:6px;">Mid-market design living para a nova classe média urbana brasileira.</h2>
+      <p class="subtitulo" style="color:#666;">Morar melhor, com design, inteligência e vida real.</p>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-3" style="flex:1; align-items:start; padding-top:22px;">
+      <div class="pilar-card" style="border-bottom-color:#222;">
+        <p class="pilar-titulo" style="color:#fff;">Design Inteligente</p>
+        <p class="pilar-desc" style="color:#777;">Plantas sem desperdício, materiais honestos, estética contemporânea.</p>
+      </div>
+      <div class="pilar-card" style="border-bottom-color:#222;">
+        <p class="pilar-titulo" style="color:#fff;">Vida Conectada</p>
+        <p class="pilar-desc" style="color:#777;">App, gestão, serviços, operação sem atrito.</p>
+      </div>
+      <div class="pilar-card" style="border-bottom-color:#222;">
+        <p class="pilar-titulo" style="color:#fff;">Bem-estar Prático</p>
+        <p class="pilar-desc" style="color:#777;">Luz, ar, verde, fitness, rotina mais saudável.</p>
+      </div>
+    </div>
+    <div class="grid-2" style="margin-top:16px;">
+      <div class="pilar-card" style="border-bottom-color:#222;">
+        <p class="pilar-titulo" style="color:#fff;">Comunidade Leve</p>
+        <p class="pilar-desc" style="color:#777;">Coworking, rooftop, térreo vivo, vizinhança.</p>
+      </div>
+      <div class="pilar-card" style="border-bottom-color:#222;">
+        <p class="pilar-titulo" style="color:#fff;">Investimento com Desejo</p>
+        <p class="pilar-desc" style="color:#777;">Produto bonito, líquido, bem localizado.</p>
+      </div>
+    </div>
+    <div class="rodape">
+      <span class="rodape-texto">Paladino + Rottas — Confidencial</span>
+      <span class="rodape-num">31 / 31</span>
+    </div>
+  </div>
+
+ </div><!-- /scaler -->
+</div><!-- /stage -->
+
+<div id="nav">
+  <button id="btn-prev" onclick="mover(-1)" disabled>←</button>
+  <span id="nav-info">0 / 31</span>
+  <button id="btn-next" onclick="mover(1)">→</button>
+</div>
+
+<script>
+  const TOTAL = 32;
+  let atual = 0;
+
+  function mover(dir) {
+    const prox = atual + dir;
+    if (prox < 0 || prox >= TOTAL) return;
+    document.getElementById('s' + atual).classList.remove('ativo');
+    atual = prox;
+    document.getElementById('s' + atual).classList.add('ativo');
+    document.getElementById('nav-info').textContent = atual + ' / 31';
+    document.getElementById('btn-prev').disabled = atual === 0;
+    document.getElementById('btn-next').disabled = atual === TOTAL - 1;
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') mover(1);
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') mover(-1);
+  });
+
+  function escalar() {
+    const scaler = document.getElementById('scaler');
+    const escala = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+    scaler.style.transform = 'scale(' + escala + ')';
+  }
+
+  escalar();
+  window.addEventListener('resize', escalar);
+</script>
+</body>
+</html>

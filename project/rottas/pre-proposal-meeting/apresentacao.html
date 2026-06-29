@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paladino + Rottas — Arquitetura de Marca</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --branco: #FFFFFF;
+    --off-white: #F5F5F3;
+    --preto: #0D0D0D;
+    --cinza-escuro: #3D3D3D;
+    --cinza-medio: #8C8C8C;
+    --cinza-claro: #E8E8E8;
+  }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    background: #1a1a1a;
+    font-family: 'DM Sans', sans-serif;
+    overflow: hidden;
+  }
+
+  /* ── STAGE ── */
+  #stage {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #scaler {
+    width: 1280px;
+    height: 720px;
+    position: relative;
+    transform-origin: center center;
+  }
+
+  /* ── SLIDE BASE ── */
+  .slide {
+    position: absolute;
+    inset: 0;
+    width: 1280px;
+    height: 720px;
+    background: var(--off-white);
+    padding: 56px 88px 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .slide.ativo {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .slide.fundo-preto {
+    background: var(--preto);
+    color: var(--branco);
+  }
+  .slide.fundo-branco {
+    background: var(--branco);
+  }
+
+  /* ── TIPOGRAFIA ── */
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--cinza-medio);
+    margin-bottom: 6px;
+  }
+  .slide.fundo-preto .eyebrow { color: #666; }
+
+  .titulo-display {
+    font-size: 72px;
+    line-height: 78px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    color: var(--preto);
+  }
+  .slide.fundo-preto .titulo-display { color: var(--branco); }
+
+  .titulo-grande {
+    font-size: 52px;
+    line-height: 60px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--preto);
+  }
+  .slide.fundo-preto .titulo-grande { color: var(--branco); }
+
+  .titulo-medio {
+    font-size: 36px;
+    line-height: 44px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--preto);
+  }
+  .slide.fundo-preto .titulo-medio { color: var(--branco); }
+
+  .subtitulo {
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 400;
+    color: var(--cinza-escuro);
+  }
+  .slide.fundo-preto .subtitulo { color: #aaa; }
+
+  .corpo {
+    font-size: 18px;
+    line-height: 28px;
+    font-weight: 400;
+    color: var(--preto);
+  }
+  .slide.fundo-preto .corpo { color: #ddd; }
+
+  .corpo-suporte {
+    font-size: 16px;
+    line-height: 25px;
+    font-weight: 400;
+    color: var(--cinza-escuro);
+  }
+  .slide.fundo-preto .corpo-suporte { color: #aaa; }
+
+  .label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--cinza-medio);
+    margin-bottom: 12px;
+  }
+  .slide.fundo-preto .label { color: #666; }
+
+  .numero-destaque {
+    font-size: 64px;
+    line-height: 70px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: var(--preto);
+  }
+
+  /* ── LAYOUT HELPERS ── */
+  .divider {
+    height: 1px;
+    background: var(--cinza-claro);
+    flex-shrink: 0;
+  }
+  .slide.fundo-preto .divider { background: #2a2a2a; }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 52px;
+  }
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 44px;
+  }
+  .grid-2-1 {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 52px;
+  }
+  .grid-1-2 {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 52px;
+  }
+
+  /* ── RETRANCA ── */
+  .retranca {
+    background: var(--branco);
+    padding: 20px 24px;
+    border-left: 2px solid var(--preto);
+  }
+  .slide.fundo-preto .retranca {
+    background: #1a1a1a;
+    border-left-color: #555;
+  }
+  .retranca .corpo-suporte {
+    font-style: italic;
+  }
+
+  /* ── NÚMERO COM LABEL ── */
+  .stat-bloco { display: flex; flex-direction: column; gap: 4px; }
+  .stat-num {
+    font-size: 52px;
+    line-height: 56px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: var(--preto);
+  }
+  .stat-label {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--cinza-escuro);
+  }
+
+  /* ── RODAPÉ ── */
+  .rodape {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 14px;
+    border-top: 1px solid var(--cinza-claro);
+    flex-shrink: 0;
+  }
+  .slide.fundo-preto .rodape { border-top-color: #2a2a2a; }
+
+  .rodape-esquerda {
+    font-size: 11px;
+    color: var(--cinza-medio);
+    letter-spacing: 0.04em;
+  }
+  .slide.fundo-preto .rodape-esquerda { color: #555; }
+
+  .rodape-num {
+    font-size: 11px;
+    color: var(--cinza-medio);
+    letter-spacing: 0.04em;
+  }
+  .slide.fundo-preto .rodape-num { color: #555; }
+
+  /* ── NAVEGAÇÃO ── */
+  #nav {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: rgba(0,0,0,0.7);
+    padding: 8px 20px;
+    border-radius: 40px;
+    backdrop-filter: blur(8px);
+    z-index: 100;
+  }
+  #nav button {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    letter-spacing: 0.06em;
+    transition: background 0.15s;
+  }
+  #nav button:hover { background: rgba(255,255,255,0.12); }
+  #nav button:disabled { opacity: 0.3; cursor: default; }
+  #nav-info {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.06em;
+    min-width: 60px;
+    text-align: center;
+  }
+
+  /* ── BLOCO TAG ── */
+  .bloco-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--cinza-medio);
+    border: 1px solid var(--cinza-claro);
+    padding: 3px 10px;
+    margin-bottom: 16px;
+  }
+</style>
+</head>
+<body>
+
+<div id="stage">
+  <div id="scaler">
+
+    <!-- ══════════════════════════════════════════
+         LÂMINA 0 — CAPA
+    ══════════════════════════════════════════ -->
+    <div class="slide fundo-preto ativo" id="s0">
+      <div>
+        <p class="eyebrow">Paladino + Rottas Construtora</p>
+      </div>
+      <div>
+        <h1 class="titulo-display" style="max-width: 780px; margin-bottom: 20px;">Arquitetura de marca para a próxima geração do portfólio Rottas</h1>
+        <p class="subtitulo" style="color: #777;">Reunião estratégica — 2026</p>
+      </div>
+      <div class="rodape">
+        <span class="rodape-esquerda">Confidencial</span>
+        <span class="rodape-num">—</span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         LÂMINA 1 — BIFURCAÇÃO DO MERCADO
+    ══════════════════════════════════════════ -->
+    <div class="slide" id="s1">
+      <div>
+        <p class="eyebrow">Bloco 1 — Abertura e contexto</p>
+        <h2 class="titulo-grande" style="margin-bottom: 6px;">O mercado está se bifurcando.</h2>
+        <p class="subtitulo">E o Sul do Brasil está no centro dessa tensão.</p>
+      </div>
+      <div class="divider"></div>
+      <div class="grid-3" style="flex: 1; align-items: start; padding-top: 28px;">
+        <div>
+          <p class="label">MCMV em expansão</p>
+          <p class="corpo-suporte">R$ 180 bilhões de orçamento em 2025. Meta ampliada para 3 milhões de unidades. 90% de aprovação popular. Um segmento em crescimento histórico.</p>
+        </div>
+        <div>
+          <p class="label">Novo comprador emergente</p>
+          <p class="corpo-suporte">Médio-alto padrão. Mais repertório, mais comparação, mais exigência estética. Busca um produto que represente seu próximo estágio de vida — não apenas metragem e entrega.</p>
+        </div>
+        <div>
+          <p class="label">Sul do Brasil, agora</p>
+          <p class="corpo-suporte">Curitiba liderou a valorização imobiliária do país em 2024, com 18% de alta. Tíquete médio de R$ 1,1 milhão em 2025. Nenhuma marca no Sul se posicionou para esse comprador com clareza.</p>
+        </div>
+      </div>
+      <div class="retranca" style="margin-bottom: 8px;">
+        <p class="label">A oportunidade</p>
+        <p class="corpo-suporte">Esse comprador existe, tem renda e tem exigência. O espaço está em aberto.</p>
+      </div>
+      <div class="rodape">
+        <span class="rodape-esquerda">Paladino + Rottas</span>
+        <span class="rodape-num">1 / 21</span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         LÂMINA 2 — ONDE A ROTTAS ESTÁ HOJE
+    ══════════════════════════════════════════ -->
+    <div class="slide" id="s2">
+      <div>
+        <p class="eyebrow">Bloco 1 — Abertura e contexto</p>
+        <h2 class="titulo-grande" style="margin-bottom: 6px;">É exatamente onde a Rottas está hoje.</h2>
+      </div>
+      <div class="divider"></div>
+      <div class="grid-2" style="flex: 1; align-items: start; padding-top: 28px;">
+        <div>
+          <p class="label">O momento raro</p>
+          <p class="corpo" style="margin-bottom: 24px;">A Rottas construiu uma marca forte em um segmento que domina e, ao mesmo tempo, passou a desenvolver produtos que pertencem a outro universo — outro ticket, outro repertório, outro desejo.</p>
+          <p class="corpo-suporte">Esse tipo de momento exige cuidado. Muitas empresas tentam esticar a marca. Marcas fortes não se esticam até o infinito — precisam ser organizadas.</p>
+        </div>
+        <div>
+          <p class="label">A decisão que se apresenta</p>
+          <p class="corpo-suporte" style="margin-bottom: 20px;">A Rottas não está diante de um problema de comunicação superficial. Está diante de uma decisão de arquitetura de marca.</p>
+          <div class="retranca">
+            <p class="label">A questão central</p>
+            <p class="corpo-suporte">A marca atual deve continuar carregando sozinha dois mundos que compram por razões completamente diferentes?</p>
+          </div>
+        </div>
+      </div>
+      <div class="rodape">
+        <span class="rodape-esquerda">Paladino + Rottas</span>
+        <span class="rodape-num">2 / 21</span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         LÂMINA 3 — O QUE A ROTTAS CONSTRUIU
+    ══════════════════════════════════════════ -->
+    <div class="slide" id="s3">
+      <div>
+        <p class="eyebrow">Bloco 2 — Diagnóstico</p>
+        <h2 class="titulo-grande" style="margin-bottom: 6px;">O que a Rottas construiu.</h2>
+        <p class="subtitulo">Equity de marca real — tijolo a tijolo, entrega por entrega.</p>
+      </div>
+      <div class="divider"></div>
+      <div class="grid-3" style="flex: 1; align-items: center; padding-top: 28px;">
+        <div class="stat-bloco">
+          <span class="stat-num">16</span>
+          <span class="stat-label">anos de operação</span>
+        </div>
+        <div class="stat-bloco">
+          <span class="stat-num">5.700+</span>
+          <span class="stat-label">unidades entregues</span>
+        </div>
+        <div class="stat-bloco">
+          <span class="stat-num">13</span>
+          <span class="stat-label">cidades em PR e SC</span>
+        </div>
+        <div class="stat-bloco" style="margin-top: 32px;">
+          <span class="stat-num">R$ 268M</span>
+          <span class="stat-label">de faturamento em 2024</span>
+        </div>
+        <div class="stat-bloco" style="margin-top: 32px;">
+          <span class="stat-num">73%</span>
+          <span class="stat-label">de crescimento em um ano</span>
+        </div>
+        <div class="stat-bloco" style="margin-top: 32px;">
+          <span class="stat-num">200</span>
+          <span class="stat-label">crianças atendidas pelo Instituto</span>
+        </div>
+      </div>
+      <div class="retranca" style="margin-bottom: 8px;">
+        <p class="label">O que isso representa</p>
+        <p class="corpo-suporte">Reputação acumulada. E reputação é marca. A proposta não é questionar o que a Rottas construiu — é proteger esse equity para que ele não precise carregar sozinho um novo território de desejo.</p>
+      </div>
+      <div class="rodape">
+        <span class="rodape-esquerda">Entre as 100 maiores construtoras do Brasil</span>
+        <span class="rodape-num">3 / 21</span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         LÂMINA 4 — A MISSÃO ORIGINAL
+    ══════════════════════════════════════════ -->
+    <div class="slide" id="s4">
+      <div>
+        <p class="eyebrow">Bloco 2 — Diagnóstico</p>
+        <h2 class="titulo-grande" style="margin-bottom: 6px;">Uma marca nasce de uma missão.</h2>
+      </div>
+      <div class="divider"></div>
+      <div class="grid-2" style="flex: 1; align-items: start; padding-top: 28px;">
+        <div>
+          <p class="label">A missão original</p>
+          <p class="corpo" style="margin-bottom: 20px;">A Rottas nasceu para levar o primeiro lar para quem ainda não tinha. Essa missão deu sentido, foco e força para a marca. Criou linguagem, reconhecimento, reputação e mercado.</p>
+          <p class="corpo-suporte">Identidade construída ao longo de 16 anos de decisões coerentes.</p>
+        </div>
+        <div>
+          <p class="label">O que mudou</p>
+          <p class="corpo-suporte" style="margin-bottom: 20px;">À medida que o portfólio cresceu, um novo tipo de produto apareceu dentro da empresa. Outro ticket, outra arquitetura, outra localização, outro ciclo de compra, outro comprador, outra expectativa estética.</p>
+          <div class="retranca">
+            <p class="label">O problema</p>
+            <p class="corpo-suporte">Não é a Rottas. É pedir para a mesma marca carregar dois mundos que não compram pelas mesmas razões.</p>
+          </div>
+        </div>
+      </div>
+      <div class="rodape">
+        <span class="rodape-esquerda">Paladino + Rottas</span>
+        <span class="rodape-num">4 / 21</span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         LÂMINA 5 — DOIS COMPRADORES
+    ══════════════════════════════════════════ -->
+    <div class="slide" id="s5">
+      <div>
+        <p class="eyebrow">Bloco 2 — Diagnóstico</p>
+        <h2 class="titulo-grande" style="margin-bottom: 6px;">Quando uma marca fala com dois desejos, perde precisão nos dois.</h2>
+      </div>
+      <div class="divider"></div>
+      <div class="grid-2" style="flex: 1; align-items: start; padding-top: 28px;">
+        <div>
+          <p class="label">Comprador do primeiro imóvel</p>
+          <p class="corpo-suporte" style="margin-bottom: 8px;">Busca acesso, segurança, viabilidade, confiança e conquista. A marca é garantia.</p>
+        </div>
+        <div>
+          <p class="label">Comprador médio-alto</p>
+          <p class="corpo-suporte" style="margin-bottom: 8px;">Busca repertório, estética, liquidez, conforto, status discreto e sensação de escolha superior. A marca é sinal.</p>
+        </div>
+      </div>
+      <div class="retranca" style="margin: 0 0 8px;">
+        <p class="label">O custo da ambiguidade</p>
+        <p class="corpo-suporte">Quando o comprador médio-alto encontra a mesma marca servindo públicos muito diferentes, uma dúvida aparece: esse produto foi mesmo feito para mim? Essa dúvida custa venda, velocidade e preço.</p>
+      </div>
+      <div class="rodape">
+        <span class="rodape-esquerda">Paladino + Rottas</span>
+        <span class="rodape-num">5 / 21</span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         LÂMINA 6 — O QUE O COMPRADOR MÉDIO-ALTO COMPRA
+    ══════════════════════════════════════════ -->
+    <div class="slide" id="s6">
+      <div>
+        <p class="eyebrow">Bloco 2 — Diagnóstico</p>
+        <h2 class="titulo-grande" style="margin-bottom: 6px;">O comprador médio-alto não compra apenas o imóvel.</h2>
+      </div>
+      <div class="divider"></div>
+      <div class="grid-3" style="flex: 1; align-items: start; padding-top: 28px;">
+        <div>
+          <p class="label">O que ele compra</p>
+          <p class="corpo-suporte">Sinal de gosto. Segurança patrimonial. Arquitetura. Acabamento. Conforto familiar. Status discreto. Confiança na entrega.</p>
+        </div>
+        <div>
+          <p class="label">O que ele não quer</p>
+          <p class="corpo-suporte">Luxo declarado. Ostentação. Muitas vezes, rejeita o excesso. O que quer é sentir que fez uma escolha superior — sem precisar anunciar.</p>
+        </div>
+        <div>
+          <p class="label">O papel da marca</p>
+          <p class="corpo-suporte">Quando o produto pertence ao mundo dele, a pergunta "será que isso é para mim?" deixa de existir antes da conversa comercial. Organizar percepção, encurtar dúvida e criar desejo.</p>
+        </div>
+      </div>
+      <div class="retranca" style="margin-bottom: 8px;">
+        <p class="label">O insight</p>
+        <p class="corpo-suporte">Esse comprador quer reconhecer, em poucos segundos, que aquele produto pertence ao mundo dele.</p>
+      </div>
+      <div class="rodape">
+        <span class="rodape-esquerda">Paladino + Rottas</span>
+        <span class="rodape-num">6 / 21</span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         LÂMINA 7 — PRODUTO JÁ EXISTE
+    ══════════════════════════════════════════ -->
+    <div class="slide" id="s7">
+      <div>
+        <p class="eyebrow">Bloco 2 — Diagnóstico</p>
+        <h2 class="titulo-grande" style="margin-bottom: 6px;">O problema não é produto. É percepção.</h2>
+      </div>
+      <div class="divider"></div>
+      <div class="grid-2" style="flex: 1; align-items: start; padding-top: 28px;">
+        <div>
+          <p class="label">O produto já existe</p>
+          <p class="corpo" style="margin-bottom: 20px;">Empreendimentos como o Éqüi e o Barra Home Resort já carregam atributos de outro segmento: localização, arquitetura, lazer, plantas, experiência e ticket.</p>
+          <p class="corpo-suporte">O comprador já existe. O que ainda não existe com a mesma força é a marca que dá a esses produtos uma casa simbólica própria.</p>
+        </div>
+        <div>
+          <p class="label">O que a marca certa faz</p>
+          <p class="corpo-suporte" style="margin-bottom: 20px;">Não cria o produto. Ela revela o produto para o comprador certo. Diminui fricção, dá linguagem ao corretor, organiza a campanha, sustenta preço e transforma atributos dispersos em percepção única.</p>
+          <div class="retranca">
+            <p class="label">A oportunidade</p>
+            <p class="corpo-suporte">O produto está mais maduro do que a narrativa que o representa.</p>
+          </div>
+        </div>
+      </div>
+      <div class="rodape">
+        <span class="rodape-esquerda">Paladino + Rottas</span>
+        <span class="rodape-num">7 / 21</span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         LÂMINA 8 — VALUATION
+    ══════════════════════════════════════════ -->
+    <div class="slide" id="s8">
+      <div>
+        <p class="eyebrow">Bloco 2 — Diagnóstico</p>
+        <h2 class="titulo-grande" style="margin-bottom: 6px;">Existe também uma oportunidade de valuation.</h2>
+      </div>
+      <div class="divider"></div>
+      <div class="grid-2" style="flex: 1; align-items: start; padding-top: 28px;">
+        <div>
+          <p class="label">Como marca compõe valor</p>
+          <p class="corpo-suporte" style="margin-bottom: 20px;">Marca compõe valuation porque organiza percepção, confiança, margem e desejo. Uma marca com receita, portfólio e governança próprios aumenta a qualidade estratégica do ativo.</p>
+          <p class="corpo-suporte">Mesmo que nunca haja venda, fusão ou captação, a clareza estratégica tem valor operacional imediato.</p>
+        </div>
+        <div>
+          <p class="label">Dois ativos, duas trajetórias</p>
+          <p class="corpo-suporte" style="margin-bottom: 20px;">Uma marca própria para o segmento médio-alto permite que cada frente construa valor com mais clareza — a Rottas fortalecendo seu território original, a nova marca construindo comprador, linguagem e trajetória próprios.</p>
+          <div class="retranca">
+            <p class="label">O princípio</p>
+            <p class="corpo-suporte">Dois ativos de marca bem definidos constroem mais valor do que uma única marca dividida entre segmentos distintos.</p>
+          </div>
+        </div>
+      </div>
+      <div class="rodape">
+        <span class="rodape-esquerda">Paladino + Rottas</span>
+        <span class="rodape-num">8 / 21</span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         LÂMINA 9 — ESTRUTURA E FUTURO
+    ══════════════════════════════════════════ -->
+    <div class="slide" id="s9">
+      <div>
+        <p class="eyebrow">Bloco 2 — Diagnóstico</p>
+        <h2 class="titulo-grande" style="margin-bottom: 6px;">A questão maior é de estrutura, governança e futuro.</h2>
+      </div>
+      <div class="divider"></div>
+      <div class="grid-2" style="flex: 1; align-items: start; padding-top: 28px;">
+        <div>
+          <p class="label">O ativo que existe</p>
+          <p class="corpo-suporte" style="margin-bottom: 20px;">16 anos de histórico. 73% de crescimento em faturamento. Presença em 13 cidades de dois estados. Esse é um ativo real.</p>
+          <p class="corpo-suporte">Ativos bem estruturados atraem capital, parceiros e compradores estratégicos. Com marcas separadas, cada negócio tem posicionamento, histórico comercial e métricas próprias.</p>
+        </div>
+        <div>
+          <p class="label">O padrão do setor</p>
+          <p class="corpo-suporte" style="margin-bottom: 20px;">A separação de braços em CNPJs distintos com marcas próprias é uma decisão comum entre as maiores construtoras do Brasil. Não é experimentação — é maturidade empresarial.</p>
+          <div class="retranca">
+            <p class="label">A pergunta maior</p>
+            <p class="corpo-suporte">Não é como vender melhor o lançamento de setembro. É que arquitetura de empresa a Rottas quer construir para os próximos dez anos.</p>
+          </div>
+        </div>
+      </div>
+      <div class="rodape">
+        <span class="rodape-esquerda">Paladino + Rottas</span>
+        <span class="rodape-num">9 / 21</span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         LÂMINA 10 — A TESE
+    ══════════════════════════════════════════ -->
+    <div class="slide fundo-preto" id="s10">
+      <div>
+        <p class="eyebrow">Bloco 3 — A tese</p>
+      </div>
+      <div>
+        <h2 class="titulo-display" style="max-width: 900px; margin-bottom: 24px;">Arquitetura de portfólio, não rebranding.</h2>
+        <p class="subtitulo" style="max-width: 680px;">A Rottas não precisa mudar. O MCMV não muda. O Instituto não muda. A operação não muda. A história não muda. O que muda é a organização do portfólio.</p>
+      </div>
+      <div class="rodape">
+        <span class="rodape-esquerda">Paladino + Rottas</span>
+        <span class="rodape-num">10 / 21</span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         LÂMINA 11 — O PRIME COMO PONTE
+    ══════════════════════════════════════════ -->
+    <div class="slide" id="s11">
+      <div>
+        <p class="eyebrow">Bloco 3 — A tese</p>
+        <h2 class="titulo-grande" style="margin-bottom: 6px;">Rottas Prime foi uma ponte — e pontes são importantes.</h2>
+      </div>
+      <div class="divider"></div>
+      <div class="grid-2" style="flex: 1; align-items: start; padding-top: 28px;">
+        <div>
+          <p class="label">O que o Prime fez</p>
+          <p class="corpo-suporte" style="margin-bottom: 20px;">Ajudou a sinalizar que havia uma categoria superior dentro do portfólio. Cumpriu uma primeira função: separar.</p>
+          <p class="corpo-suporte">Mas ainda funciona mais como etiqueta do que como marca com mundo próprio. Prime diz que existe algo acima. Mas ainda não diz quem é esse comprador, que vida ele deseja, que estética carrega.</p>
+        </div>
+        <div>
+          <p class="label">O próximo passo</p>
+          <p class="corpo-suporte" style="margin-bottom: 20px;">Não é negar o Prime. É transformar essa separação inicial em uma marca com nome, linguagem, narrativa, identidade e sistema comercial próprios.</p>
+          <div class="retranca">
+            <p class="label">A diferença</p>
+            <p class="corpo-suporte">Uma etiqueta classifica. Uma marca cria desejo. São dois papéis diferentes — e a próxima etapa é fazer a transição.</p>
+          </div>
+        </div>
+      </div>
+      <div class="rodape">
+        <span class="rodape-esquerda">Paladino + Rottas</span>
+        <span class="rodape-num">11 / 21</span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         LÂMINA 12 — O MERCADO JÁ ENTENDEU
+    ══════════════════════════════════════════ -->
+    <div class="slide" id="s12">
+      <div>
+        <p class="eyebrow">Bloco 3 — A tese</p>
+        <h2 class="titulo-grande" style="margin-bottom: 6px;">O mercado maduro já entendeu esse movimento.</h2>
+      </div>
+      <div class="divider"></div>
+      <div class="grid-3" style="flex: 1; align-items: start; padding-top: 28px;">
+        <div>
+          <span class="bloco-tag">Cyrela</span>
+          <p class="corpo-suporte">Cyrela, Living e Vivaz — três marcas para três territórios. Cada uma com comprador, linguagem e equity próprios.</p>
+        </div>
+        <div>
+          <span class="bloco-tag">Direcional</span>
+          <p class="corpo-suporte">A Riva nasce para outro perfil de comprador. Mesma origem, outra marca, outro posicionamento, outra trajetória.</p>
+        </div>
+        <div>
+          <span class="bloco-tag">Plaenge</span>
+          <p class="corpo-suporte">Plaenge para o alto padrão, Vanguard para o jovem e contemporâneo. Reputação preservada. Liberdade criativa garantida.</p>
+        </div>
+      </div>
+      <div class="retranca" style="margin-bottom: 8px;">
+        <p class="label">O que isso significa para a Rottas</p>
+        <p class="corpo-suporte">Esse movimento não é experimental — é maturidade empresarial. A pergunta não é se o modelo faz sentido. É qual será a versão Rottas desse modelo.</p>
+      </div>
+      <div class="rodape">
+        <span class="rodape-esquerda">Paladino + Rottas</span>
+        <span class="rodape-num">12 / 21</span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         LÂMINA 13 — O TERRITÓRIO DA NOVA MARCA
+    ══════════════════════════════════════════ -->
+    <div class="slide" id="s13">
+      <div>
+        <p class="eyebrow">Bloco 3 — A tese</p>
+        <h2 class="titulo-grande" style="margin-bottom: 6px;">A nova marca nasce para um território específico.</h2>
+      </div>
+      <div class="divider"></div>
+      <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 20px 0;">
+        <p class="titulo-medio" style="margin-bottom: 32px; max-width: 800px;">Moradia média-alta contemporânea. Design como critério de projeto, não como ornamento.</p>
+        <div class="grid-3">
+          <div>
+            <p class="label">Urbana</p>
+            <p class="corpo-suporte">Bem localizada, conectada à cidade, com planta inteligente e programa de uso real.</p>
+          </div>
+          <div>
+            <p class="label">Aspiracional</p>
+            <p class="corpo-suporte">Sem ostentação. Acessível sem parecer popular. Confiável sem parecer tradicional demais.</p>
+          </div>
+          <div>
+            <p class="label">Para esse comprador</p>
+            <p class="corpo-suporte">Não precisa de excesso. Precisa sentir que o produto foi pensado para sua vida, seu repertório e seu momento.</p>
+          </div>
+        </div>
+      </div>
+      <div class="retranca" style="margin-bottom: 8px;">
+        <p class="label">O papel</p>
+        <p class="corpo-suporte">A nova marca não nasce para competir com a Rottas. Nasce para completar a arquitetura.</p>
+      </div>
+      <div class="rodape">
+        <span class="rodape-esquerda">Paladino + Rottas</span>
+        <span class="rodape-num">13 / 21</span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         LÂMINA 14 — CONFIANÇA E DESEJO
+    ══════════════════════════════════════════ -->
+    <div class="slide fundo-preto" id="s14">
+      <div>
+        <p class="eyebrow">Bloco 3 — A tese</p>
+      </div>
+      <div>
+        <h2 class="titulo-display" style="max-width: 860px; margin-bottom: 24px;">A Rottas construiu confiança. Agora pode construir desejo.</h2>
+        <div class="grid-2" style="margin-top: 12px;">
+          <p class="subtitulo">A Rottas segue sendo a marca da confiança, do acesso e da conquista.</p>
+          <p class="subtitulo">A nova marca nasce mais autoral, mais contemporânea, orientada ao repertório médio-alto e preparada para construir desejo onde a Rottas construiu confiança.</p>
+        </div>
+      </div>
+      <div class="rodape">
+        <span class="rodape-esquerda">Paladino + Rottas</span>
+        <span class="rodape-num">14 / 21</span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         LÂMINA 15 — PRODUTO, LINGUAGEM, EXPERIÊNCIA
+    ══════════════════════════════════════════ -->
+    <div class="slide" id="s15">
+      <div>
+        <p class="eyebrow">Bloco 4 — O caminho concreto</p>
+        <h2 class="titulo-grande" style="margin-bottom: 6px;">O novo território precisa ser traduzido em produto, linguagem e experiência.</h2>
+      </div>
+      <div class="divider"></div>
+      <div class="grid-2" style="flex: 1; align-items: start; padding-top: 28px;">
+        <div>
+          <p class="label">O sistema inteiro precisa falar a mesma língua</p>
+          <p class="corpo-suporte" style="margin-bottom: 20px;">Nome, narrativa, identidade visual, site, stand, book comercial, campanha, fala do corretor e experiência de visita. Quando tudo conversa, o comprador entende mais rápido e decide com menos resistência.</p>
+        </div>
+        <div>
+          <p class="label">Design como decisão, não decoração</p>
+          <p class="corpo-suporte">A planta que flui. A tomada no lugar certo. A janela que captura o sol da manhã. O espaço comum que alguém realmente usa. São mil escolhas certas que o comprador só percebe quando estão erradas.</p>
+        </div>
+      </div>
+      <div class="rodape">
+        <span class="rodape-esquerda">Paladino + Rottas</span>
+        <span class="rodape-num">15 / 21</span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         LÂMINA 16 — SMART LIVING
+    ══════════════════════════════════════════ -->
+    <div class="slide" id="s16">
+      <div>
+        <p class="eyebrow">Bloco 4 — O caminho concreto</p>
+        <h2 class="titulo-grande" style="margin-bottom: 6px;">Smart living não é gadget.</h2>
+      </div>
+      <div class="divider"></div>
+      <div class="grid-3" style="flex: 1; align-items: start; padding-top: 28px;">
+        <div>
+          <p class="label">O que não é</p>
+          <p class="corpo-suporte">Fechadura digital. Inovação performática. Tecnologia que aparece para impressionar.</p>
+        </div>
+        <div>
+          <p class="label">O que é</p>
+          <p class="corpo-suporte">Planta sem desperdício. Boa iluminação. Ventilação. Acústica. Áreas comuns úteis. Coworking que não é cenográfico. Academia que alguém realmente usa. Manutenção simples. Comunicação clara.</p>
+        </div>
+        <div>
+          <p class="label">O que o comprador quer</p>
+          <p class="corpo-suporte">Não quer tecnologia performática. Quer vida funcionando melhor.</p>
+        </div>
+      </div>
+      <div class="retranca" style="margin-bottom: 8px;">
+        <p class="label">O princípio</p>
+        <p class="corpo-suporte">A tecnologia ideal é aquela que desaparece para a vida aparecer.</p>
+      </div>
+      <div class="rodape">
+        <span class="rodape-esquerda">Paladino + Rottas</span>
+        <span class="rodape-num">16 / 21</span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         LÂMINA 17 — REFERÊNCIAS
+    ══════════════════════════════════════════ -->
+    <div class="slide" id="s17">
+      <div>
+        <p class="eyebrow">Bloco 4 — O caminho concreto</p>
+        <h2 class="titulo-grande" style="margin-bottom: 6px;">O mercado oferece referências. A Rottas precisa criar sua própria tradução.</h2>
+      </div>
+      <div class="divider"></div>
+      <div class="grid-3" style="flex: 1; align-items: start; padding-top: 24px;">
+        <div>
+          <p class="label">Compact e smart</p>
+          <p class="corpo-suporte"><strong style="font-weight: 500;">Vitacon</strong> mostrou o poder do compacto urbano. <strong style="font-weight: 500;">Housi</strong> mostrou a importância da operação e da conveniência.</p>
+        </div>
+        <div>
+          <p class="label">Arquitetura como marca</p>
+          <p class="corpo-suporte"><strong style="font-weight: 500;">Idea!Zarvos</strong> mostrou que arquitetura autoral pode virar equity de marca. <strong style="font-weight: 500;">Plaenge e Vanguard</strong> mostram como um grupo forte sustenta marcas distintas.</p>
+        </div>
+        <div>
+          <p class="label">Design e comunidade</p>
+          <p class="corpo-suporte"><strong style="font-weight: 500;">Nightingale</strong> e <strong style="font-weight: 500;">Assemble</strong> mostram que design e comunidade criam desejo sem depender de luxo ostensivo.</p>
+        </div>
+      </div>
+      <div class="retranca" style="margin-bottom: 8px;">
+        <p class="label">A postura</p>
+        <p class="corpo-suporte">A oportunidade da Rottas não é copiar modelos. É traduzir os melhores aprendizados para sua realidade, seu portfólio e seu comprador.</p>
+      </div>
+      <div class="rodape">
+        <span class="rodape-esquerda">Paladino + Rottas</span>
+        <span class="rodape-num">17 / 21</span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         LÂMINA 18 — SETEMBRO
+    ══════════════════════════════════════════ -->
+    <div class="slide" id="s18">
+      <div>
+        <p class="eyebrow">Bloco 4 — O caminho concreto</p>
+        <h2 class="titulo-grande" style="margin-bottom: 6px;">Setembro é o momento natural para iniciar esse movimento.</h2>
+      </div>
+      <div class="divider"></div>
+      <div class="grid-2" style="flex: 1; align-items: start; padding-top: 28px;">
+        <div>
+          <p class="label">O que já existe</p>
+          <p class="corpo-suporte" style="margin-bottom: 20px;">O produto já existe. O comprador já existe. O lançamento em Curitiba cria uma janela concreta.</p>
+          <p class="corpo-suporte">Não é necessário que tudo esteja completo em setembro — é necessário que a decisão esteja tomada agora, para que a equipe tenha direção e prazo para arquitetar.</p>
+        </div>
+        <div>
+          <p class="label">O que não pode esperar</p>
+          <p class="corpo-suporte" style="margin-bottom: 20px;">Marca não nasce no dia do lançamento. Precisa ser construída antes, para dar direção a campanha, site, stand, corretor, narrativa, nome, identidade e experiência comercial.</p>
+          <div class="retranca">
+            <p class="label">O risco real</p>
+            <p class="corpo-suporte">Não é criar uma marca nova. É chegar em setembro com produto forte e percepção ainda indefinida.</p>
+          </div>
+        </div>
+      </div>
+      <div class="rodape">
+        <span class="rodape-esquerda">Paladino + Rottas</span>
+        <span class="rodape-num">18 / 21</span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         LÂMINA 19 — MVP DE MARCA
+    ══════════════════════════════════════════ -->
+    <div class="slide" id="s19">
+      <div>
+        <p class="eyebrow">Bloco 4 — O caminho concreto</p>
+        <h2 class="titulo-grande" style="margin-bottom: 6px;">O primeiro movimento é um MVP de marca.</h2>
+        <p class="subtitulo">Não o sistema completo. O sistema suficiente para a marca nascer com clareza.</p>
+      </div>
+      <div class="divider"></div>
+      <div class="grid-3" style="flex: 1; align-items: start; padding-top: 28px;">
+        <div>
+          <p class="label">Estratégia</p>
+          <p class="corpo-suporte">Posicionamento e narrativa fundadora. Arquitetura de relação com a Rottas. Manifesto de marca.</p>
+        </div>
+        <div>
+          <p class="label">Identidade</p>
+          <p class="corpo-suporte">Naming. Identidade visual. Tom de voz. Website inicial.</p>
+        </div>
+        <div>
+          <p class="label">Comercial</p>
+          <p class="corpo-suporte">Deck comercial. Argumentário para a equipe de vendas.</p>
+        </div>
+      </div>
+      <div class="retranca" style="margin-bottom: 8px;">
+        <p class="label">O objetivo de setembro</p>
+        <p class="corpo-suporte">Nascer com nome, linguagem, rosto e direção. O sistema completo evolui depois.</p>
+      </div>
+      <div class="rodape">
+        <span class="rodape-esquerda">Paladino + Rottas</span>
+        <span class="rodape-num">19 / 21</span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         LÂMINA 20 — A ROTTAS NÃO MUDA
+    ══════════════════════════════════════════ -->
+    <div class="slide fundo-preto" id="s20">
+      <div>
+        <p class="eyebrow">Bloco 4 — O caminho concreto</p>
+      </div>
+      <div>
+        <h2 class="titulo-display" style="margin-bottom: 28px;">A Rottas não muda.</h2>
+        <div class="grid-2">
+          <div>
+            <p class="corpo" style="color: #999; margin-bottom: 12px;">O MCMV não muda.</p>
+            <p class="corpo" style="color: #999; margin-bottom: 12px;">O Instituto não muda.</p>
+            <p class="corpo" style="color: #999; margin-bottom: 12px;">A operação não muda.</p>
+            <p class="corpo" style="color: #999;">A história não muda.</p>
+          </div>
+          <div>
+            <p class="corpo" style="color: #fff; margin-bottom: 16px;">O que muda é que o portfólio médio-alto passa a ter uma marca própria — com posicionamento claro, linguagem adequada e uma história construída para o comprador certo.</p>
+            <p class="corpo" style="color: #777;">A Rottas ganha foco. A nova marca ganha liberdade.</p>
+          </div>
+        </div>
+      </div>
+      <div class="rodape">
+        <span class="rodape-esquerda">Paladino + Rottas</span>
+        <span class="rodape-num">20 / 21</span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         LÂMINA 21 — O QUE A PALADINO PROPÕE
+    ══════════════════════════════════════════ -->
+    <div class="slide" id="s21">
+      <div>
+        <p class="eyebrow">Fechamento e próximo passo</p>
+        <h2 class="titulo-grande" style="margin-bottom: 6px;">O que a Paladino propõe.</h2>
+      </div>
+      <div class="divider"></div>
+      <div class="grid-2" style="flex: 1; align-items: start; padding-top: 28px;">
+        <div>
+          <p class="label">O escopo</p>
+          <p class="corpo-suporte" style="margin-bottom: 20px;">Definir quem essa marca é, para quem ela existe, que território ocupa, o que promete, como se chama, como aparece, como fala e como convive com a Rottas.</p>
+          <p class="corpo-suporte">A entrega não é apenas visual. É estratégica, verbal, comercial e simbólica.</p>
+        </div>
+        <div>
+          <p class="label">O objetivo</p>
+          <p class="corpo-suporte" style="margin-bottom: 20px;">Criar a fundação da marca que vai representar a próxima geração do portfólio — capaz de organizar desejo, sustentar percepção de valor e dar clareza para marketing, vendas e produto.</p>
+          <div class="retranca">
+            <p class="label">Próximo passo</p>
+            <p class="corpo-suporte">A proposta completa chega em 24 horas, com escopo, cronograma e investimento.</p>
+          </div>
+        </div>
+      </div>
+      <div class="rodape">
+        <span class="rodape-esquerda">Paladino Inc. — Confidencial</span>
+        <span class="rodape-num">21 / 21</span>
+      </div>
+    </div>
+
+  </div><!-- /scaler -->
+</div><!-- /stage -->
+
+<!-- ── NAVEGAÇÃO ── -->
+<div id="nav">
+  <button id="btn-prev" onclick="mover(-1)" disabled>←</button>
+  <span id="nav-info">0 / 21</span>
+  <button id="btn-next" onclick="mover(1)">→</button>
+</div>
+
+<script>
+  const TOTAL = 22;
+  let atual = 0;
+
+  function mover(dir) {
+    const prox = atual + dir;
+    if (prox < 0 || prox >= TOTAL) return;
+    document.getElementById('s' + atual).classList.remove('ativo');
+    atual = prox;
+    document.getElementById('s' + atual).classList.add('ativo');
+    document.getElementById('nav-info').textContent = atual + ' / 21';
+    document.getElementById('btn-prev').disabled = atual === 0;
+    document.getElementById('btn-next').disabled = atual === TOTAL - 1;
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') mover(1);
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') mover(-1);
+  });
+
+  function escalar() {
+    const scaler = document.getElementById('scaler');
+    const sw = window.innerWidth;
+    const sh = window.innerHeight;
+    const escala = Math.min(sw / 1280, sh / 720);
+    scaler.style.transform = 'scale(' + escala + ')';
+  }
+
+  escalar();
+  window.addEventListener('resize', escalar);
+</script>
+</body>
+</html>
