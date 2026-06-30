@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposta Técnica — Paladino × Rottas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --branco: #FFFFFF;
+    --off-white: #F5F5F3;
+    --preto: #0D0D0D;
+    --cinza-escuro: #3D3D3D;
+    --cinza-medio: #8C8C8C;
+    --cinza-claro: #E8E8E8;
+  }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    background: #1a1a1a;
+    font-family: 'DM Sans', sans-serif;
+    overflow: hidden;
+  }
+
+  #stage {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #scaler {
+    width: 1280px;
+    height: 720px;
+    position: relative;
+    transform-origin: center center;
+  }
+
+  /* ── SLIDE BASE ── */
+  .slide {
+    position: absolute;
+    inset: 0;
+    width: 1280px;
+    height: 720px;
+    background: var(--off-white);
+    padding: 52px 88px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.22s ease;
+  }
+  .slide.ativo { opacity: 1; pointer-events: all; }
+  .slide.fundo-preto { background: var(--preto); }
+  .slide.fundo-branco { background: var(--branco); }
+
+  /* ── TIPOGRAFIA ── */
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--cinza-medio);
+    margin-bottom: 6px;
+  }
+  .slide.fundo-preto .eyebrow { color: #555; }
+
+  .titulo-display {
+    font-size: 64px;
+    line-height: 70px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    color: var(--preto);
+  }
+  .slide.fundo-preto .titulo-display { color: var(--branco); }
+
+  .titulo-grande {
+    font-size: 44px;
+    line-height: 52px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--preto);
+  }
+  .slide.fundo-preto .titulo-grande { color: var(--branco); }
+
+  .titulo-medio {
+    font-size: 30px;
+    line-height: 38px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--preto);
+  }
+
+  .subtitulo {
+    font-size: 19px;
+    line-height: 27px;
+    font-weight: 400;
+    color: var(--cinza-escuro);
+  }
+  .slide.fundo-preto .subtitulo { color: #999; }
+
+  .corpo {
+    font-size: 17px;
+    line-height: 26px;
+    font-weight: 400;
+    color: var(--preto);
+  }
+
+  .corpo-suporte {
+    font-size: 15px;
+    line-height: 23px;
+    font-weight: 400;
+    color: var(--cinza-escuro);
+  }
+  .slide.fundo-preto .corpo-suporte { color: #aaa; }
+
+  .label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--cinza-medio);
+    margin-bottom: 10px;
+    display: block;
+  }
+  .slide.fundo-preto .label { color: #555; }
+
+  /* ── LAYOUT ── */
+  .divider {
+    height: 1px;
+    background: var(--cinza-claro);
+    flex-shrink: 0;
+  }
+  .slide.fundo-preto .divider { background: #222; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 52px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; }
+  .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 32px; }
+  .grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 52px; }
+  .grid-1-2 { display: grid; grid-template-columns: 1fr 2fr; gap: 52px; }
+
+  .retranca {
+    background: var(--branco);
+    padding: 16px 22px;
+    border-left: 2px solid var(--preto);
+  }
+  .slide.fundo-preto .retranca { background: #181818; border-left-color: #444; }
+  .retranca .corpo-suporte { font-style: normal; }
+
+  /* ── RODAPÉ ── */
+  .rodape {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid var(--cinza-claro);
+    flex-shrink: 0;
+  }
+  .slide.fundo-preto .rodape { border-top-color: #222; }
+  .rodape-texto { font-size: 11px; color: var(--cinza-medio); letter-spacing: 0.04em; }
+  .slide.fundo-preto .rodape-texto { color: #444; }
+  .rodape-num {
+    font-size: 11px;
+    color: var(--cinza-medio);
+    letter-spacing: 0.04em;
+    font-variant-numeric: tabular-nums;
+    min-width: 48px;
+    text-align: right;
+  }
+  .slide.fundo-preto .rodape-num { color: #444; }
+  .rodape-link {
+    font-size: 11px;
+    color: var(--cinza-medio);
+    text-decoration: none;
+    border-bottom: 1px solid #ccc;
+    letter-spacing: 0.04em;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .rodape-link:hover { color: var(--preto); border-bottom-color: var(--preto); }
+
+  /* ── RETRANCA DE TRANSIÇÃO (slide inteira) ── */
+  .slide-transicao {
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .transicao-numero {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cinza-medio);
+    margin-bottom: 28px;
+  }
+  .transicao-eyebrow {
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--cinza-escuro);
+    margin-bottom: 10px;
+  }
+  .transicao-titulo {
+    font-size: 72px;
+    line-height: 78px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: var(--preto);
+  }
+
+  /* ── MÓDULO NUMERADO ── */
+  .modulo {
+    display: flex;
+    gap: 16px;
+    align-items: baseline;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--cinza-claro);
+  }
+  .modulo:last-child { border-bottom: none; }
+  .modulo-num {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--cinza-medio);
+    min-width: 32px;
+  }
+  .modulo-titulo {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--preto);
+  }
+
+  /* ── CAMADA CARD ── */
+  .camada-card {
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--cinza-claro);
+    margin-bottom: 18px;
+  }
+  .camada-card:last-child { border-bottom: none; margin-bottom: 0; }
+  .camada-titulo {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--preto);
+    margin-bottom: 8px;
+  }
+
+  /* ── LISTA SIMPLES ── */
+  .lista-simples li {
+    list-style: none;
+    font-size: 15px;
+    line-height: 24px;
+    color: var(--cinza-escuro);
+    padding-left: 16px;
+    position: relative;
+    margin-bottom: 8px;
+  }
+  .lista-simples li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--cinza-medio);
+  }
+
+  /* ── TABELA CRONOGRAMA ── */
+  .cronograma-linha {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 24px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--cinza-claro);
+    align-items: baseline;
+  }
+  .cronograma-semana {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--preto);
+  }
+  .cronograma-desc {
+    font-size: 14px;
+    color: var(--cinza-escuro);
+    line-height: 21px;
+  }
+
+  /* ── INVESTIMENTO ── */
+  .invest-numero {
+    font-size: 56px;
+    line-height: 60px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    color: var(--preto);
+  }
+  .invest-sub {
+    font-size: 14px;
+    color: var(--cinza-escuro);
+    margin-top: 6px;
+  }
+
+  /* ── NAV ── */
+  #nav {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: rgba(0,0,0,0.7);
+    padding: 8px 20px;
+    border-radius: 40px;
+    backdrop-filter: blur(8px);
+    z-index: 100;
+  }
+  #nav button {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    letter-spacing: 0.06em;
+    transition: background 0.15s;
+  }
+  #nav button:hover { background: rgba(255,255,255,0.12); }
+  #nav button:disabled { opacity: 0.3; cursor: default; }
+  #nav-info {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.06em;
+    min-width: 64px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div id="stage">
+ <div id="scaler">
+
+  <!-- ═══════════════════════════════════
+       01 — CAPA
+  ═══════════════════════════════════ -->
+  <div class="slide fundo-preto ativo" id="s0">
+    <div>
+      <p class="eyebrow">Paladino Inc.</p>
+    </div>
+    <div>
+      <h1 class="titulo-display" style="margin-bottom: 20px;">Proposta Técnica<br>Rottas Construtora e Incorporadora</h1>
+      <p class="subtitulo" style="color:#888; margin-bottom: 36px;">Arquitetura de Marca e Sistema de Lançamento</p>
+      <p class="corpo-suporte" style="color:#666;">A/C Paulo Rafael Folador<br>c.c. Thaís</p>
+    </div>
+    <div class="rodape">
+      <span class="rodape-texto">Versão 1.0 — 2026</span>
+      <span class="rodape-num">01 / 17</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       02 — RETRANCA: PONTO DE PARTIDA
+  ═══════════════════════════════════ -->
+  <div class="slide slide-transicao" id="s1">
+    <div></div>
+    <div>
+      <p class="transicao-numero">01</p>
+      <p class="transicao-eyebrow">O momento que gerou esta proposta</p>
+      <h2 class="transicao-titulo">Ponto de partida</h2>
+    </div>
+    <div class="rodape">
+      <span class="rodape-texto">Paladino × Rottas</span>
+      <span class="rodape-num">02 / 17</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       03 — PONTO DE PARTIDA (conteúdo)
+  ═══════════════════════════════════ -->
+  <div class="slide" id="s2">
+    <div>
+      <p class="eyebrow">Ponto de partida</p>
+      <h2 class="titulo-grande" style="max-width: 920px;">A Rottas não precisa trocar o que construiu. Precisa organizar o que já conquistou — e abrir espaço para o que vem a seguir.</h2>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2" style="flex:1; align-items:start; padding-top:22px;">
+      <div>
+        <p class="corpo-suporte">Ao longo de 16 anos, a Rottas construiu reputação, escala, capacidade de entrega e presença regional a partir de uma operação sólida, especialmente conectada ao segmento de entrada e ao Minha Casa Minha Vida. Esse equity não deve ser descartado nem diluído.</p>
+      </div>
+      <div>
+        <p class="corpo-suporte">Ao mesmo tempo, a empresa passou a desenvolver produtos que pertencem a outro universo de percepção: maior ticket, maior complexidade, maior repertório estético e maior exigência simbólica.</p>
+      </div>
+    </div>
+    <div class="retranca" style="margin-bottom:8px;">
+      <p class="corpo-suporte">O lançamento previsto para setembro cria uma janela concreta para transformar essa tensão em arquitetura. A Paladino foi convidada a pensar como a Rottas pode preservar o valor da marca que construiu e, ao mesmo tempo, criar uma nova marca capaz de representar a próxima geração de seu portfólio.</p>
+    </div>
+    <div class="rodape">
+      <span class="rodape-texto">Paladino × Rottas</span>
+      <span class="rodape-num">03 / 17</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       04 — RETRANCA: LEITURA ESTRATÉGICA
+  ═══════════════════════════════════ -->
+  <div class="slide slide-transicao" id="s3">
+    <div></div>
+    <div>
+      <p class="transicao-numero">02</p>
+      <p class="transicao-eyebrow">O que identificamos</p>
+      <h2 class="transicao-titulo">Leitura estratégica</h2>
+    </div>
+    <div class="rodape">
+      <span class="rodape-texto">Paladino × Rottas</span>
+      <span class="rodape-num">04 / 17</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       05 — DUAS TENSÕES, DUAS OPORTUNIDADES
+  ═══════════════════════════════════ -->
+  <div class="slide" id="s4">
+    <div>
+      <p class="eyebrow">Leitura estratégica</p>
+      <h2 class="titulo-medio" style="max-width:880px; margin-bottom:6px;">A leitura central: o produto evoluiu mais rápido do que a arquitetura de marca.</h2>
+      <p class="corpo-suporte">O diagnóstico parte de duas tensões estruturais — e revela duas oportunidades que decorrem diretamente delas.</p>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2" style="flex:1; align-items:start; padding-top:18px;">
+      <div style="display:flex; flex-direction:column; gap:18px;">
+        <div>
+          <p class="label">Tensão 01 — Elasticidade no limite</p>
+          <p class="corpo-suporte">A Rottas tem força real no território original, mas passou a carregar produtos com razões de compra diferentes. O comprador do primeiro imóvel busca acesso, confiança e conquista. O comprador médio-alto busca repertório, design, segurança patrimonial e sensação de escolha superior.</p>
+        </div>
+        <div>
+          <p class="label">Tensão 02 — Ambiguidade comercial</p>
+          <p class="corpo-suporte">Quando esses dois mundos aparecem sob a mesma marca, o comprador mais aspiracional encontra ruído. A dúvida não é estética — é comercial: "esse produto foi mesmo feito para mim?" Essa dúvida custa velocidade, margem e percepção de valor.</p>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:18px;">
+        <div>
+          <p class="label">Oportunidade 01 — O produto já existe</p>
+          <p class="corpo-suporte">Localização, escala, áreas comuns, lazer, eficiência construtiva e preço competitivo já estão presentes em empreendimentos como o Éqüi e o Barra Home Resort. O desafio não está em reinventar a engenharia. Está em transformar o que a Rottas já faz em percepção organizada.</p>
+        </div>
+        <div>
+          <p class="label">Oportunidade 02 — Valuation e governança</p>
+          <p class="corpo-suporte">A separação entre Rottas e a nova marca permite públicos, narrativas, canais, métricas e trajetórias de valor independentes. Estruturas jurídicas separadas abrem caminho para governança independente e possibilidades de valuation e M&A no futuro.</p>
+        </div>
+      </div>
+    </div>
+    <div class="retranca" style="margin-bottom:8px;">
+      <p class="corpo-suporte">O desafio não é criar luxo. É transformar eficiência operacional, escala e affordability em desejo percebido.</p>
+    </div>
+    <div class="rodape">
+      <span class="rodape-texto">R$ 1,1M de ticket médio em Curitiba (2025) · 18% de valorização no Sul (2024)</span>
+      <span class="rodape-num">05 / 17</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       06 — RETRANCA: RECOMENDAÇÃO
+  ═══════════════════════════════════ -->
+  <div class="slide slide-transicao" id="s5">
+    <div></div>
+    <div>
+      <p class="transicao-numero">03</p>
+      <p class="transicao-eyebrow">A direção estratégica proposta</p>
+      <h2 class="transicao-titulo">Recomendação</h2>
+    </div>
+    <div class="rodape">
+      <span class="rodape-texto">Paladino × Rottas</span>
+      <span class="rodape-num">06 / 17</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       07 — AS TRÊS CAMADAS DA RECOMENDAÇÃO
+  ═══════════════════════════════════ -->
+  <div class="slide" id="s6">
+    <div>
+      <p class="eyebrow">Recomendação</p>
+      <h2 class="titulo-medio" style="max-width:880px;">Recomendamos criar uma nova marca para o portfólio médio-alto contemporâneo, sem diluir a Rottas.</h2>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-3" style="flex:1; align-items:start; padding-top:20px;">
+      <div class="camada-card" style="border-bottom:none;">
+        <p class="label">Camada 1</p>
+        <p class="camada-titulo">Arquitetura de portfólio</p>
+        <p class="corpo-suporte">Separação formal entre a marca Rottas e a nova marca. A Rottas permanece como marca principal do território original: confiança, acesso, entrega e conquista. A nova marca passa a representar moradia média-alta contemporânea: desejo, repertório, design útil e investimento.</p>
+      </div>
+      <div class="camada-card" style="border-bottom:none;">
+        <p class="label">Camada 2</p>
+        <p class="camada-titulo">Nova marca</p>
+        <p class="corpo-suporte">Criação de uma marca própria para o novo território. Deve definir quem é, para quem existe, que promessa carrega, como se chama, como aparece, como fala e como orienta marketing, comercial, produto e experiência.</p>
+      </div>
+      <div class="camada-card" style="border-bottom:none;">
+        <p class="label">Camada 3</p>
+        <p class="camada-titulo">Rottas fortalecida</p>
+        <p class="corpo-suporte">A criação da nova marca também libera a Rottas para voltar a falar com mais precisão com seu público original. A separação não enfraquece a Rottas — protege seu equity e reduz ambiguidade.</p>
+      </div>
+    </div>
+    <div class="retranca" style="margin-bottom:8px;">
+      <p class="corpo">A Rottas ganha foco. A nova marca ganha liberdade.</p>
+    </div>
+    <div class="rodape">
+      <span class="rodape-texto">Paladino × Rottas</span>
+      <span class="rodape-num">07 / 17</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       08 — RETRANCA: COMO VAMOS TRABALHAR
+  ═══════════════════════════════════ -->
+  <div class="slide slide-transicao" id="s7">
+    <div></div>
+    <div>
+      <p class="transicao-numero">04</p>
+      <p class="transicao-eyebrow">Processo Paladino</p>
+      <h2 class="transicao-titulo">Como vamos trabalhar</h2>
+    </div>
+    <div class="rodape">
+      <span class="rodape-texto">Paladino × Rottas</span>
+      <span class="rodape-num">08 / 17</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       09 — OS QUATRO MOVIMENTOS DO MÉTODO
+  ═══════════════════════════════════ -->
+  <div class="slide" id="s8">
+    <div>
+      <p class="eyebrow">Como pensamos</p>
+      <h2 class="titulo-medio" style="max-width:900px;">O projeto avança em quatro movimentos interdependentes — a filosofia por trás de cada entrega.</h2>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-4" style="padding-top:20px;">
+      <div>
+        <p class="label">01</p>
+        <p class="camada-titulo" style="font-size:15px;">Imersão Ontológica</p>
+        <p class="corpo-suporte">Investigação do negócio, do portfólio, dos públicos, da operação, das tensões internas e dos critérios de decisão.</p>
+      </div>
+      <div>
+        <p class="label">02</p>
+        <p class="camada-titulo" style="font-size:15px;">Formulação Estratégica</p>
+        <p class="corpo-suporte">Definição de arquitetura de marca, posicionamento, território, proposta de valor e narrativa fundadora.</p>
+      </div>
+      <div>
+        <p class="label">03</p>
+        <p class="camada-titulo" style="font-size:15px;">Estruturação Simbólica</p>
+        <p class="corpo-suporte">Tradução da estratégia em nome, identidade visual, identidade verbal e sistema de expressão.</p>
+      </div>
+      <div>
+        <p class="label">04</p>
+        <p class="camada-titulo" style="font-size:15px;">Ativação Sistêmica</p>
+        <p class="corpo-suporte">Aplicações, materiais, diretrizes e instrumentos para marketing, vendas, produto e parceiros usarem a marca com consistência.</p>
+      </div>
+    </div>
+    <div class="retranca" style="margin: 18px 0 8px;">
+      <p class="corpo-suporte">A meta é entregar clareza estratégica, expansão de valor e autonomia operacional — para que a equipe interna sustente a marca sem dependência contínua da consultoria.</p>
+    </div>
+    <div class="rodape">
+      <span class="rodape-texto">Paladino × Rottas</span>
+      <span class="rodape-num">09 / 17</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       10 — RETRANCA: FASE 1
+  ═══════════════════════════════════ -->
+  <div class="slide slide-transicao fundo-preto" id="s9">
+    <div></div>
+    <div>
+      <p class="transicao-numero" style="color:#555;">05</p>
+      <p class="transicao-eyebrow" style="color:#888;">Sistema de Lançamento da Nova Marca</p>
+      <h2 class="transicao-titulo" style="color:#fff;">Fase 1</h2>
+    </div>
+    <div class="rodape">
+      <span class="rodape-texto">Paladino × Rottas</span>
+      <span class="rodape-num">10 / 17</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       11 — OS OITO MÓDULOS DA FASE 1
+  ═══════════════════════════════════ -->
+  <div class="slide" id="s10">
+    <div>
+      <p class="eyebrow">O que entregamos</p>
+      <h2 class="titulo-medio" style="max-width:920px;">A Fase 1 cria o sistema mínimo coerente para a marca nascer com solidez, em 10 semanas — os artefatos concretos de cada movimento do método.</h2>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2" style="flex:1; padding-top:16px; column-gap:64px;">
+      <div>
+        <div class="modulo"><span class="modulo-num">01</span><span class="modulo-titulo">Imersão e alinhamento executivo</span></div>
+        <div class="modulo"><span class="modulo-num">02</span><span class="modulo-titulo">Arquitetura de marca e posicionamento</span></div>
+        <div class="modulo"><span class="modulo-num">03</span><span class="modulo-titulo">Naming e recomendação fundamentada</span></div>
+        <div class="modulo"><span class="modulo-num">04</span><span class="modulo-titulo">Identidade verbal e narrativa fundadora</span></div>
+      </div>
+      <div>
+        <div class="modulo"><span class="modulo-num">05</span><span class="modulo-titulo">Identidade visual inicial</span></div>
+        <div class="modulo"><span class="modulo-num">06</span><span class="modulo-titulo">Presença digital inicial</span></div>
+        <div class="modulo"><span class="modulo-num">07</span><span class="modulo-titulo">Materiais comerciais de lançamento</span></div>
+        <div class="modulo"><span class="modulo-num">08</span><span class="modulo-titulo">Guia de transição e convivência com Rottas</span></div>
+      </div>
+    </div>
+    <div class="retranca" style="margin-bottom:8px;">
+      <p class="corpo-suporte">Não é o sistema completo. É o necessário para nascer com nome, linguagem, rosto, direção e clareza comercial — a tempo do lançamento de setembro.</p>
+    </div>
+    <div class="rodape">
+      <span class="rodape-texto">Fase 1 — 10 semanas</span>
+      <span class="rodape-num">11 / 17</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       12 — ENTREGAS x PREMISSAS
+  ═══════════════════════════════════ -->
+  <div class="slide" id="s11">
+    <div>
+      <p class="eyebrow">Escopo e premissas</p>
+      <h2 class="titulo-medio" style="max-width:880px;">O lançamento precisa alinhar marca, venda e operação desde o primeiro dia.</h2>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2" style="flex:1; align-items:start; padding-top:20px;">
+      <div>
+        <p class="label">Entregas essenciais</p>
+        <ul class="lista-simples">
+          <li>Estratégia e arquitetura da nova marca</li>
+          <li>Nome e orientação para validação jurídica</li>
+          <li>Manifesto, mensagens-chave e tom de voz</li>
+          <li>Logo, paleta, tipografia e direção estética</li>
+          <li>Landing page ou site inicial</li>
+          <li>Deck comercial e argumentário de vendas</li>
+        </ul>
+      </div>
+      <div>
+        <p class="label">Premissas de controle</p>
+        <ul class="lista-simples">
+          <li>Website inicial entregue em Framer a partir de protótipo Figma, sem escopo de plataforma completa</li>
+          <li>Validação INPI/jurídica, registro de marca, taxas e honorários jurídicos conduzidos pela Rottas ou parceiro legal</li>
+          <li>Renders, imagens e informações técnicas fornecidos pela Rottas</li>
+          <li>Infraestrutura técnica e produção física (CRM, mídia paga, hospedagem, domínio, stand, decorado, sinalização) por conta da Rottas ou contratadas à parte</li>
+          <li>Rodadas de revisão além do combinado em contrato, e atualizações pós-entrega, orçadas como escopo adicional ou retainer</li>
+          <li>Decisões executivas concentradas em checkpoints objetivos</li>
+        </ul>
+      </div>
+    </div>
+    <div class="retranca" style="margin-bottom:8px;">
+      <p class="corpo-suporte" style="font-style:normal;">Esta proposta apresenta o escopo, a estrutura e o investimento do projeto. Especificações técnicas detalhadas, número de rodadas de revisão por entregável, prazos de aprovação e demais condições operacionais serão formalizados em contrato específico, anexo a esta proposta.</p>
+    </div>
+    <div class="rodape">
+      <span class="rodape-texto">Paladino × Rottas</span>
+      <span class="rodape-num">12 / 17</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       13 — RETRANCA: FASE 2
+  ═══════════════════════════════════ -->
+  <div class="slide slide-transicao fundo-preto" id="s12">
+    <div></div>
+    <div>
+      <p class="transicao-numero" style="color:#555;">06</p>
+      <p class="transicao-eyebrow" style="color:#888;">Sistema Completo e Governança</p>
+      <h2 class="transicao-titulo" style="color:#fff;">Fase 2</h2>
+    </div>
+    <div class="rodape">
+      <span class="rodape-texto">Paladino × Rottas</span>
+      <span class="rodape-num">13 / 17</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       14 — OS QUATRO BLOCOS DA FASE 2
+  ═══════════════════════════════════ -->
+  <div class="slide" id="s13">
+    <div>
+      <p class="eyebrow">Fase 2</p>
+      <h2 class="titulo-medio" style="max-width:880px;">A Fase 2 transforma a fundação da nova marca em um sistema governável e escalável.</h2>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2" style="flex:1; align-items:start; padding-top:18px; row-gap:20px;">
+      <div class="camada-card" style="border-bottom:none;">
+        <p class="label">01 — Brand System Completo</p>
+        <p class="corpo-suporte">Expansão da identidade visual e sistema completo de aplicações. Design system em Figma. Brand guidelines completo e manual de uso online e offline. Templates para futuros empreendimentos.</p>
+      </div>
+      <div class="camada-card" style="border-bottom:none;">
+        <p class="label">02 — Experiência Digital Completa</p>
+        <p class="corpo-suporte">Website completo com estrutura para empreendimentos atuais e futuros. Estratégia editorial e conteúdo proprietário. Direção para canais sociais. Recomendações de integração com CRM, mídia e operação comercial.</p>
+      </div>
+      <div class="camada-card" style="border-bottom:none;">
+        <p class="label">03 — Estratégia Comercial de Marca</p>
+        <p class="corpo-suporte">Playbook comercial da nova marca. Narrativa de vendas por empreendimento. Estratégia de canais: digital, parceiros, house e imobiliárias.</p>
+      </div>
+      <div class="camada-card" style="border-bottom:none;">
+        <p class="label">04 — Treinamento e Evolução do Sistema</p>
+        <p class="corpo-suporte">Treinamento para equipe interna e corretores. Diretrizes de manutenção e atualização do sistema de marca. Critérios para aplicação consistente em novos materiais e lançamentos futuros.</p>
+      </div>
+    </div>
+    <div class="retranca" style="margin-bottom:8px;">
+      <p class="corpo-suporte">A Fase 2 dá continuidade natural ao trabalho iniciado na Fase 1 — do lançamento ao sistema completo, sem interrupção entre estratégia e operação.</p>
+    </div>
+    <div class="rodape">
+      <span class="rodape-texto">Fase 2 — 8 semanas</span>
+      <span class="rodape-num">14 / 17</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       15 — CRONOGRAMA COMPLETO
+  ═══════════════════════════════════ -->
+  <div class="slide" id="s14">
+    <div>
+      <p class="eyebrow">Planejamento</p>
+      <h2 class="titulo-grande">Cronograma estimado.</h2>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2" style="flex:1; align-items:start; padding-top:20px;">
+      <div>
+        <p class="label">Fase 1 — 10 semanas</p>
+        <div class="cronograma-linha">
+          <span class="cronograma-semana">Semanas 1–2</span>
+          <span class="cronograma-desc">Imersão, alinhamento executivo, diagnóstico e arquitetura preliminar</span>
+        </div>
+        <div class="cronograma-linha">
+          <span class="cronograma-semana">Semanas 3–4</span>
+          <span class="cronograma-desc">Posicionamento, narrativa fundadora e naming</span>
+        </div>
+        <div class="cronograma-linha">
+          <span class="cronograma-semana">Semanas 5–6</span>
+          <span class="cronograma-desc">Identidade visual, identidade verbal e direção estética</span>
+        </div>
+        <div class="cronograma-linha">
+          <span class="cronograma-semana">Semanas 7–8</span>
+          <span class="cronograma-desc">Site inicial, materiais comerciais e guia de transição</span>
+        </div>
+        <div class="cronograma-linha" style="border-bottom:none;">
+          <span class="cronograma-semana">Semanas 9–10</span>
+          <span class="cronograma-desc">Ajustes finais, validação e preparação para ativação</span>
+        </div>
+      </div>
+      <div>
+        <p class="label">Fase 2 — 8 semanas</p>
+        <div class="cronograma-linha">
+          <span class="cronograma-semana">Semanas 1–2</span>
+          <span class="cronograma-desc">Brand system completo e guidelines</span>
+        </div>
+        <div class="cronograma-linha">
+          <span class="cronograma-semana">Semanas 3–4</span>
+          <span class="cronograma-desc">Experiência digital completa</span>
+        </div>
+        <div class="cronograma-linha">
+          <span class="cronograma-semana">Semanas 5–6</span>
+          <span class="cronograma-desc">Estratégia comercial e playbook</span>
+        </div>
+        <div class="cronograma-linha" style="border-bottom:none;">
+          <span class="cronograma-semana">Semanas 7–8</span>
+          <span class="cronograma-desc">Treinamento de equipe e evolução do sistema</span>
+        </div>
+      </div>
+    </div>
+    <div class="retranca" style="margin-bottom:8px;">
+      <p class="corpo">Marco estratégico: lançamento em Curitiba — meados de setembro de 2026.</p>
+    </div>
+    <div class="rodape">
+      <span class="rodape-texto">Paladino × Rottas</span>
+      <span class="rodape-num">15 / 17</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       16 — INVESTIMENTO
+  ═══════════════════════════════════ -->
+  <div class="slide" id="s15">
+    <div>
+      <p class="eyebrow">Condições comerciais</p>
+      <h2 class="titulo-grande">Investimento e condições de pagamento.</h2>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2-1" style="flex:1; align-items:start; padding-top:22px;">
+      <div>
+        <p class="label">Projeto — Arquitetura de Marca e Sistema de Lançamento</p>
+        <p class="invest-numero">R$ 180.000</p>
+        <p class="invest-sub">aprox. US$ 32.000 · 6 parcelas mensais de R$ 30.000, sendo a primeira na assinatura</p>
+
+        <div class="grid-2" style="margin-top:28px; gap:32px;">
+          <div>
+            <p class="label">Momento 1 — Semanas 1 a 10</p>
+            <p class="corpo-suporte">Imersão, diagnóstico, posicionamento, naming, identidade visual e verbal, site inicial, materiais comerciais e guia de transição</p>
+          </div>
+          <div>
+            <p class="label">Momento 2 — Semanas 11 a 18</p>
+            <p class="corpo-suporte">Brand system completo, experiência digital completa, estratégia comercial, playbook e treinamento de equipe</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p class="label">Não inclui</p>
+        <p class="corpo-suporte">Despesas externas, mídia, produção, registro de marca (INPI/jurídico) e integrações técnicas de terceiros (CRM, etc.)</p>
+      </div>
+    </div>
+    <div class="retranca" style="margin-bottom:8px;">
+      <p class="corpo-suporte" style="font-style:normal;">Esse investimento estrutura um novo ativo de negócio para a Rottas — uma marca própria, com trajetória, governança e potencial de crescimento independentes. O retorno não está apenas no lançamento de setembro, mas na construção de um segundo pilar de valor para a empresa nos próximos anos.</p>
+    </div>
+    <div class="rodape">
+      <span class="rodape-texto">Forma de pagamento: 6 parcelas mensais de R$ 30.000</span>
+      <span class="rodape-num">16 / 17</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       17 — PRÓXIMO PASSO
+  ═══════════════════════════════════ -->
+  <div class="slide fundo-preto" id="s16">
+    <div>
+      <p class="eyebrow">Fechamento</p>
+    </div>
+    <div>
+      <h2 class="titulo-display" style="margin-bottom:36px;">Próximo passo.</h2>
+      <div class="grid-2" style="margin-bottom:48px;">
+        <p class="subtitulo">A partir do alinhamento estratégico construído nas reuniões anteriores, o próximo passo é validar a direção proposta e aprovar o início do projeto.</p>
+        <p class="subtitulo">Dado o lançamento previsto para setembro, a decisão precisa ser tomada com agilidade para garantir tempo hábil de imersão, estratégia, naming, identidade, presença digital inicial e materiais comerciais.</p>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+        <div>
+          <p class="corpo-suporte" style="color:#777;">hi@paladino.inc<br>paladino.inc<br>@paladino.inc</p>
+        </div>
+        <div style="display:flex; gap:64px;">
+          <div>
+            <p class="corpo" style="color:#fff; margin-bottom:2px;">Marco Chaparro</p>
+            <p class="corpo-suporte" style="color:#666;">Founder & Creative Director</p>
+          </div>
+          <div>
+            <p class="corpo" style="color:#fff; margin-bottom:2px;">Marco Anu</p>
+            <p class="corpo-suporte" style="color:#666;">Founder & Operations Director</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="rodape">
+      <span class="rodape-texto">Paladino Inc. — Confidencial</span>
+      <span class="rodape-num">17 / 17</span>
+    </div>
+  </div>
+
+ </div><!-- /scaler -->
+</div><!-- /stage -->
+
+<div id="nav">
+  <button id="btn-prev" onclick="mover(-1)" disabled>←</button>
+  <span id="nav-info">01 / 17</span>
+  <button id="btn-next" onclick="mover(1)">→</button>
+</div>
+
+<script>
+  const TOTAL = 17;
+  let atual = 0;
+
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+  function mover(dir) {
+    const prox = atual + dir;
+    if (prox < 0 || prox >= TOTAL) return;
+    document.getElementById('s' + atual).classList.remove('ativo');
+    atual = prox;
+    document.getElementById('s' + atual).classList.add('ativo');
+    document.getElementById('nav-info').textContent = pad(atual + 1) + ' / 17';
+    document.getElementById('btn-prev').disabled = atual === 0;
+    document.getElementById('btn-next').disabled = atual === TOTAL - 1;
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') mover(1);
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') mover(-1);
+  });
+
+  function escalar() {
+    const scaler = document.getElementById('scaler');
+    const escala = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+    scaler.style.transform = 'scale(' + escala + ')';
+  }
+
+  escalar();
+  window.addEventListener('resize', escalar);
+</script>
+</body>
+</html>
