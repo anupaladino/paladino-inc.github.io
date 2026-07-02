@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paladino — Framework de Processo (v0)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+  --white:#FFFFFF;
+  --off:#F7F7F5;
+  --black:#0D0D0D;
+  --g900:#1A1A1A;
+  --g600:#6B6B67;
+  --g400:#9A9A94;
+  --g200:#E3E3DE;
+  --g100:#EFEFEC;
+  --rule:1px solid #DEDED8;
+  --rule-dark:1px solid #2A2A2A;
+  --max:900px;
+  --pad:56px;
+  --nav-w:252px;
+}
+
+html{background:var(--off);scroll-behavior:smooth;}
+body{
+  font-family:'DM Sans',sans-serif;
+  font-weight:300;
+  font-size:16px;
+  line-height:27px;
+  color:var(--black);
+  background:var(--off);
+  -webkit-font-smoothing:antialiased;
+}
+
+h1,h2,h3,h4{font-family:'DM Sans',sans-serif;font-weight:500;color:var(--black);letter-spacing:-0.01em;}
+p{margin:0 0 16px;}
+p:last-child{margin-bottom:0;}
+ul{list-style:none;}
+strong{font-weight:600;}
+em{font-style:italic;}
+a{color:inherit;}
+
+/* ── TOP BAR ── */
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:300;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:18px 28px;
+  background:rgba(247,247,245,.88);
+  backdrop-filter:blur(10px);
+  border-bottom:var(--rule);
+}
+.topbar-brand{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;}
+.topbar-actions{display:flex;gap:10px;align-items:center;}
+.btn{
+  font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;
+  letter-spacing:.09em;text-transform:uppercase;
+  background:transparent;border:1px solid var(--g900);color:var(--g900);
+  padding:9px 16px;cursor:pointer;transition:background .15s,color .15s;
+  white-space:nowrap;
+}
+.btn:hover{background:var(--g900);color:var(--white);}
+.btn-solid{background:var(--black);color:var(--white);border-color:var(--black);}
+.btn-solid:hover{background:var(--g900);}
+.nav-toggle{display:none;}
+
+/* ── FLOATING SIDE NAV ── */
+.side-nav{
+  position:fixed;left:28px;top:50%;transform:translateY(-50%);
+  width:var(--nav-w);max-height:76vh;overflow-y:auto;
+  z-index:200;padding-right:8px;
+}
+.side-nav::-webkit-scrollbar{width:3px;}
+.side-nav::-webkit-scrollbar-thumb{background:var(--g200);}
+.side-nav-title{
+  font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--g400);margin-bottom:14px;
+}
+.side-nav ul{display:flex;flex-direction:column;gap:2px;}
+.side-nav .lvl2 > a{
+  display:block;font-size:13px;font-weight:500;color:var(--g600);
+  padding:6px 0;border-left:2px solid transparent;padding-left:12px;
+  transition:color .15s,border-color .15s;
+}
+.side-nav .lvl3 > a{
+  display:block;font-size:12px;font-weight:300;color:var(--g400);
+  padding:4px 0 4px 24px;border-left:2px solid transparent;
+  transition:color .15s,border-color .15s;
+}
+.side-nav a:hover{color:var(--black);}
+.side-nav .lvl2 > a.active{color:var(--black);border-left-color:var(--black);font-weight:600;}
+.side-nav .lvl3 > a.active{color:var(--black);border-left-color:var(--g400);}
+
+@media(max-width:1240px){
+  .side-nav{display:none;}
+  .side-nav.open{
+    display:block;position:fixed;top:64px;left:0;bottom:0;width:78vw;max-width:320px;
+    max-height:none;background:var(--white);border-right:var(--rule);
+    padding:28px 24px;transform:none;box-shadow:8px 0 24px rgba(0,0,0,.08);
+  }
+  .nav-toggle{display:inline-block;}
+}
+
+/* ── DOC WRAPPER ── */
+.doc{max-width:var(--max);margin:0 auto;padding:0 var(--pad) 140px;}
+@media(min-width:1560px){.doc{margin:0 auto 0 calc(50% - 180px);}}
+
+/* ── COVER ── */
+.cover{
+  min-height:100vh;background:var(--black);color:var(--white);
+  display:flex;flex-direction:column;justify-content:space-between;
+  padding:110px var(--pad) 56px;margin:0 calc(-1 * var(--pad)) 0;
+}
+.cover-word{font-size:13px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--white);}
+.cover-meta-top{display:flex;justify-content:space-between;align-items:flex-start;}
+.cover-meta-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#7A7A75;margin-bottom:6px;}
+.cover-meta-value{font-size:13px;color:#D8D8D4;}
+.cover-center{margin:auto 0;padding:64px 0;}
+.cover-eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#8C8C87;margin-bottom:20px;}
+.cover-title{font-size:52px;line-height:1.08;font-weight:500;letter-spacing:-0.02em;max-width:680px;}
+.cover-title em{font-style:normal;color:#8C8C87;}
+.cover-sub{margin-top:24px;font-size:16px;font-weight:300;color:#B8B8B3;max-width:520px;line-height:26px;}
+.cover-bottom{display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid #2A2A2A;padding-top:24px;}
+.cover-bottom strong{display:block;font-weight:500;color:var(--white);margin-bottom:4px;}
+.cover-bottom span{font-size:13px;color:#8C8C87;}
+.cover-status{text-align:right;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#8C8C87;}
+
+/* ── SECTION STRUCTURE ── */
+.section{padding:88px 0;border-top:var(--rule);scroll-margin-top:28px;}
+.section:first-of-type{border-top:none;}
+.section-eyebrow{
+  display:flex;align-items:center;gap:12px;margin-bottom:16px;
+}
+.section-index{font-size:12px;font-weight:600;letter-spacing:.08em;color:var(--g400);}
+h2.section-title{font-size:30px;letter-spacing:-0.015em;scroll-margin-top:28px;}
+.section-intro{max-width:640px;color:var(--g600);font-weight:300;font-size:16px;margin-top:14px;}
+
+.status-tag{
+  display:inline-block;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  padding:4px 10px;border-radius:2px;
+}
+.status-validado{background:var(--black);color:var(--white);}
+.status-hipotese{border:1px solid var(--g400);color:var(--g600);}
+
+.sub{margin-top:56px;padding-top:40px;border-top:var(--rule);scroll-margin-top:28px;}
+.sub:first-of-type{border-top:none;margin-top:44px;}
+.sub-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:18px;}
+h3.sub-title{font-size:19px;font-weight:600;}
+.sub-kicker{font-size:12px;color:var(--g400);letter-spacing:.04em;}
+
+.field{display:grid;grid-template-columns:150px 1fr;gap:8px 24px;padding:14px 0;border-top:var(--rule);}
+.field:first-of-type{border-top:none;}
+h4.field-label{font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--g400);padding-top:2px;}
+.field-body{font-size:15px;color:var(--g900);font-weight:300;line-height:25px;}
+.field-body ul{display:flex;flex-direction:column;gap:6px;}
+.field-body li{position:relative;padding-left:14px;}
+.field-body li::before{content:"—";position:absolute;left:0;color:var(--g400);}
+
+@media(max-width:640px){
+  .field{grid-template-columns:1fr;gap:4px;}
+}
+
+.callout{background:var(--black);color:var(--white);padding:40px 44px;margin:40px 0;}
+.callout-eyebrow{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#8C8C87;margin-bottom:14px;}
+.callout p{font-size:18px;font-weight:300;line-height:29px;color:#EDEDEA;}
+.callout strong{color:var(--white);font-weight:600;}
+
+.note{border-left:2px solid var(--g200);padding:4px 0 4px 18px;margin:24px 0;color:var(--g600);font-size:14px;line-height:23px;}
+.note strong{color:var(--g900);}
+
+/* macro table */
+.macro-list{display:flex;flex-direction:column;}
+.macro-row{display:grid;grid-template-columns:60px 200px 1fr auto;gap:20px;align-items:start;padding:22px 0;border-top:var(--rule);}
+.macro-row:first-child{border-top:none;}
+.macro-num{font-size:13px;color:var(--g400);font-weight:600;}
+.macro-name{font-size:15px;font-weight:600;}
+.macro-desc{font-size:14px;color:var(--g600);font-weight:300;line-height:22px;}
+@media(max-width:760px){.macro-row{grid-template-columns:1fr;gap:6px;}}
+
+/* signature elements grid */
+.sig-grid{display:flex;flex-direction:column;margin-top:28px;}
+.sig-item{display:grid;grid-template-columns:34px 1fr;gap:18px;padding:24px 0;border-top:var(--rule);}
+.sig-item:first-child{border-top:none;}
+.sig-num{font-size:14px;font-weight:600;color:var(--g400);}
+.sig-title{font-size:16px;font-weight:600;margin-bottom:6px;}
+.sig-desc{font-size:14.5px;color:var(--g600);font-weight:300;line-height:23px;}
+
+/* cadence timeline */
+.timeline{display:flex;flex-direction:column;margin-top:20px;}
+.tl-row{display:grid;grid-template-columns:140px 1fr;gap:20px;padding:16px 0;border-top:var(--rule);}
+.tl-row:first-child{border-top:none;}
+.tl-when{font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--g900);padding-top:2px;}
+.tl-body{font-size:14.5px;color:var(--g600);font-weight:300;line-height:22px;}
+.tl-body strong{color:var(--g900);font-weight:500;}
+@media(max-width:640px){.tl-row{grid-template-columns:1fr;gap:4px;}}
+
+/* open questions */
+.q-list{display:flex;flex-direction:column;margin-top:24px;}
+.q-item{display:grid;grid-template-columns:34px 1fr;gap:16px;padding:20px 0;border-top:var(--rule);}
+.q-item:first-child{border-top:none;}
+.q-num{font-size:13px;font-weight:600;color:var(--g400);}
+.q-text{font-size:15px;color:var(--g900);font-weight:400;margin-bottom:4px;}
+.q-note{font-size:13.5px;color:var(--g600);font-weight:300;line-height:21px;}
+
+/* footer */
+.doc-footer{border-top:var(--rule);padding-top:40px;margin-top:40px;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;}
+.doc-footer span{font-size:12px;color:var(--g400);}
+
+@media print{
+  .topbar,.side-nav,.nav-toggle{display:none;}
+  body{background:white;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-brand">Paladino</div>
+  <div class="topbar-actions">
+    <button class="btn nav-toggle" id="navToggle">Seções</button>
+    <button class="btn btn-solid" id="downloadMd">Baixar .md</button>
+  </div>
+</div>
+
+<nav class="side-nav" id="sideNav">
+  <div class="side-nav-title">Neste documento</div>
+  <ul id="navList"></ul>
+</nav>
+
+<div class="doc" id="content">
+
+  <!-- ══ COVER ══ -->
+  <div class="cover">
+    <div class="cover-meta-top">
+      <div class="cover-word">Paladino</div>
+      <div style="text-align:right;">
+        <div class="cover-meta-label">Emissão</div>
+        <div class="cover-meta-value">Julho 2026</div>
+      </div>
+    </div>
+    <div class="cover-center">
+      <div class="cover-eyebrow">Documento Interno · Uso Restrito</div>
+      <h1 class="cover-title">Framework de Processo<br><em>— as quatro etapas.</em></h1>
+      <p class="cover-sub">Etapa 01 documentada e validada em piloto real. Etapas 02, 03 e 04 propostas como hipótese de processo — base de trabalho para o desenho conjunto da v1.</p>
+    </div>
+    <div class="cover-bottom">
+      <div>
+        <strong>Marco Anu &amp; Chaparro</strong>
+        <span>Paladino Inc. — Founder &amp; Operations / Founder &amp; Creative</span>
+      </div>
+      <div class="cover-status">Versão 0<br>Não aprovado para uso externo</div>
+    </div>
+  </div>
+
+  <!-- ══ 00 SOBRE ══ -->
+  <div class="section" id="sobre">
+    <div class="section-eyebrow"><span class="section-index">00</span></div>
+    <h2 class="section-title">Sobre este documento</h2>
+    <div class="section-intro">
+      <p>Este é um v0. Consolida três fontes: o Framework de Processo v1.1 (documento canônico da Imersão Ontológica), o rascunho de Desenho de Processo para as Etapas 2 a 4, e a execução real do piloto Galo Cinza — dois decks de cliente e uma análise interna, produzidos entre maio e junho de 2026.</p>
+      <p style="margin-top:16px;">A Etapa 01 está documentada como método validado: o que está aqui foi testado em projeto real. As Etapas 02, 03 e 04 não passaram por nenhum projeto ainda — são hipótese de processo, construídas a partir do rascunho existente e por proposta direta onde não havia matéria-prima nenhuma. Cada seção carrega uma tag de status.</p>
+    </div>
+    <div class="field" style="margin-top:32px;">
+      <h4 class="field-label">Legenda</h4>
+      <div class="field-body">
+        <p><span class="status-tag status-validado">Validado</span> &nbsp; testado no piloto Galo Cinza, com evidência real de deliverable.</p>
+        <p style="margin-top:10px;"><span class="status-tag status-hipotese">Hipótese</span> &nbsp; proposta de processo, ainda sem execução real. Ponto de partida para decisão do Chaparro, não método fechado.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 01 ESTRUTURA MACRO ══ -->
+  <div class="section" id="estrutura-macro">
+    <div class="section-eyebrow"><span class="section-index">01</span></div>
+    <h2 class="section-title">Estrutura macro — 4 etapas</h2>
+    <p class="section-intro">Sequência inegociável. Cada etapa depende do que a anterior produziu. A lógica é a mesma dos 4D do Design Thinking — Discover, Define, Develop, Deliver — com linguagem e método próprios.</p>
+
+    <div class="macro-list">
+      <div class="macro-row">
+        <div class="macro-num">01</div>
+        <div class="macro-name">Imersão Ontológica</div>
+        <div class="macro-desc">Leitura profunda do negócio em todas as camadas. Output: diagnóstico estratégico completo.</div>
+        <span class="status-tag status-validado">Validado</span>
+      </div>
+      <div class="macro-row">
+        <div class="macro-num">02</div>
+        <div class="macro-name">Formulação Estratégica</div>
+        <div class="macro-desc">Proposta de valor, arquitetura de portfólio, identidade conceitual.</div>
+        <span class="status-tag status-hipotese">Hipótese</span>
+      </div>
+      <div class="macro-row">
+        <div class="macro-num">03</div>
+        <div class="macro-name">Estruturação Simbólica</div>
+        <div class="macro-desc">Tradução em sistema de linguagem — tipografia, cor, forma, tom de voz.</div>
+        <span class="status-tag status-hipotese">Hipótese</span>
+      </div>
+      <div class="macro-row">
+        <div class="macro-num">04</div>
+        <div class="macro-name">Ativação Sistêmica</div>
+        <div class="macro-desc">Consolidação e autonomia. Sucesso não é mais entrega — é operação sem dependência da Paladino.</div>
+        <span class="status-tag status-hipotese">Hipótese</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 02 PADRÃO TRANSVERSAL ══ -->
+  <div class="section" id="padrao-transversal">
+    <div class="section-eyebrow"><span class="section-index">02</span></div>
+    <h2 class="section-title">Padrão transversal</h2>
+    <p class="section-intro">Seis elementos se repetiram nos deliverables reais do piloto Galo Cinza sem terem sido combinados de antemão — o que os qualifica como assinatura de método, não coincidência. Cinco entram como padrão nas quatro etapas. Um fica exclusivo da Etapa 01, por decisão direta.</p>
+
+    <div class="sig-grid">
+      <div class="sig-item">
+        <div class="sig-num">01</div>
+        <div>
+          <div class="sig-title">Bloco de posição</div>
+          <div class="sig-desc">Mapa das 4 etapas no topo de toda apresentação de cliente, com a etapa atual destacada. Orienta o cliente sobre onde o projeto está antes de qualquer conteúdo novo.</div>
+        </div>
+      </div>
+      <div class="sig-item">
+        <div class="sig-num">02</div>
+        <div>
+          <div class="sig-title">Materiais recebidos / pendentes</div>
+          <div class="sig-desc">Bloco de status logo após a posição — o que chegou do cliente, o que falta. Aplica-se nas etapas com coleta ativa de material do cliente.</div>
+        </div>
+      </div>
+      <div class="sig-item">
+        <div class="sig-num">03</div>
+        <div>
+          <div class="sig-title">Tensões numeradas</div>
+          <div class="sig-desc">Pontos de desalinhamento identificados, nomeados T1, T2, T3... e classificados por camada. A nomenclatura das camadas de tensão ainda não foi fixada — ver seção 07.</div>
+        </div>
+      </div>
+      <div class="sig-item">
+        <div class="sig-num">04</div>
+        <div>
+          <div class="sig-title">Instrumentos construídos por tensão</div>
+          <div class="sig-desc">Ferramenta artesanal criada para resolver uma tensão específica — não framework de mercado adaptado. Quantidade não é fixa: um instrumento por tensão que exigir resolução prática, não teórica. No Galo Cinza foram 4, porque 4 tensões pediram. A natureza do instrumento muda por etapa: na Imersão Ontológica resolve tensão estratégica; na Estruturação Simbólica, testa coerência entre expressão e síntese aprovada — não redefine estratégia.</div>
+        </div>
+      </div>
+      <div class="sig-item">
+        <div class="sig-num">05</div>
+        <div>
+          <div class="sig-title">Análise Interna pós-reunião</div>
+          <div class="sig-desc">Documento interno produzido depois de toda reunião de cliente com peso estratégico. Estrutura observada: o que funcionou / o que falhou, feedback implícito, mapa de oportunidades, avaliação de hipóteses, estrutura da etapa seguinte, entregáveis obrigatórios antes do próximo encontro, decisões prioritárias, leitura final. Produzida no dia seguinte à reunião, no piloto.</div>
+        </div>
+      </div>
+      <div class="sig-item">
+        <div class="sig-num">06</div>
+        <div>
+          <div class="sig-title">Leitura central de fechamento</div>
+          <div class="sig-desc">Uma frase que resume a virada estratégica da etapa, no encerramento da apresentação. No piloto, repetiu-se palavra por palavra entre dois decks diferentes — é o elemento com mais disciplina de repetição de todos.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note"><strong>Fora do padrão:</strong> steps numerados com nome técnico em inglês (Context Lock, Signal Detection, Tension Mapping...). Existem no Framework v1.1 como estrutura de raciocínio interno da Imersão Ontológica, mas não apareceram em nenhum deliverable real — nem de cliente, nem de análise interna. Ficam exclusivos da Etapa 01, como camada invisível, e não se estendem às demais.</div>
+  </div>
+
+  <!-- ══ 03 ETAPA 01 ══ -->
+  <div class="section" id="etapa-01">
+    <div class="section-eyebrow"><span class="section-index">03</span><span class="status-tag status-validado">Validado — piloto Galo Cinza</span></div>
+    <h2 class="section-title">Etapa 01 — Imersão Ontológica</h2>
+    <p class="section-intro">Leitura estrutural do negócio antes de qualquer proposta. Dividida em três sub-etapas — Tese, Antítese, Síntese — cada uma operando sobre as mesmas quatro camadas de análise.</p>
+
+    <div class="field" style="margin-top:32px;">
+      <h4 class="field-label">Camadas</h4>
+      <div class="field-body">
+        <ul>
+          <li><strong>Ontológica</strong> — origem, propósito, valores inegociáveis.</li>
+          <li><strong>Operacional</strong> — produtos, serviços, estrutura, processos, dependências.</li>
+          <li><strong>Simbólica</strong> — marca, identidade, expressão visual e verbal.</li>
+          <li><strong>Mercadológica</strong> — mercado, concorrentes, canais, posicionamento percebido.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sub" id="etapa-01-tese">
+      <div class="sub-head"><h3 class="sub-title">1. Tese — a perspectiva do cliente</h3><span class="sub-kicker">Coleta, não validação</span></div>
+      <div class="field">
+        <h4 class="field-label">Métodos</h4>
+        <div class="field-body"><ul>
+          <li>Ask &amp; Handover — materiais existentes do cliente.</li>
+          <li>Discovery — questionário assíncrono, organizado pelas 4 camadas.</li>
+          <li>Reuniões de escuta — captura de contexto e narrativa; transcrição é dado.</li>
+        </ul></div>
+      </div>
+      <div class="field">
+        <h4 class="field-label">Steps internos</h4>
+        <div class="field-body">Context Lock, Signal Detection, Tension Mapping, Hidden Patterns, Risk Assessment — 5 steps, uso interno. Não aparecem no deliverable.</div>
+      </div>
+      <div class="field">
+        <h4 class="field-label">Output</h4>
+        <div class="field-body">Leitura do que o cliente acredita que é, por camada — sem interpretação Paladino ainda.</div>
+      </div>
+    </div>
+
+    <div class="sub" id="etapa-01-antitese">
+      <div class="sub-head"><h3 class="sub-title">2. Antítese — a leitura validada Paladino</h3><span class="sub-kicker">Interna, sem co-criação</span></div>
+      <div class="field">
+        <h4 class="field-label">Métodos</h4>
+        <div class="field-body"><ul>
+          <li>Análise de contraste — micro (incoerências internas) e macro (posição no mercado).</li>
+          <li>Frameworks por camada — lentes analíticas internas, não apresentadas ao cliente.</li>
+          <li>Inputs Paladino — sinais das reuniões que não entraram nas respostas formais.</li>
+          <li>Pesquisa complementar — mercado, tendências, referências, quando necessário.</li>
+        </ul></div>
+      </div>
+      <div class="field">
+        <h4 class="field-label">Steps internos</h4>
+        <div class="field-body">Hypothesis Map, Strategic Directions, Reframe — 3 steps, uso interno.</div>
+      </div>
+      <div class="field">
+        <h4 class="field-label">Padrão aplicado</h4>
+        <div class="field-body">Bloco de posição, materiais recebidos/pendentes, tensões numeradas por camada, instrumentos por tensão, leitura central de fechamento.</div>
+      </div>
+      <div class="field">
+        <h4 class="field-label">Output</h4>
+        <div class="field-body">Tensões nomeadas, instrumentos construídos, hipóteses levantadas para reação do cliente.</div>
+      </div>
+    </div>
+
+    <div class="sub" id="etapa-01-sintese">
+      <div class="sub-head"><h3 class="sub-title">3. Síntese — o resultado do cruzamento</h3><span class="sub-kicker">Não é soma — é reframe</span></div>
+      <div class="field">
+        <h4 class="field-label">Caráter</h4>
+        <div class="field-body">Output intelectual da etapa. Encerra o diagnóstico, prepara a Formulação Estratégica.</div>
+      </div>
+      <div class="field">
+        <h4 class="field-label">Output por camada</h4>
+        <div class="field-body">Definição estrutural do negócio, o que está frágil operacionalmente, direção simbólica, território de mercado defensável.</div>
+      </div>
+    </div>
+
+    <div class="sub" id="etapa-01-protocolo">
+      <div class="sub-head"><h3 class="sub-title">Protocolo de contato com cliente</h3></div>
+      <div class="field">
+        <h4 class="field-label">Fluxo estabelecido</h4>
+        <div class="field-body">Ask &amp; Handover e Discovery enviados após assinatura. Duas semanas depois, reunião única apresenta Tese + Antítese + Síntese integradas.</div>
+      </div>
+      <div class="field">
+        <h4 class="field-label">Fluxo piloto (Galo Cinza)</h4>
+        <div class="field-body">Projeto iniciado antes do fluxo estabelecido existir. Reunião 1 — Tese + Antítese apresentadas juntas. Reunião 2 — Síntese, em separado.</div>
+      </div>
+    </div>
+
+    <div class="sub" id="etapa-01-cadencia">
+      <div class="sub-head"><h3 class="sub-title">Cadência real observada</h3><span class="sub-kicker">Piloto Galo Cinza, 2026</span></div>
+      <div class="timeline">
+        <div class="tl-row"><div class="tl-when">Reuniões 1–2</div><div class="tl-body">Captura de contexto via transcrição. Sem Ask &amp; Handover, sem Discovery respondido.</div></div>
+        <div class="tl-row"><div class="tl-when">05.05</div><div class="tl-body">Push de Ask &amp; Handover enviado ao cliente. Diagnóstico interno produzido com o material disponível — <strong>Ask &amp; Handover nunca retornou.</strong></div></div>
+        <div class="tl-row"><div class="tl-when">10.06</div><div class="tl-body">Antítese apresentada ao cliente. 4 tensões, 4 instrumentos.</div></div>
+        <div class="tl-row"><div class="tl-when">11.06</div><div class="tl-body">Análise Interna pós-reunião produzida no dia seguinte.</div></div>
+        <div class="tl-row"><div class="tl-when">~3 semanas depois</div><div class="tl-body">Síntese — planejada para "semana seguinte" à Antítese, realizada com atraso significativo em relação ao previsto.</div></div>
+      </div>
+      <div class="note"><strong>Para a v1:</strong> a cadência real correu mais devagar que a planejada entre Antítese e Síntese. Vale considerar um buffer maior no protocolo formal, em vez de assumir "semana seguinte" como padrão.</div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-eyebrow">Formato de entrega — validado</div>
+      <p>Deck HTML, apresentação ao vivo, com bloco de posição e status de materiais no abertura, leitura central no fechamento.</p>
+    </div>
+  </div>
+
+  <!-- ══ 04 ETAPA 02 ══ -->
+  <div class="section" id="etapa-02">
+    <div class="section-eyebrow"><span class="section-index">04</span><span class="status-tag status-hipotese">Hipótese de processo</span></div>
+    <h2 class="section-title">Etapa 02 — Formulação Estratégica</h2>
+    <p class="section-intro">Síntese intelectual e estruturação do sistema. Define-se proposta de valor, arquitetura de portfólio e identidade conceitual — com base no que a Síntese da Etapa 01 entregou.</p>
+
+    <div class="sub" id="etapa-02-boards">
+      <div class="sub-head"><h3 class="sub-title">2.1 Boards visuais e verbais</h3></div>
+      <div class="field"><h4 class="field-label">Método</h4><div class="field-body">Desktop research e referências externas. Sem criação própria — puro exercício de calibração de direção.</div></div>
+      <div class="field"><h4 class="field-label">Instrumentos</h4><div class="field-body">Só se a leitura dos boards revelar tensão entre direções — por exemplo, o cliente puxando para um lado enquanto a Síntese aponta outro. Não é automático.</div></div>
+      <div class="field"><h4 class="field-label">Output</h4><div class="field-body">Apresentação ao cliente para calibrar direção estética e conceitual.</div></div>
+      <div class="field"><h4 class="field-label">Prep antes</h4><div class="field-body">Curadoria de referências externas alinhadas à Síntese aprovada.</div></div>
+      <div class="field"><h4 class="field-label">Prep depois</h4><div class="field-body">Análise Interna pós-reunião — captura reação do cliente aos boards.</div></div>
+    </div>
+
+    <div class="sub" id="etapa-02-lookfeel">
+      <div class="sub-head"><h3 class="sub-title">2.2 Look &amp; Feel</h3></div>
+      <div class="field"><h4 class="field-label">Método</h4><div class="field-body">Designer entra. Criação própria a partir do feedback dos boards. DNA + identidade verbal como brief que já antecipa parte da guideline futura.</div></div>
+      <div class="field"><h4 class="field-label">Output</h4><div class="field-body">Figma slides + feedback do cliente sobre o Look &amp; Feel.</div></div>
+      <div class="field"><h4 class="field-label">Prep antes</h4><div class="field-body">Produção criativa a partir da direção calibrada em 2.1.</div></div>
+      <div class="field"><h4 class="field-label">Prep depois</h4><div class="field-body">Análise Interna pós-reunião.</div></div>
+    </div>
+
+    <div class="sub" id="etapa-02-proposta-final">
+      <div class="sub-head"><h3 class="sub-title">2.3 Proposta final</h3><span class="sub-kicker">Sem matéria-prima nas fontes</span></div>
+      <div class="field"><h4 class="field-label">O que existe</h4><div class="field-body">Só a definição do Framework v1.1: "estrutura definitiva para avançar à Estruturação Simbólica." Nenhum método ou formato de output documentado em nenhuma fonte.</div></div>
+      <div class="field"><h4 class="field-label">Proposta (aberta)</h4><div class="field-body">Consolidação do Look &amp; Feel aprovado numa proposta formal única, que funciona como documento de encerramento da etapa e handover para a Estruturação Simbólica. Formato e nível de detalhe ficam em aberto para definição direta do Chaparro.</div></div>
+    </div>
+
+    <div class="sub" id="etapa-02-cadencia">
+      <div class="sub-head"><h3 class="sub-title">Cadência proposta</h3><span class="sub-kicker">Hipótese — sem execução real</span></div>
+      <div class="timeline">
+        <div class="tl-row"><div class="tl-when">Reunião 1</div><div class="tl-body"><strong>Boards.</strong> ~2 semanas após aprovação da Síntese, para dar tempo de curadoria de referência.</div></div>
+        <div class="tl-row"><div class="tl-when">Reunião 2</div><div class="tl-body"><strong>Look &amp; Feel.</strong> ~2 semanas após aprovação dos boards — tempo de produção criativa.</div></div>
+        <div class="tl-row"><div class="tl-when">Reunião 3</div><div class="tl-body"><strong>Proposta final.</strong> Intervalo a definir — depende do escopo que a Proposta final assumir.</div></div>
+      </div>
+      <div class="note">3 reuniões já estavam definidas no Framework v1.1 macro. O intervalo entre elas (~2 semanas) é hipótese nova, baseada em tempo de produção razoável — não em execução real.</div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-eyebrow">Formato de entrega — herdado do rascunho</div>
+      <p>Figma slides + feedback do cliente. Mesma lógica de apresentação ao vivo da Etapa 01.</p>
+    </div>
+  </div>
+
+  <!-- ══ 05 ETAPA 03 ══ -->
+  <div class="section" id="etapa-03">
+    <div class="section-eyebrow"><span class="section-index">05</span><span class="status-tag status-hipotese">Hipótese de processo</span></div>
+    <h2 class="section-title">Etapa 03 — Estruturação Simbólica</h2>
+    <p class="section-intro">Execução a partir do Look &amp; Feel e da Proposta aprovados. Tipografia, cor, forma e tom de voz deixam de ser escolha estética e passam a operar como sinal de reconhecimento e autoridade.</p>
+
+    <div class="sub" id="etapa-03-execucao">
+      <div class="sub-head"><h3 class="sub-title">3.1 Execução a partir da Proposta aprovada</h3></div>
+      <div class="field"><h4 class="field-label">Método</h4><div class="field-body">Tradução da Proposta e do Look &amp; Feel em sistema formal de linguagem visual e verbal.</div></div>
+      <div class="field"><h4 class="field-label">Instrumentos</h4><div class="field-body">Uso diferente do da Imersão Ontológica: aqui o instrumento testa coerência entre a expressão em construção e a Síntese aprovada — não redefine estratégia. Aplica-se se um elemento simbólico soar certo mas não performar a função que o território pede.</div></div>
+      <div class="field"><h4 class="field-label">Output</h4><div class="field-body">Sistema de marca em construção.</div></div>
+    </div>
+
+    <div class="sub" id="etapa-03-guidelines">
+      <div class="sub-head"><h3 class="sub-title">3.2 Guidelines + Playbooks</h3></div>
+      <div class="field"><h4 class="field-label">Método</h4><div class="field-body">Consolidação dos elementos definidos em 3.1 em documentos de aplicação.</div></div>
+      <div class="field"><h4 class="field-label">Output</h4><div class="field-body">Sistema de marca completo — guidelines, playbooks, ativos de identidade.</div></div>
+    </div>
+
+    <div class="sub" id="etapa-03-cadencia">
+      <div class="sub-head"><h3 class="sub-title">Cadência proposta</h3><span class="sub-kicker">Hipótese — sem base nas fontes</span></div>
+      <div class="timeline">
+        <div class="tl-row"><div class="tl-when">Checkpoint</div><div class="tl-body">Revisão intermediária do sistema em progresso — antes de fechar guidelines, validar direção com o cliente.</div></div>
+        <div class="tl-row"><div class="tl-when">Aprovação final</div><div class="tl-body">Entrega e aprovação do sistema de marca completo.</div></div>
+      </div>
+      <div class="field"><h4 class="field-label">Prep antes</h4><div class="field-body">Material de sistema pronto para revisão — não esboço, aplicação real.</div></div>
+      <div class="field"><h4 class="field-label">Prep depois</h4><div class="field-body">Análise Interna pós-reunião, se houver ajuste a incorporar antes da entrega final.</div></div>
+      <div class="note">Nenhuma das duas fontes documenta quantidade ou cadência de reunião para esta etapa. As duas reuniões acima são proposta mínima razoável, não achado.</div>
+    </div>
+  </div>
+
+  <!-- ══ 06 ETAPA 04 ══ -->
+  <div class="section" id="etapa-04">
+    <div class="section-eyebrow"><span class="section-index">06</span><span class="status-tag status-hipotese">Hipótese de processo — pouca base</span></div>
+    <h2 class="section-title">Etapa 04 — Ativação Sistêmica</h2>
+    <p class="section-intro">Consolidação e autonomia. O critério de sucesso não é entregar mais material — é o organismo operar sem depender da Paladino para cada decisão de marca.</p>
+
+    <div class="note"><strong>Aviso de escopo:</strong> esta é a etapa com menos matéria-prima das quatro. Nenhuma fonte documenta sub-etapa, método ou reunião. O que segue é construção a partir de uma única descrição de parágrafo — ponto de partida para a conversa de amanhã, não estrutura testada nem inferida de rascunho.</div>
+
+    <div class="sub" id="etapa-04-handoff">
+      <div class="sub-head"><h3 class="sub-title">4.1 Handoff e treinamento (proposta)</h3></div>
+      <div class="field"><h4 class="field-label">Método</h4><div class="field-body">Transferência formal do sistema para a operação do cliente. Sessão de treinamento de equipe na aplicação prática das guidelines.</div></div>
+      <div class="field"><h4 class="field-label">Output</h4><div class="field-body">Equipe do cliente capaz de aplicar o sistema sem consulta a cada decisão.</div></div>
+    </div>
+
+    <div class="sub" id="etapa-04-governanca">
+      <div class="sub-head"><h3 class="sub-title">4.2 Governança de longo prazo (proposta)</h3></div>
+      <div class="field"><h4 class="field-label">Método</h4><div class="field-body">Protocolo de decisão para aplicações futuras não previstas nas guidelines — o que pode ser decidido internamente pelo cliente, o que exige consulta.</div></div>
+      <div class="field"><h4 class="field-label">Output</h4><div class="field-body">Diretrizes de governança documentadas. Autonomia operacional real, não apenas declarada.</div></div>
+    </div>
+
+    <div class="sub" id="etapa-04-cadencia">
+      <div class="sub-head"><h3 class="sub-title">Cadência proposta</h3></div>
+      <div class="timeline">
+        <div class="tl-row"><div class="tl-when">Reunião única</div><div class="tl-body">Handoff + treinamento, combinados.</div></div>
+        <div class="tl-row"><div class="tl-when">Checkpoint opcional</div><div class="tl-body">Acompanhamento pós-entrega, sem compromisso fixo — a definir se entra como escopo contratado ou como oferta separada.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 07 PERGUNTAS ABERTAS ══ -->
+  <div class="section" id="perguntas-abertas">
+    <div class="section-eyebrow"><span class="section-index">07</span></div>
+    <h2 class="section-title">Perguntas em aberto para a v1</h2>
+    <p class="section-intro">Não bloqueiam este v0. Precisam de decisão antes do framework virar documento final.</p>
+
+    <div class="q-list">
+      <div class="q-item">
+        <div class="q-num">01</div>
+        <div>
+          <div class="q-text">Nomenclatura das camadas de tensão</div>
+          <div class="q-note">O diagnóstico (05.05) usa Ontológica / Estratégica / Perceptual / Latente. A Antítese (10.06) usa Identidade / Crescimento / Percepção / Portfólio. Mesmo conteúdo, rótulo diferente. Fixar uma versão.</div>
+        </div>
+      </div>
+      <div class="q-item">
+        <div class="q-num">02</div>
+        <div>
+          <div class="q-text">Status real da Síntese do Galo Cinza</div>
+          <div class="q-note">Confirmado: acontece amanhã. Assim que fechar, a Etapa 01 vira caso de referência completo — este documento deve ser atualizado com o resultado.</div>
+        </div>
+      </div>
+      <div class="q-item">
+        <div class="q-num">03</div>
+        <div>
+          <div class="q-text">Quantidade de reuniões nas Etapas 03 e 04</div>
+          <div class="q-note">Proposta mínima incluída neste v0. Sem execução real para validar se é suficiente.</div>
+        </div>
+      </div>
+      <div class="q-item">
+        <div class="q-num">04</div>
+        <div>
+          <div class="q-text">Formato final da Proposta final (2.3)</div>
+          <div class="q-note">Único ponto da Etapa 02 sem nenhuma base documental, nem no Framework v1.1 nem no rascunho.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-eyebrow">Nota de fechamento</div>
+      <p>Este documento é insumo para o encontro de amanhã. O Chaparro traz trabalho equivalente do lado dele — a v1 nasce do cruzamento dos dois, não da adoção direta deste v0.</p>
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    <span>Paladino Inc. — Documento interno · Framework de Processo v0 · Julho 2026</span>
+    <span>Fontes: Framework de Processo v1.1 · Desenho de Processo (rascunho) · Piloto Galo Cinza</span>
+  </div>
+
+</div>
+
+<script type="application/md" id="mdSource"># PALADINO — FRAMEWORK DE PROCESSO (v0)
+*Documento interno · Julho 2026 · Base de trabalho para desenho da v1*
+
+---
+
+Paladino
+
+Paladino
+
+Emissão
+
+Julho 2026
+
+Documento Interno · Uso Restrito
+
+# Framework de Processo *— as quatro etapas.*
+
+Etapa 01 documentada e validada em piloto real. Etapas 02, 03 e 04 propostas como hipótese de processo — base de trabalho para o desenho conjunto da v1.
+
+**Marco Anu & Chaparro** Paladino Inc. — Founder & Operations / Founder & Creative
+
+Versão 0  
+Não aprovado para uso externo
+
+00
+
+## Sobre este documento
+
+Este é um v0. Consolida três fontes: o Framework de Processo v1.1 (documento canônico da Imersão Ontológica), o rascunho de Desenho de Processo para as Etapas 2 a 4, e a execução real do piloto Galo Cinza — dois decks de cliente e uma análise interna, produzidos entre maio e junho de 2026.
+
+A Etapa 01 está documentada como método validado: o que está aqui foi testado em projeto real. As Etapas 02, 03 e 04 não passaram por nenhum projeto ainda — são hipótese de processo, construídas a partir do rascunho existente e por proposta direta onde não havia matéria-prima nenhuma. Cada seção carrega uma tag de status.
+
+#### Legenda
+
+Validado   testado no piloto Galo Cinza, com evidência real de deliverable.
+
+Hipótese   proposta de processo, ainda sem execução real. Ponto de partida para decisão do Chaparro, não método fechado.
+
+01
+
+## Estrutura macro — 4 etapas
+
+Sequência inegociável. Cada etapa depende do que a anterior produziu. A lógica é a mesma dos 4D do Design Thinking — Discover, Define, Develop, Deliver — com linguagem e método próprios.
+
+01
+
+Imersão Ontológica
+
+Leitura profunda do negócio em todas as camadas. Output: diagnóstico estratégico completo.
+
+Validado
+
+02
+
+Formulação Estratégica
+
+Proposta de valor, arquitetura de portfólio, identidade conceitual.
+
+Hipótese
+
+03
+
+Estruturação Simbólica
+
+Tradução em sistema de linguagem — tipografia, cor, forma, tom de voz.
+
+Hipótese
+
+04
+
+Ativação Sistêmica
+
+Consolidação e autonomia. Sucesso não é mais entrega — é operação sem dependência da Paladino.
+
+Hipótese
+
+02
+
+## Padrão transversal
+
+Seis elementos se repetiram nos deliverables reais do piloto Galo Cinza sem terem sido combinados de antemão — o que os qualifica como assinatura de método, não coincidência. Cinco entram como padrão nas quatro etapas. Um fica exclusivo da Etapa 01, por decisão direta.
+
+01
+
+Bloco de posição
+
+Mapa das 4 etapas no topo de toda apresentação de cliente, com a etapa atual destacada. Orienta o cliente sobre onde o projeto está antes de qualquer conteúdo novo.
+
+02
+
+Materiais recebidos / pendentes
+
+Bloco de status logo após a posição — o que chegou do cliente, o que falta. Aplica-se nas etapas com coleta ativa de material do cliente.
+
+03
+
+Tensões numeradas
+
+Pontos de desalinhamento identificados, nomeados T1, T2, T3... e classificados por camada. A nomenclatura das camadas de tensão ainda não foi fixada — ver seção 07.
+
+04
+
+Instrumentos construídos por tensão
+
+Ferramenta artesanal criada para resolver uma tensão específica — não framework de mercado adaptado. Quantidade não é fixa: um instrumento por tensão que exigir resolução prática, não teórica. No Galo Cinza foram 4, porque 4 tensões pediram. A natureza do instrumento muda por etapa: na Imersão Ontológica resolve tensão estratégica; na Estruturação Simbólica, testa coerência entre expressão e síntese aprovada — não redefine estratégia.
+
+05
+
+Análise Interna pós-reunião
+
+Documento interno produzido depois de toda reunião de cliente com peso estratégico. Estrutura observada: o que funcionou / o que falhou, feedback implícito, mapa de oportunidades, avaliação de hipóteses, estrutura da etapa seguinte, entregáveis obrigatórios antes do próximo encontro, decisões prioritárias, leitura final. Produzida no dia seguinte à reunião, no piloto.
+
+06
+
+Leitura central de fechamento
+
+Uma frase que resume a virada estratégica da etapa, no encerramento da apresentação. No piloto, repetiu-se palavra por palavra entre dois decks diferentes — é o elemento com mais disciplina de repetição de todos.
+
+**Fora do padrão:** steps numerados com nome técnico em inglês (Context Lock, Signal Detection, Tension Mapping...). Existem no Framework v1.1 como estrutura de raciocínio interno da Imersão Ontológica, mas não apareceram em nenhum deliverable real — nem de cliente, nem de análise interna. Ficam exclusivos da Etapa 01, como camada invisível, e não se estendem às demais.
+
+03Validado — piloto Galo Cinza
+
+## Etapa 01 — Imersão Ontológica
+
+Leitura estrutural do negócio antes de qualquer proposta. Dividida em três sub-etapas — Tese, Antítese, Síntese — cada uma operando sobre as mesmas quatro camadas de análise.
+
+#### Camadas
+
+- **Ontológica** — origem, propósito, valores inegociáveis.
+- **Operacional** — produtos, serviços, estrutura, processos, dependências.
+- **Simbólica** — marca, identidade, expressão visual e verbal.
+- **Mercadológica** — mercado, concorrentes, canais, posicionamento percebido.
+
+### 1. Tese — a perspectiva do cliente
+
+Coleta, não validação
+
+#### Métodos
+
+- Ask & Handover — materiais existentes do cliente.
+- Discovery — questionário assíncrono, organizado pelas 4 camadas.
+- Reuniões de escuta — captura de contexto e narrativa; transcrição é dado.
+
+#### Steps internos
+
+Context Lock, Signal Detection, Tension Mapping, Hidden Patterns, Risk Assessment — 5 steps, uso interno. Não aparecem no deliverable.
+
+#### Output
+
+Leitura do que o cliente acredita que é, por camada — sem interpretação Paladino ainda.
+
+### 2. Antítese — a leitura validada Paladino
+
+Interna, sem co-criação
+
+#### Métodos
+
+- Análise de contraste — micro (incoerências internas) e macro (posição no mercado).
+- Frameworks por camada — lentes analíticas internas, não apresentadas ao cliente.
+- Inputs Paladino — sinais das reuniões que não entraram nas respostas formais.
+- Pesquisa complementar — mercado, tendências, referências, quando necessário.
+
+#### Steps internos
+
+Hypothesis Map, Strategic Directions, Reframe — 3 steps, uso interno.
+
+#### Padrão aplicado
+
+Bloco de posição, materiais recebidos/pendentes, tensões numeradas por camada, instrumentos por tensão, leitura central de fechamento.
+
+#### Output
+
+Tensões nomeadas, instrumentos construídos, hipóteses levantadas para reação do cliente.
+
+### 3. Síntese — o resultado do cruzamento
+
+Não é soma — é reframe
+
+#### Caráter
+
+Output intelectual da etapa. Encerra o diagnóstico, prepara a Formulação Estratégica.
+
+#### Output por camada
+
+Definição estrutural do negócio, o que está frágil operacionalmente, direção simbólica, território de mercado defensável.
+
+### Protocolo de contato com cliente
+
+#### Fluxo estabelecido
+
+Ask & Handover e Discovery enviados após assinatura. Duas semanas depois, reunião única apresenta Tese + Antítese + Síntese integradas.
+
+#### Fluxo piloto (Galo Cinza)
+
+Projeto iniciado antes do fluxo estabelecido existir. Reunião 1 — Tese + Antítese apresentadas juntas. Reunião 2 — Síntese, em separado.
+
+### Cadência real observada
+
+Piloto Galo Cinza, 2026
+
+Reuniões 1–2
+
+Captura de contexto via transcrição. Sem Ask & Handover, sem Discovery respondido.
+
+05.05
+
+Push de Ask & Handover enviado ao cliente. Diagnóstico interno produzido com o material disponível — **Ask & Handover nunca retornou.**
+
+10.06
+
+Antítese apresentada ao cliente. 4 tensões, 4 instrumentos.
+
+11.06
+
+Análise Interna pós-reunião produzida no dia seguinte.
+
+~3 semanas depois
+
+Síntese — planejada para "semana seguinte" à Antítese, realizada com atraso significativo em relação ao previsto.
+
+**Para a v1:** a cadência real correu mais devagar que a planejada entre Antítese e Síntese. Vale considerar um buffer maior no protocolo formal, em vez de assumir "semana seguinte" como padrão.
+
+Formato de entrega — validado
+
+Deck HTML, apresentação ao vivo, com bloco de posição e status de materiais no abertura, leitura central no fechamento.
+
+04Hipótese de processo
+
+## Etapa 02 — Formulação Estratégica
+
+Síntese intelectual e estruturação do sistema. Define-se proposta de valor, arquitetura de portfólio e identidade conceitual — com base no que a Síntese da Etapa 01 entregou.
+
+### 2.1 Boards visuais e verbais
+
+#### Método
+
+Desktop research e referências externas. Sem criação própria — puro exercício de calibração de direção.
+
+#### Instrumentos
+
+Só se a leitura dos boards revelar tensão entre direções — por exemplo, o cliente puxando para um lado enquanto a Síntese aponta outro. Não é automático.
+
+#### Output
+
+Apresentação ao cliente para calibrar direção estética e conceitual.
+
+#### Prep antes
+
+Curadoria de referências externas alinhadas à Síntese aprovada.
+
+#### Prep depois
+
+Análise Interna pós-reunião — captura reação do cliente aos boards.
+
+### 2.2 Look & Feel
+
+#### Método
+
+Designer entra. Criação própria a partir do feedback dos boards. DNA + identidade verbal como brief que já antecipa parte da guideline futura.
+
+#### Output
+
+Figma slides + feedback do cliente sobre o Look & Feel.
+
+#### Prep antes
+
+Produção criativa a partir da direção calibrada em 2.1.
+
+#### Prep depois
+
+Análise Interna pós-reunião.
+
+### 2.3 Proposta final
+
+Sem matéria-prima nas fontes
+
+#### O que existe
+
+Só a definição do Framework v1.1: "estrutura definitiva para avançar à Estruturação Simbólica." Nenhum método ou formato de output documentado em nenhuma fonte.
+
+#### Proposta (aberta)
+
+Consolidação do Look & Feel aprovado numa proposta formal única, que funciona como documento de encerramento da etapa e handover para a Estruturação Simbólica. Formato e nível de detalhe ficam em aberto para definição direta do Chaparro.
+
+### Cadência proposta
+
+Hipótese — sem execução real
+
+Reunião 1
+
+**Boards.** ~2 semanas após aprovação da Síntese, para dar tempo de curadoria de referência.
+
+Reunião 2
+
+**Look & Feel.** ~2 semanas após aprovação dos boards — tempo de produção criativa.
+
+Reunião 3
+
+**Proposta final.** Intervalo a definir — depende do escopo que a Proposta final assumir.
+
+3 reuniões já estavam definidas no Framework v1.1 macro. O intervalo entre elas (~2 semanas) é hipótese nova, baseada em tempo de produção razoável — não em execução real.
+
+Formato de entrega — herdado do rascunho
+
+Figma slides + feedback do cliente. Mesma lógica de apresentação ao vivo da Etapa 01.
+
+05Hipótese de processo
+
+## Etapa 03 — Estruturação Simbólica
+
+Execução a partir do Look & Feel e da Proposta aprovados. Tipografia, cor, forma e tom de voz deixam de ser escolha estética e passam a operar como sinal de reconhecimento e autoridade.
+
+### 3.1 Execução a partir da Proposta aprovada
+
+#### Método
+
+Tradução da Proposta e do Look & Feel em sistema formal de linguagem visual e verbal.
+
+#### Instrumentos
+
+Uso diferente do da Imersão Ontológica: aqui o instrumento testa coerência entre a expressão em construção e a Síntese aprovada — não redefine estratégia. Aplica-se se um elemento simbólico soar certo mas não performar a função que o território pede.
+
+#### Output
+
+Sistema de marca em construção.
+
+### 3.2 Guidelines + Playbooks
+
+#### Método
+
+Consolidação dos elementos definidos em 3.1 em documentos de aplicação.
+
+#### Output
+
+Sistema de marca completo — guidelines, playbooks, ativos de identidade.
+
+### Cadência proposta
+
+Hipótese — sem base nas fontes
+
+Checkpoint
+
+Revisão intermediária do sistema em progresso — antes de fechar guidelines, validar direção com o cliente.
+
+Aprovação final
+
+Entrega e aprovação do sistema de marca completo.
+
+#### Prep antes
+
+Material de sistema pronto para revisão — não esboço, aplicação real.
+
+#### Prep depois
+
+Análise Interna pós-reunião, se houver ajuste a incorporar antes da entrega final.
+
+Nenhuma das duas fontes documenta quantidade ou cadência de reunião para esta etapa. As duas reuniões acima são proposta mínima razoável, não achado.
+
+06Hipótese de processo — pouca base
+
+## Etapa 04 — Ativação Sistêmica
+
+Consolidação e autonomia. O critério de sucesso não é entregar mais material — é o organismo operar sem depender da Paladino para cada decisão de marca.
+
+**Aviso de escopo:** esta é a etapa com menos matéria-prima das quatro. Nenhuma fonte documenta sub-etapa, método ou reunião. O que segue é construção a partir de uma única descrição de parágrafo — ponto de partida para a conversa de amanhã, não estrutura testada nem inferida de rascunho.
+
+### 4.1 Handoff e treinamento (proposta)
+
+#### Método
+
+Transferência formal do sistema para a operação do cliente. Sessão de treinamento de equipe na aplicação prática das guidelines.
+
+#### Output
+
+Equipe do cliente capaz de aplicar o sistema sem consulta a cada decisão.
+
+### 4.2 Governança de longo prazo (proposta)
+
+#### Método
+
+Protocolo de decisão para aplicações futuras não previstas nas guidelines — o que pode ser decidido internamente pelo cliente, o que exige consulta.
+
+#### Output
+
+Diretrizes de governança documentadas. Autonomia operacional real, não apenas declarada.
+
+### Cadência proposta
+
+Reunião única
+
+Handoff + treinamento, combinados.
+
+Checkpoint opcional
+
+Acompanhamento pós-entrega, sem compromisso fixo — a definir se entra como escopo contratado ou como oferta separada.
+
+07
+
+## Perguntas em aberto para a v1
+
+Não bloqueiam este v0. Precisam de decisão antes do framework virar documento final.
+
+01
+
+Nomenclatura das camadas de tensão
+
+O diagnóstico (05.05) usa Ontológica / Estratégica / Perceptual / Latente. A Antítese (10.06) usa Identidade / Crescimento / Percepção / Portfólio. Mesmo conteúdo, rótulo diferente. Fixar uma versão.
+
+02
+
+Status real da Síntese do Galo Cinza
+
+Confirmado: acontece amanhã. Assim que fechar, a Etapa 01 vira caso de referência completo — este documento deve ser atualizado com o resultado.
+
+03
+
+Quantidade de reuniões nas Etapas 03 e 04
+
+Proposta mínima incluída neste v0. Sem execução real para validar se é suficiente.
+
+04
+
+Formato final da Proposta final (2.3)
+
+Único ponto da Etapa 02 sem nenhuma base documental, nem no Framework v1.1 nem no rascunho.
+
+Nota de fechamento
+
+Este documento é insumo para o encontro de amanhã. O Chaparro traz trabalho equivalente do lado dele — a v1 nasce do cruzamento dos dois, não da adoção direta deste v0.
+
+Paladino Inc. — Documento interno · Framework de Processo v0 · Julho 2026 Fontes: Framework de Processo v1.1 · Desenho de Processo (rascunho) · Piloto Galo Cinza
+</script>
+
+<script>
+// Build floating nav dynamically from headings
+(function(){
+  const content = document.getElementById('content');
+  const navList = document.getElementById('navList');
+  const headings = content.querySelectorAll('h2.section-title, h3.sub-title');
+  let currentH2Li = null;
+
+  headings.forEach(function(h){
+    const parentId = h.closest('[id]') ? h.closest('[id]').id : null;
+    if(!parentId) return;
+    const isH2 = h.tagName === 'H2';
+    const li = document.createElement('li');
+    li.className = isH2 ? 'lvl2' : 'lvl3';
+    const a = document.createElement('a');
+    a.href = '#' + parentId;
+    a.textContent = h.textContent;
+    a.dataset.target = parentId;
+    li.appendChild(a);
+
+    if(isH2){
+      navList.appendChild(li);
+      currentH2Li = li;
+      const sub = document.createElement('ul');
+      sub.style.display = 'flex';
+      sub.style.flexDirection = 'column';
+      li.appendChild(sub);
+    } else if(currentH2Li){
+      currentH2Li.querySelector('ul').appendChild(li);
+    } else {
+      navList.appendChild(li);
+    }
+  });
+
+  const links = navList.querySelectorAll('a');
+  links.forEach(function(a){
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      const target = document.getElementById(a.dataset.target);
+      if(target){ target.scrollIntoView({behavior:'smooth', block:'start'}); }
+      document.getElementById('sideNav').classList.remove('open');
+    });
+  });
+
+  const targets = Array.from(links).map(function(a){ return document.getElementById(a.dataset.target); }).filter(Boolean);
+  const observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      const id = entry.target.id;
+      const link = navList.querySelector('a[data-target="'+id+'"]');
+      if(!link) return;
+      if(entry.isIntersecting){
+        links.forEach(function(l){ l.classList.remove('active'); });
+        link.classList.add('active');
+      }
+    });
+  }, {rootMargin:'-15% 0px -70% 0px'});
+  targets.forEach(function(t){ observer.observe(t); });
+
+  document.getElementById('navToggle').addEventListener('click', function(){
+    document.getElementById('sideNav').classList.toggle('open');
+  });
+
+  document.getElementById('downloadMd').addEventListener('click', function(){
+    const mdText = document.getElementById('mdSource').textContent;
+    const blob = new Blob([mdText], {type:'text/markdown;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'paladino-framework-de-processo-v0.md';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+})();
+</script>
+
+</body>
+</html>
