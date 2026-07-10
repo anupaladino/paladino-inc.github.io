@@ -1,0 +1,1924 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposta Técnica — Paladino × Rottas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --branco: #FFFFFF;
+    --off-white: #F5F5F3;
+    --preto: #0D0D0D;
+    --cinza-escuro: #3D3D3D;
+    --cinza-medio: #8C8C8C;
+    --cinza-claro: #E8E8E8;
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    background: #111;
+    font-family: 'DM Sans', sans-serif;
+    overflow: hidden;
+  }
+
+  /* ── STAGE ── */
+  #stage {
+    width: 100vw; height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #scaler {
+    width: 1280px; height: 720px;
+    position: relative;
+    transform-origin: center center;
+  }
+
+  /* ── SLIDE BASE ── */
+  .slide {
+    position: absolute; inset: 0;
+    width: 1280px; height: 720px;
+    background: var(--off-white);
+    padding: 56px 88px 44px;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+  .slide.ativo { opacity: 1; pointer-events: all; }
+  .slide.preto { background: var(--preto); }
+  .slide.branco { background: var(--branco); }
+
+  /* ── TIPOGRAFIA — escala DM Sans ── */
+  .eyebrow {
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--cinza-medio); margin-bottom: 8px;
+  }
+  .preto .eyebrow { color: #555; }
+  .branco .eyebrow { color: var(--cinza-medio); }
+
+  /* Title 1 — 72px / abertura */
+  .t1 {
+    font-size: 72px; line-height: 76px; font-weight: 600;
+    letter-spacing: -0.03em; color: var(--preto);
+  }
+  .preto .t1 { color: var(--branco); }
+
+  /* Title 2 — 52px / seções */
+  .t2 {
+    font-size: 52px; line-height: 60px; font-weight: 600;
+    letter-spacing: -0.025em; color: var(--preto);
+  }
+  .preto .t2 { color: var(--branco); }
+
+  /* H1 — 38px */
+  .h1 {
+    font-size: 38px; line-height: 46px; font-weight: 600;
+    letter-spacing: -0.018em; color: var(--preto);
+  }
+  .preto .h1 { color: var(--branco); }
+
+  /* H2 — 28px */
+  .h2 {
+    font-size: 28px; line-height: 36px; font-weight: 600;
+    letter-spacing: -0.012em; color: var(--preto);
+  }
+  .preto .h2 { color: var(--branco); }
+  /* H2 subtitle variant — lighter weight, muted color */
+  .h2-sub {
+    font-size: 28px; line-height: 36px; font-weight: 400;
+    letter-spacing: -0.012em; color: var(--cinza-escuro);
+    margin-top: 4px;
+  }
+
+  /* H3 — 20px */
+  .h3 {
+    font-size: 20px; line-height: 28px; font-weight: 600;
+    letter-spacing: -0.008em; color: var(--preto);
+  }
+  .preto .h3 { color: var(--branco); }
+  /* H3 subtitle variant */
+  .h3-sub {
+    font-size: 20px; line-height: 28px; font-weight: 400;
+    letter-spacing: -0.008em; color: var(--cinza-escuro);
+    margin-top: 6px;
+  }
+
+  /* Body — 17px */
+  .body {
+    font-size: 17px; line-height: 27px; font-weight: 400;
+    color: var(--preto);
+  }
+  .preto .body { color: #ddd; }
+  /* Consecutive body paragraphs */
+  .body + .body { margin-top: 18px; }
+  .body + .sup  { margin-top: 18px; }
+
+  /* Body suporte — 15px */
+  .sup {
+    font-size: 15px; line-height: 24px; font-weight: 400;
+    color: var(--cinza-escuro);
+  }
+  .preto .sup { color: #aaa; }
+  .branco .sup { color: var(--cinza-escuro); }
+  /* Consecutive sup paragraphs */
+  .sup + .sup { margin-top: 16px; }
+
+  /* Label — 11px caps */
+  .lbl {
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.11em; text-transform: uppercase;
+    color: var(--cinza-medio); display: block;
+    margin-bottom: 10px;
+  }
+  /* When a lbl follows body text or sup, add breathing room above */
+  .sup + .lbl,
+  .body + .lbl,
+  p + .lbl { margin-top: 20px; }
+  .preto .lbl { color: #555; }
+  .branco .lbl { color: var(--cinza-medio); }
+
+  /* Caption — 12px */
+  .cap {
+    font-size: 12px; line-height: 20px; font-weight: 400;
+    color: var(--cinza-medio); margin-bottom: 12px;
+  }
+  .preto .cap { color: #555; }
+
+  /* Número destaque */
+  .num-destaque {
+    font-size: 56px; line-height: 60px; font-weight: 600;
+    letter-spacing: -0.03em; color: var(--preto);
+  }
+
+  /* ── LAYOUT ── */
+  /* Divider: respiro fixo acima e abaixo */
+  .divider {
+    height: 1px; background: var(--cinza-claro); flex-shrink: 0;
+    margin-top: 16px;
+  }
+  .preto .divider { background: #1f1f1f; }
+  .branco .divider { background: var(--cinza-claro); }
+
+  /* Grids: gap consistente, padding-top unificado via classe utilitária */
+  .g2  { display: grid; grid-template-columns: 1fr 1fr; gap: 52px; }
+  .g3  { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; }
+  .g4  { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 28px; }
+  .g21 { display: grid; grid-template-columns: 2fr 1fr; gap: 52px; }
+  .g12 { display: grid; grid-template-columns: 1fr 2fr; gap: 52px; }
+
+  /* Todos os grids logo após divider recebem padding-top via seletor,
+     eliminando o inline style inconsistente */
+  .divider + .g2,
+  .divider + .g3,
+  .divider + .g4,
+  .divider + .g21,
+  .divider + .g12 { padding-top: 24px; }
+
+  /* ── RETRANCA ── */
+  .retranca {
+    background: var(--branco);
+    padding: 18px 24px;
+    border-left: 2px solid var(--preto);
+  }
+  .preto .retranca { background: #181818; border-left-color: #3a3a3a; }
+  .branco .retranca { background: var(--off-white); border-left-color: var(--preto); }
+
+  /* Retranca depois de texto: sempre com espaço acima */
+  .sup + .retranca,
+  .body + .retranca { margin-top: 20px; }
+
+  /* Lbl dentro de retranca: margem inferior reduzida */
+  .retranca .lbl { margin-bottom: 8px; }
+
+  /* ── SLIDE TRANSIÇÃO ── */
+  .s-tr { justify-content: space-between; }
+
+  .tr-seq {
+    font-size: 120px; line-height: 1; font-weight: 600;
+    letter-spacing: -0.05em; color: #1e1e1e;
+    /* removido margin-bottom negativo — causa overlap em alguns browsers */
+    margin-bottom: 0;
+  }
+  .tr-ey {
+    font-size: 13px; font-weight: 400; letter-spacing: 0.06em;
+    color: #666; margin-bottom: 12px; text-transform: uppercase;
+  }
+  .tr-titulo {
+    font-size: 60px; line-height: 66px; font-weight: 600;
+    letter-spacing: -0.025em; color: var(--branco);
+    max-width: 800px;
+  }
+
+  /* ── MÓDULO NUMERADO ── */
+  .mod {
+    display: flex; gap: 16px; align-items: baseline;
+    padding: 12px 0; border-bottom: 1px solid var(--cinza-claro);
+  }
+  .mod:last-child { border-bottom: none; }
+  .mod-n {
+    font-size: 13px; font-weight: 600; color: var(--cinza-medio);
+    min-width: 28px; flex-shrink: 0; line-height: 22px;
+  }
+  .mod-t { font-size: 15px; font-weight: 500; color: var(--preto); line-height: 22px; }
+  .mod-d {
+    font-size: 13px; font-weight: 400; color: var(--cinza-escuro);
+    line-height: 20px; margin-top: 4px;
+  }
+
+  /* ── CARD DE DIMENSÃO ── */
+  /* Grid container has border-top; all cards start at same baseline */
+  .dim { padding: 20px 0 0 0; border-top: none; }
+  .dim-seq {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.10em;
+    text-transform: uppercase; color: var(--cinza-medio); margin-bottom: 6px;
+  }
+  .dim-t { font-size: 17px; font-weight: 600; color: var(--preto); margin-bottom: 6px; }
+  .dim-d { font-size: 14px; line-height: 23px; color: var(--cinza-escuro); }
+
+  /* ── CARD DE ENTREGÁVEL ── */
+  .entrega { padding: 20px 0; border-top: 2px solid var(--preto); }
+  .branco .entrega { border-top-color: var(--preto); }
+  .entrega-n {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.10em;
+    text-transform: uppercase; color: var(--cinza-medio);
+    margin-bottom: 8px; display: block;
+  }
+  .entrega-t { font-size: 17px; font-weight: 600; color: var(--preto); margin-bottom: 8px; }
+  .entrega-d { font-size: 14px; line-height: 23px; color: var(--cinza-escuro); }
+
+  /* ── CARD GOVERNANÇA ── */
+  .gov { padding: 18px 0 18px 18px; border-left: 1px solid var(--cinza-claro); }
+  .gov-t {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.09em;
+    text-transform: uppercase; color: var(--preto); margin-bottom: 8px;
+  }
+  .gov-d { font-size: 13px; line-height: 21px; color: var(--cinza-escuro); }
+
+  /* ── DECUPAGEM ── */
+  .dec-titulo-grupo {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.10em;
+    text-transform: uppercase; color: var(--preto);
+    padding-bottom: 8px; border-bottom: 1px solid var(--preto);
+    margin-bottom: 2px; margin-top: 20px; display: block;
+  }
+  /* First group in a column: no top margin */
+  div > .dec-titulo-grupo:first-child { margin-top: 0; }
+  .branco .dec-titulo-grupo { color: var(--preto); border-bottom-color: var(--preto); }
+  .dec-item {
+    font-size: 13px; line-height: 19px; color: var(--cinza-escuro);
+    padding: 6px 0; border-bottom: 1px solid var(--cinza-claro);
+    display: flex; gap: 10px; align-items: baseline;
+  }
+  .dec-item:last-child { border-bottom: none; }
+  /* min-width fixo no label: alinha coluna de descrições */
+  .dec-item b {
+    font-weight: 500; color: var(--preto);
+    flex-shrink: 0; min-width: 148px;
+  }
+
+  /* ── STAT ── */
+  .stat-n {
+    font-size: 52px; line-height: 56px; font-weight: 600;
+    letter-spacing: -0.03em; color: var(--preto);
+  }
+  .stat-l {
+    font-size: 14px; line-height: 22px; font-weight: 400;
+    color: var(--cinza-escuro); margin-top: 8px;
+    max-width: 280px; /* evita linha longa no grid de 3 */
+  }
+
+  /* ── LISTA ── */
+  .ul li {
+    list-style: none; padding: 8px 0 8px 20px; position: relative;
+    font-size: 14px; line-height: 22px; color: var(--cinza-escuro);
+    border-bottom: 1px solid var(--cinza-claro);
+  }
+  .ul li:last-child { border-bottom: none; }
+  .ul li::before { content: "—"; position: absolute; left: 0; color: var(--cinza-claro); }
+
+  /* ── INVEST ── */
+  .invest-v {
+    font-size: 60px; line-height: 64px; font-weight: 600;
+    letter-spacing: -0.03em; color: var(--preto);
+  }
+  .invest-s {
+    font-size: 15px; font-weight: 400; color: var(--cinza-escuro);
+    margin-top: 10px; line-height: 24px;
+  }
+
+  /* ── CAPTION ── */
+  /* line-height corrigido de 18 para 20px */
+
+  /* ── RODAPÉ ── */
+  .rodape {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 14px; border-top: 1px solid var(--cinza-claro); flex-shrink: 0;
+  }
+  .preto .rodape { border-top-color: #1f1f1f; }
+  .branco .rodape { border-top-color: var(--cinza-claro); }
+  .rod-t { font-size: 11px; color: var(--cinza-medio); letter-spacing: 0.04em; }
+  .preto .rod-t { color: #444; }
+  .rod-n { font-size: 11px; color: var(--cinza-medio); letter-spacing: 0.04em; min-width: 56px; text-align: right; font-variant-numeric: tabular-nums; }
+  .preto .rod-n { color: #444; }
+  .rod-link { font-size: 11px; color: var(--cinza-medio); letter-spacing: 0.04em; text-decoration: none; border-bottom: 1px solid var(--cinza-claro); transition: color .15s, border-color .15s; }
+  .rod-link:hover { color: var(--preto); border-bottom-color: var(--preto); }
+  .preto .rod-link { color: #444; border-bottom-color: #333; }
+
+  /* ── NAV ── */
+  #nav {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 16px;
+    background: rgba(0,0,0,0.75); padding: 8px 20px; border-radius: 40px;
+    backdrop-filter: blur(8px); z-index: 100;
+  }
+  #nav button {
+    background: none; border: 1px solid rgba(255,255,255,0.2);
+    color: #fff; font-family: 'DM Sans', sans-serif;
+    font-size: 12px; padding: 6px 16px; border-radius: 20px;
+    cursor: pointer; letter-spacing: 0.06em; transition: background .15s;
+  }
+  #nav button:hover { background: rgba(255,255,255,0.1); }
+  #nav button:disabled { opacity: 0.25; cursor: default; }
+  #nav-info { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 0.06em; min-width: 64px; text-align: center; }
+</style>
+</head>
+<body>
+<div id="stage"><div id="scaler">
+<!-- ══════════════════════════════════════════════════════
+     01 — CAPA
+══════════════════════════════════════════════════════ -->
+<div class="slide preto ativo" id="s0">
+  <div>
+    <span class="eyebrow">Paladino Inc.</span>
+  </div>
+  <div>
+    <h1 class="t1" style="max-width:900px; margin-bottom:24px;">Proposta Técnica<br>Arquitetura de Marca para a Próxima Geração do Portfólio Rottas</h1>
+    <p class="sup" style="color:#777; margin-bottom:8px;">Rottas Construtora e Incorporadora</p>
+    <p class="sup" style="color:#555;">A/C Diretoria Rottas</p>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Julho de 2026 · Versão 2.0 · Confidencial</span>
+    <span class="rod-n">01 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     02 — CITAÇÃO
+══════════════════════════════════════════════════════ -->
+<div class="slide preto" id="s1">
+  <div></div>
+  <div style="width:100%; display:flex; justify-content:center; align-items:center; flex:1; margin-bottom:44px;">
+    <p style="font-size:48px; line-height:62px; font-weight:400; color:var(--branco); letter-spacing:-0.02em; text-align:center; max-width:820px;">"Uma marca não é algo que um negócio possui.<br>É algo que um negócio se torna."</p>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">02 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     03 — SOBRE A PALADINO
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s2">
+  <div>
+    <span class="eyebrow">Sobre a Paladino</span>
+    <h2 class="t2" style="margin-bottom:4px; max-width:700px;">Estratégia antes de identidade.</h2>
+  </div>
+  <div class="divider"></div>
+  <div class="g21" style="flex:1; align-items:start;">
+    <div>
+      <p class="body">A Paladino revela aquilo que torna um negócio singular antes de projetar sua marca. A partir dessa compreensão, estruturamos um sistema capaz de orientar decisões, organizar sua expressão e preservar sua integridade conforme o negócio cresce, evolui e se relaciona com o mundo.</p>
+      <p class="sup">Fundada por estrategistas de marca com mais de vinte anos de experiência, a Paladino liderou projetos para mais de 300 organizações no Brasil, Estados Unidos, Reino Unido, Europa e Ásia, entre elas METCHA, Grendene, Melissa, Mini Melissa, Brazilian Leather (Apex Brasil), JBS, Walmart, PepsiCo, Coca-Cola, Mor e Coza.</p>
+    </div>
+    <div>
+      <div class="retranca">
+        <span class="lbl">Nossa função</span>
+        <p class="sup">Investigamos a essência do negócio, estruturamos sua identidade, organizamos sua expressão e orientamos sua experiência como partes de um único sistema.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rodape">
+    <a class="rod-link" href="https://paladino.inc" target="_blank">paladino.inc</a>
+    <span class="rod-n">03 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     04 — TRANSIÇÃO: PONTO DE PARTIDA
+══════════════════════════════════════════════════════ -->
+<div class="slide preto s-tr" id="s3">
+  <div>
+    <p class="tr-seq">01</p>
+  </div>
+  <div>
+    <p class="tr-ey">O momento que gerou esta proposta</p>
+    <h2 class="tr-titulo">Ponto de Partida</h2>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">04 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     05 — PONTO DE PARTIDA
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s4">
+  <div>
+    <span class="eyebrow">01 — Ponto de Partida</span>
+    <h2 class="h1" style="max-width:860px; margin-bottom:4px;">Ao longo de dezesseis anos, a Rottas consolidou uma operação reconhecida por sua capacidade de entregar habitação em escala.</h2>
+  </div>
+  <div class="divider"></div>
+  <div class="g2" style="flex:1; align-items:start;">
+    <div>
+      <p class="sup">Essa trajetória construiu uma marca associada à confiança, à eficiência e ao acesso à moradia, especialmente no segmento de entrada. Esse patrimônio representa um dos principais ativos da empresa e merece ser preservado.</p>
+      <p class="sup">Nos últimos anos, entretanto, o portfólio passou a incorporar empreendimentos destinados a outro contexto de mercado. São produtos direcionados a um público que adota critérios diferentes de decisão em relação à arquitetura, ao design, à experiência de compra e ao valor percebido do investimento.</p>
+    </div>
+    <div>
+      <p class="sup">Essa evolução altera a função da marca. Uma identidade que durante anos representou um conjunto relativamente homogêneo de produtos passa, agora, a representar categorias distintas, com públicos, referências e expectativas diferentes.</p>
+      <div class="retranca">
+        <span class="lbl">A janela concreta</span>
+        <p class="sup">O lançamento previsto para setembro torna essa transição especialmente relevante. Mais do que lançar um novo empreendimento, ele representa a oportunidade de estruturar a arquitetura de marca que sustentará o próximo ciclo de crescimento da Rottas.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">05 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     06 — DADOS DE CONTEXTO
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s5">
+  <div>
+    <span class="eyebrow">01 — Ponto de Partida</span>
+    <h2 class="h1">Dados de Contexto</h2>
+  </div>
+  <div class="divider"></div>
+  <div class="g3" style="flex:1; align-items:center;">
+    <div>
+      <div class="stat-n">16 anos</div>
+      <div class="stat-l">de trajetória construindo reputação, escala e capacidade de entrega no mercado imobiliário.</div>
+    </div>
+    <div>
+      <div class="stat-n">+7.000</div>
+      <div class="stat-l">unidades entregues, com forte presença no segmento de entrada e expansão consistente do portfólio.</div>
+    </div>
+    <div>
+      <div class="stat-n">18%</div>
+      <div class="stat-l">de valorização imobiliária. Curitiba registrou a maior valorização entre as capitais brasileiras em 2024, consolidando-se como um dos mercados imobiliários mais dinâmicos do país.</div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">06 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     07 — TRANSIÇÃO: O QUE IDENTIFICAMOS
+══════════════════════════════════════════════════════ -->
+<div class="slide preto s-tr" id="s6">
+  <div>
+    <p class="tr-seq">02</p>
+  </div>
+  <div>
+    <p class="tr-ey">O que identificamos</p>
+    <h2 class="tr-titulo">Leitura Estratégica</h2>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">07 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     08 — DIAGNÓSTICO: ABERTURA
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s7">
+  <div>
+    <span class="eyebrow">02 — O que identificamos</span>
+    <h2 class="t2" style="max-width:860px; margin-bottom:4px;">O diagnóstico conduzido pela Paladino não aponta uma deficiência de comunicação.</h2>
+  </div>
+  <div class="divider"></div>
+  <div class="g21" style="flex:1; align-items:start;">
+    <div>
+      <p class="body">Ele revela uma mudança na capacidade da marca de representar, com precisão, a evolução do portfólio da empresa.</p>
+      <p class="sup">Enquanto os empreendimentos compartilhavam características semelhantes, uma única identidade era suficiente para sustentar a percepção da organização. À medida que o portfólio passou a ocupar novos territórios de mercado, essa mesma identidade passou a representar expectativas substancialmente diferentes.</p>
+    </div>
+    <div>
+      <div class="retranca">
+        <span class="lbl">O ponto de partida do diagnóstico</span>
+        <p class="sup">As tensões apresentadas a seguir são consequência direta dessa transformação — e revelam onde estão as maiores oportunidades para o próximo ciclo.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">08 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     09 — TENSÃO 01
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s8">
+  <div>
+    <span class="eyebrow">02 — Leitura Estratégica</span>
+    <h2 class="h1" style="margin-bottom:4px;">Tensão 01</h2>
+    <p class="h2-sub">A marca atual passou a representar expectativas diferentes.</p>
+  </div>
+  <div class="divider"></div>
+  <div class="g2" style="flex:1; align-items:start;">
+    <div>
+      <span class="lbl">O comprador do primeiro imóvel</span>
+      <p class="sup">Procura segurança, previsibilidade e confiança ao longo de sua jornada. A marca é garantia — representa entrega, reputação e acesso a um sonho que ainda está sendo construído.</p>
+    </div>
+    <div>
+      <span class="lbl">O comprador do segmento médio-alto</span>
+      <p class="sup">Utiliza outros critérios de decisão. Além dos atributos funcionais do empreendimento, avalia linguagem arquitetônica, qualidade percebida, potencial de valorização, identidade do produto e aderência ao estilo de vida que pretende construir.</p>
+      <div class="retranca">
+        <span class="lbl">O efeito na percepção</span>
+        <p class="sup">Quando ambos os públicos encontram a mesma marca, parte dessa percepção deixa de acontecer espontaneamente. O resultado raramente se manifesta como rejeição explícita — ele aparece na dificuldade de construir uma percepção de valor compatível com o posicionamento pretendido.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">09 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     10 — TENSÃO 02
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s9">
+  <div>
+    <span class="eyebrow">02 — Leitura Estratégica</span>
+    <h2 class="h1" style="margin-bottom:4px;">Tensão 02</h2>
+    <p class="h2-sub">O produto evoluiu mais rápido do que a marca.</p>
+  </div>
+  <div class="divider"></div>
+  <div class="g2" style="flex:1; align-items:start;">
+    <div>
+      <p class="body">A qualidade dos empreendimentos desenvolvidos pela Rottas evoluiu de forma consistente nos últimos anos. Localização, racionalidade de projeto, eficiência construtiva, áreas comuns e competitividade formam um conjunto de atributos capaz de sustentar uma nova percepção de mercado.</p>
+    </div>
+    <div>
+      <div class="retranca">
+        <span class="lbl">O desafio central</span>
+        <p class="sup">Não está em transformar o produto. Está em desenvolver uma marca capaz de traduzir, com a mesma precisão, aquilo que o produto já se tornou.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">10 / 53</span>
+  </div>
+</div>
+<!-- ══════════════════════════════════════════════════════
+     11 — TENSÃO 03
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s10">
+  <div>
+    <span class="eyebrow">02 — Leitura Estratégica</span>
+    <h2 class="h1" style="margin-bottom:4px;">Tensão 03</h2>
+    <p class="h2-sub">O diferencial está na forma como o valor é construído.</p>
+  </div>
+  <div class="divider"></div>
+  <div class="g2" style="flex:1; align-items:start;">
+    <div>
+      <p class="sup">A oportunidade da nova marca não está em disputar espaço com incorporadoras de alto luxo nem em reproduzir os códigos tradicionais desse segmento.</p>
+      <p class="sup">O território que se apresenta é outro: empreendimentos contemporâneos, bem resolvidos, com arquitetura consistente, inteligência de projeto e alto valor percebido dentro de uma lógica econômica eficiente.</p>
+    </div>
+    <div>
+      <div class="retranca">
+        <span class="lbl">A vantagem competitiva</span>
+        <p class="sup">Não nasce da exclusividade. Nasce da capacidade de entregar mais valor do que o mercado espera para essa faixa de investimento.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">11 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     12 — TENSÃO 04
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s11">
+  <div>
+    <span class="eyebrow">02 — Leitura Estratégica</span>
+    <h2 class="h1" style="margin-bottom:4px;">Tensão 04</h2>
+    <p class="h2-sub">A arquitetura do portfólio tornou-se uma decisão estratégica.</p>
+  </div>
+  <div class="divider"></div>
+  <div class="g2" style="flex:1; align-items:start;">
+    <div>
+      <p class="sup">À medida que o portfólio se diversifica, propostas de valor distintas passam a exigir identidades próprias.</p>
+      <p class="sup">A convivência entre a Rottas e uma nova marca permite que cada uma desenvolva seu posicionamento com maior precisão, preservando coerência entre produto, comunicação e público.</p>
+    </div>
+    <div>
+      <div class="retranca">
+        <span class="lbl">O que a arquitetura amplia</span>
+        <p class="sup">Ao mesmo tempo, essa arquitetura amplia as possibilidades de governança, expansão do portfólio e construção independente de valor para cada marca.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">12 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     13 — CONTEXTO DE MERCADO
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s12">
+  <div>
+    <span class="eyebrow">02 — Leitura Estratégica</span>
+    <h2 class="t2" style="max-width:860px; margin-bottom:4px;">Contexto de Mercado</h2>
+  </div>
+  <div class="divider"></div>
+  <div class="g21" style="flex:1; align-items:start;">
+    <div>
+      <p class="body">O mercado já demonstra a existência desse novo território.</p>
+      <p class="sup">O ticket médio dos lançamentos em Curitiba ultrapassou R$ 1,1 milhão em 2025, enquanto a cidade consolidou uma das maiores valorizações imobiliárias do país.</p>
+      <p class="sup">Esse cenário revela uma transformação importante: cresce o número de compradores que procuram empreendimentos contemporâneos, com maior qualidade percebida, sem necessariamente migrar para o segmento de alto luxo.</p>
+    </div>
+    <div>
+      <div class="retranca">
+        <span class="lbl">A questão que se coloca</span>
+        <p class="sup">A questão, portanto, deixa de ser se esse mercado existe. Passa a ser como construir uma marca capaz de dialogar com ele de forma consistente.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">13 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     14 — TRANSIÇÃO: O QUE RECOMENDAMOS
+══════════════════════════════════════════════════════ -->
+<div class="slide preto s-tr" id="s13">
+  <div>
+    <p class="tr-seq">03</p>
+  </div>
+  <div>
+    <p class="tr-ey">A direção estratégica proposta</p>
+    <h2 class="tr-titulo">O que Recomendamos</h2>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">14 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     15 — RECOMENDAÇÃO
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s14">
+  <div>
+    <span class="eyebrow">03 — O que recomendamos</span>
+    <h2 class="t2" style="max-width:860px; margin-bottom:4px;">O diagnóstico conduz a uma conclusão clara.</h2>
+  </div>
+  <div class="divider"></div>
+  <div class="g21" style="flex:1; align-items:start;">
+    <div>
+      <p class="body">A evolução do portfólio da Rottas exige uma arquitetura de marca compatível com a nova realidade da empresa.</p>
+      <p class="sup">Nossa recomendação não consiste em reposicionar a marca atual. Consiste em desenvolver uma nova marca para representar um território que passou a exigir identidade própria.</p>
+      <p class="sup">Essa decisão preserva o patrimônio construído pela Rottas e cria as condições para o desenvolvimento de um novo ativo estratégico, capaz de crescer com autonomia sem comprometer a clareza do portfólio.</p>
+    </div>
+    <div>
+      <div class="retranca">
+        <span class="lbl">O que essa decisão faz</span>
+        <p class="sup">Preserva o equity da Rottas. Cria um novo ativo com trajetória própria. Organiza a percepção do portfólio com a clareza que cada público exige.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">15 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     16 — ARQUITETURA DE PORTFÓLIO
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s15">
+  <div>
+    <span class="eyebrow">03 — O que recomendamos</span>
+    <h2 class="h1">Arquitetura de Portfólio</h2>
+  </div>
+  <div class="divider"></div>
+  <div class="g2" style="flex:1; align-items:start;">
+    <div>
+      <span class="lbl">A Rottas</span>
+      <p class="sup">Permanece responsável pelo território em que consolidou sua reputação: acesso à moradia, confiança, eficiência operacional e capacidade de entrega.</p>
+      <span class="lbl">A nova marca</span>
+      <p class="sup">Passa a representar o portfólio de empreendimentos contemporâneos destinados ao segmento médio-alto, com posicionamento, linguagem e experiência alinhados às expectativas desse contexto.</p>
+    </div>
+    <div>
+      <p class="sup">Mais do que separar produtos, essa arquitetura organiza funções distintas dentro do portfólio, reduz conflitos de percepção entre públicos diferentes e permite que cada marca fortaleça seu próprio território de valor.</p>
+      <div class="retranca">
+        <span class="lbl">No longo prazo</span>
+        <p class="sup">Essa estrutura amplia a capacidade de expansão do portfólio, fortalece sua governança e cria novos ativos de marca capazes de evoluir de forma independente.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">16 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     17 — A NOVA MARCA. O NOVO TERRITÓRIO.
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s16">
+  <div>
+    <span class="eyebrow">03 — O que recomendamos</span>
+    <h2 class="t2" style="margin-bottom:4px;">A Nova Marca. O Novo Território.</h2>
+  </div>
+  <div class="divider"></div>
+  <div class="g21" style="flex:1; align-items:start;">
+    <div>
+      <p class="body">Uma marca não começa pelo nome nem termina na identidade visual.</p>
+      <p class="sup">Ela nasce da compreensão do negócio que representa e se consolida pela coerência entre estratégia, expressão e experiência.</p>
+      <p class="sup">Por isso, a nova marca será construída a partir de um território estratégico claro, capaz de orientar posicionamento, linguagem, identidade, comunicação e critérios de decisão ao longo do tempo.</p>
+    </div>
+    <div>
+      <div class="retranca">
+        <span class="lbl">O objetivo</span>
+        <p class="sup">Não é construir uma marca de luxo. É construir uma marca cuja percepção seja coerente com o valor do portfólio que representa.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">17 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     18 — A ROTTAS FORTALECIDA
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s17">
+  <div>
+    <span class="eyebrow">03 — O que recomendamos</span>
+    <h2 class="t2" style="max-width:800px; margin-bottom:4px;">A criação de uma nova marca também fortalece a marca principal.</h2>
+  </div>
+  <div class="divider"></div>
+  <div class="g2" style="flex:1; align-items:start;">
+    <div>
+      <p class="sup">Ao deixar de representar categorias diferentes sob uma única identidade, a Rottas recupera clareza sobre seu território de atuação e reforça os atributos que construíram sua reputação ao longo de dezesseis anos.</p>
+    </div>
+    <div>
+      <div class="retranca">
+        <span class="lbl">A função de cada marca</span>
+        <p class="sup">Cada marca passa a exercer uma função específica dentro da arquitetura do portfólio, permitindo que ambas evoluam de forma consistente sem competir entre si.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">18 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     19 — TRANSIÇÃO: NOSSA ABORDAGEM
+══════════════════════════════════════════════════════ -->
+<div class="slide preto s-tr" id="s18">
+  <div>
+    <p class="tr-seq">04</p>
+  </div>
+  <div>
+    <p class="tr-ey">Método Paladino: Dimensões de Marca</p>
+    <h2 class="tr-titulo">Nossa Abordagem</h2>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">19 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     20 — ABORDAGEM: SISTEMA
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s19">
+  <div>
+    <span class="eyebrow">04 — Nossa Abordagem</span>
+    <h2 class="t2" style="max-width:820px; margin-bottom:4px;">A construção de uma marca não começa pela identidade visual.</h2>
+  </div>
+  <div class="divider"></div>
+  <div class="g2" style="flex:1; align-items:start;">
+    <div>
+      <p class="body">Começa pela compreensão do negócio que essa marca deverá representar.</p>
+      <p class="sup">Na Paladino, compreendemos a marca como a manifestação de um negócio. Por isso, investigamos sua essência, estruturamos sua identidade, organizamos sua expressão e orientamos sua experiência como partes de um único sistema.</p>
+      <p class="sup">Esse entendimento deu origem ao Método Paladino: Dimensões de Marca. Por meio de quatro dimensões interdependentes — Ontológica, Operacional, Simbólica e Relacional — conduzimos um processo que transforma compreensão em estrutura, estrutura em expressão e expressão em experiência.</p>
+    </div>
+    <div>
+      <p class="sup">Cada etapa reduz incertezas, orienta decisões e prepara a seguinte, permitindo que a marca evolua preservando coerência, integridade e capacidade de gerar valor ao longo do tempo.</p>
+      <div class="retranca">
+        <span class="lbl">Nosso objetivo</span>
+        <p class="sup">Não é produzir documentos isolados. É construir um sistema capaz de orientar decisões, preservar identidade e sustentar a evolução da marca muito além da conclusão do projeto.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">20 / 53</span>
+  </div>
+</div>
+<!-- ══════════════════════════════════════════════════════
+     21 — TRÊS RESULTADOS: SINGULARIDADE
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s20">
+  <div>
+    <span class="eyebrow">04 — Nossa Abordagem · Resultado 01 de 03</span>
+    <h2 class="t2" style="margin-bottom:4px;">Singularidade Estratégica</h2>
+  </div>
+  <div class="divider"></div>
+  <div class="g21" style="flex:1; align-items:start;">
+    <div>
+      <p class="body">Construir um território estratégico claro, reconhecível e consistente.</p>
+      <p class="sup">Não buscamos diferenciação pela diferença. A singularidade é revelada a partir da essência do negócio e consolidada pela coerência entre estrutura, posicionamento, linguagem e expressão.</p>
+    </div>
+    <div>
+      <div class="retranca">
+        <span class="lbl">O efeito</span>
+        <p class="sup">Quando essa relação é preservada, a marca passa a ocupar um território próprio. O reconhecimento deixa de depender de explicações e torna-se consequência natural da estratégia.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">21 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     22 — TRÊS RESULTADOS: VALOR DE MARCA
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s21">
+  <div>
+    <span class="eyebrow">04 — Nossa Abordagem · Resultado 02 de 03</span>
+    <h2 class="t2" style="margin-bottom:4px;">Valor de Marca</h2>
+  </div>
+  <div class="divider"></div>
+  <div class="g21" style="flex:1; align-items:start;">
+    <div>
+      <p class="body">Transformar percepção em vantagem competitiva e geração consistente de valor.</p>
+      <p class="sup">Quando estratégia, expressão e experiência permanecem coerentes, a marca fortalece confiança, aumenta valor percebido, amplia capacidade de precificação e reduz fricções comerciais.</p>
+    </div>
+    <div>
+      <div class="retranca">
+        <span class="lbl">O ativo estratégico</span>
+        <p class="sup">Mais do que um ativo de comunicação, a marca torna-se um ativo estratégico capaz de fortalecer reputação, crescimento e valuation ao longo do tempo.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">22 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     23 — TRÊS RESULTADOS: AUTONOMIA OPERACIONAL
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s22">
+  <div>
+    <span class="eyebrow">04 — Nossa Abordagem · Resultado 03 de 03</span>
+    <h2 class="t2" style="margin-bottom:4px;">Autonomia Operacional</h2>
+  </div>
+  <div class="divider"></div>
+  <div class="g21" style="flex:1; align-items:start;">
+    <div>
+      <p class="body">Transformar inteligência estratégica em critérios permanentes de decisão.</p>
+      <p class="sup">Formalizamos sistemas, guidelines e playbooks que permitem à organização preservar coerência mesmo diante de crescimento, novas equipes, novos produtos e novos canais.</p>
+    </div>
+    <div>
+      <div class="retranca">
+        <span class="lbl">O objetivo</span>
+        <p class="sup">Não é criar dependência da consultoria. É entregar uma infraestrutura capaz de orientar decisões, preservar identidade e sustentar a evolução da marca com autonomia.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">23 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     24 — MÉTODO: AS QUATRO DIMENSÕES
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s23">
+  <div>
+    <span class="eyebrow">04 — Método Paladino: Dimensões de Marca</span>
+    <h2 class="h1" style="max-width:820px; margin-bottom:4px;">Quatro dimensões interdependentes. Um único sistema.</h2>
+  </div>
+  <div class="divider"></div>
+  <div class="g4" style="flex:1; align-items:start; border-top:1px solid var(--cinza-claro); margin-top:0; padding-top:0;">
+    <div class="dim">
+      <p class="dim-seq">Dimensão 01</p>
+      <p class="dim-t">Ontológica</p>
+      <p class="dim-d">Qual é a nossa essência? Investiga aquilo que permanece constante enquanto todas as demais manifestações podem mudar.</p>
+    </div>
+    <div class="dim">
+      <p class="dim-seq">Dimensão 02</p>
+      <p class="dim-t">Operacional</p>
+      <p class="dim-d">Como essa essência ganha estrutura? Onde princípios se traduzem em posicionamento, processos e critérios de decisão sustentáveis.</p>
+    </div>
+    <div class="dim">
+      <p class="dim-seq">Dimensão 03</p>
+      <p class="dim-t">Simbólica</p>
+      <p class="dim-d">Como essa estrutura se expressa? Onde linguagem, identidade e design transformam estratégia em expressão perceptível.</p>
+    </div>
+    <div class="dim">
+      <p class="dim-seq">Dimensão 04</p>
+      <p class="dim-t">Relacional</p>
+      <p class="dim-d">Como essa marca é experienciada? Onde se observa se a experiência confirma, fortalece ou contradiz o que foi estruturado.</p>
+    </div>
+  </div>
+  <div class="retranca" style="margin-bottom:8px;">
+    <p class="sup">Como as cordas de um instrumento, cada dimensão possui uma função própria. A marca emerge quando todas permanecem afinadas. Quando uma delas perde sua integridade, o desequilíbrio tende a tornar-se perceptível primeiro na experiência, embora sua origem esteja em uma dimensão mais profunda.</p>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Dimensões → Ontológica · Operacional · Simbólica · Relacional &nbsp;&nbsp; Processo → Essência · Estrutura · Expressão · Experiência</span>
+    <span class="rod-n">24 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     25 — ETAPA 01: ONTOLÓGICA
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s24">
+  <div>
+    <span class="eyebrow">04 — Etapa 01 de 04</span>
+    <h2 class="t2" style="margin-bottom:4px;">Ontológica</h2>
+    <p class="h3-sub">Qual é a nossa essência?</p>
+  </div>
+  <div class="divider"></div>
+  <div class="g21" style="flex:1; align-items:start;">
+    <div>
+      <p class="body">A primeira etapa é dedicada à compreensão profunda do negócio. Investigamos aquilo que permanece constante enquanto todas as demais manifestações podem evoluir: sua essência, sua singularidade e os princípios que orientarão todas as decisões do projeto.</p>
+      <p class="sup">Analisamos contexto, liderança, cultura, operação, portfólio, mercado, públicos e tensões estratégicas para identificar aquilo que torna o negócio singular e capaz de sustentar uma marca relevante ao longo do tempo.</p>
+    </div>
+    <div>
+      <span class="lbl">Método</span>
+      <p class="body">REFRAME</p>
+      <div class="retranca">
+        <span class="lbl">Prazo</span>
+        <p class="sup">Decupagem após o fechamento do projeto.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">25 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     26 — ETAPA 02: OPERACIONAL
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s25">
+  <div>
+    <span class="eyebrow">04 — Etapa 02 de 04</span>
+    <h2 class="t2" style="margin-bottom:4px;">Operacional</h2>
+    <p class="h3-sub">Como essa essência ganha estrutura?</p>
+  </div>
+  <div class="divider"></div>
+  <div class="g2" style="flex:1; align-items:start;">
+    <div>
+      <p class="sup">Com a identidade do negócio compreendida, estruturamos os fundamentos que sustentarão sua evolução. Transformamos princípios em posicionamento, arquitetura, critérios de decisão e direcionamentos estratégicos capazes de orientar todas as manifestações futuras da marca.</p>
+      <p class="sup">É nesta etapa que consolidamos a estrutura estratégica do projeto e desenvolvemos o processo de Naming, assegurando que o nome represente a identidade construída e possua consistência para acompanhar sua evolução ao longo do tempo.</p>
+    </div>
+    <div>
+      <span class="lbl">Processo Complementar — Naming</span>
+      <p class="sup">O processo de Naming acontece de forma integrada à etapa Operacional. Seu objetivo é desenvolver um nome capaz de representar a identidade construída durante o projeto e sustentar sua evolução ao longo do tempo.</p>
+      <p class="sup">Cada alternativa é desenvolvida considerando critérios estratégicos, semânticos, fonéticos, simbólicos e mercadológicos, acompanhada por análises preliminares de disponibilidade e orientações para validação jurídica e registro.</p>
+      <div class="retranca">
+        <span class="lbl">Prazo estimado</span>
+        <p class="sup">Decupagem após o fechamento do projeto.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">26 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     27 — ETAPA 03: SIMBÓLICA
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s26">
+  <div>
+    <span class="eyebrow">04 — Etapa 03 de 04</span>
+    <h2 class="t2" style="margin-bottom:4px;">Simbólica</h2>
+    <p class="h3-sub">Como essa estrutura se expressa?</p>
+  </div>
+  <div class="divider"></div>
+  <div class="g21" style="flex:1; align-items:start;">
+    <div>
+      <p class="sup">Com a estratégia consolidada, traduzimos a identidade do negócio em um sistema de expressão capaz de tornar sua singularidade perceptível em todos os pontos de contato.</p>
+      <p class="sup">Linguagem, identidade verbal, identidade visual, direção criativa e critérios de expressão passam a operar de forma integrada, garantindo que toda manifestação da marca preserve coerência entre aquilo que o negócio é e aquilo que comunica.</p>
+    </div>
+    <div>
+      <div class="retranca">
+        <span class="lbl">Prazo estimado</span>
+        <p class="sup">Decupagem após o fechamento do projeto.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">27 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     28 — ETAPA 04: RELACIONAL
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s27">
+  <div>
+    <span class="eyebrow">04 — Etapa 04 de 04</span>
+    <h2 class="t2" style="margin-bottom:4px;">Relacional</h2>
+    <p class="h3-sub">Como essa marca é experienciada?</p>
+  </div>
+  <div class="divider"></div>
+  <div class="g21" style="flex:1; align-items:start;">
+    <div>
+      <p class="sup">A etapa final transforma estratégia e expressão em um sistema capaz de orientar a implementação e a evolução da marca ao longo do tempo. Consolidamos documentos, bibliotecas, playbooks e ferramentas que permitem à organização preservar coerência em todos os seus pontos de contato.</p>
+      <p class="sup">Mais do que organizar materiais, esta etapa estabelece a governança da experiência da marca, criando critérios que asseguram que cada interação confirme aquilo que foi revelado, estruturado e expresso nas etapas anteriores.</p>
+    </div>
+    <div>
+      <div class="retranca">
+        <span class="lbl">Prazo estimado</span>
+        <p class="sup">Decupagem após o fechamento do projeto.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">28 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     29 — TRANSIÇÃO: ENTREGÁVEIS
+══════════════════════════════════════════════════════ -->
+<div class="slide preto s-tr" id="s28">
+  <div>
+    <p class="tr-seq">05</p>
+  </div>
+  <div>
+    <p class="tr-ey">O que entregamos</p>
+    <h2 class="tr-titulo">Entregáveis</h2>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">29 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     30 — ENTREGÁVEIS: VISÃO GERAL
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s29">
+  <div>
+    <span class="eyebrow">05 — Entregáveis</span>
+    <h2 class="h1" style="max-width:860px; margin-bottom:4px;">Os entregáveis transformam a estratégia em um sistema capaz de orientar a evolução da marca ao longo do tempo.</h2>
+  </div>
+  <div class="divider"></div>
+  <div style="flex:1; display:flex; align-items:center;">
+    <p class="sup" style="max-width:820px;">Cada documento, biblioteca e playbook possui uma função específica na preservação da identidade do negócio, garantindo que decisões, linguagem, expressão e implementação permaneçam coerentes à medida que a marca cresce. Mais do que ativos individuais, entregamos uma infraestrutura concebida para sustentar consistência, autonomia operacional e valor de longo prazo.</p>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">30 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     31 — ENTREGÁVEL 01: BRAND SYSTEM GUIDELINES
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s30">
+  <div>
+    <span class="eyebrow">05 — Entregável 01 de 06</span>
+    <h2 class="t2" style="margin-bottom:4px;">Brand System Guidelines</h2>
+  </div>
+  <div class="divider"></div>
+  <div class="g21" style="flex:1; align-items:start;">
+    <div>
+      <p class="body">Documento que consolida os fundamentos estratégicos da marca e estabelece os critérios que orientam suas decisões.</p>
+      <p class="sup">Formaliza sua identidade, posicionamento, linguagem e princípios de expressão, tornando-se a principal referência para preservar coerência, integridade e singularidade ao longo de sua evolução.</p>
+    </div>
+    <div>
+      <div class="retranca">
+        <span class="lbl">Decupagem completa</span>
+        <p class="sup">A estrutura detalhada do Brand System Guidelines está apresentada no anexo ao final desta proposta.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">31 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     32 — ENTREGÁVEL 02: DESIGN SYSTEM
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s31">
+  <div>
+    <span class="eyebrow">05 — Entregável 02 de 06</span>
+    <h2 class="t2" style="margin-bottom:4px;">Design System (Figma)</h2>
+  </div>
+  <div class="divider"></div>
+  <div class="g21" style="flex:1; align-items:start;">
+    <div>
+      <p class="body">Sistema que organiza a expressão visual da marca em componentes reutilizáveis, critérios de aplicação e padrões consistentes.</p>
+      <p class="sup">Mais do que uma biblioteca de interfaces, estabelece uma infraestrutura capaz de manter unidade entre produto, comunicação e futuras implementações, reduzindo ruído e acelerando a evolução da marca.</p>
+    </div>
+    <div>
+      <div class="retranca">
+        <span class="lbl">O que o Design System garante</span>
+        <p class="sup">Que toda decisão visual futura — seja feita pela equipe interna, por uma agência ou por um parceiro externo — parta de um sistema coerente e documentado.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">32 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     33 — ENTREGÁVEL 03: BIBLIOTECA DE ATIVOS
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s32">
+  <div>
+    <span class="eyebrow">05 — Entregável 03 de 06</span>
+    <h2 class="t2" style="margin-bottom:4px;">Biblioteca de Ativos da Marca</h2>
+  </div>
+  <div class="divider"></div>
+  <div class="g21" style="flex:1; align-items:start;">
+    <div>
+      <p class="body">Repositório organizado com todos os ativos oficiais da marca para utilização institucional e operacional.</p>
+      <p class="sup">Reúne logotipos, elementos gráficos, templates e materiais padronizados, assegurando que cada manifestação preserve coerência visual e esteja pronta para aplicação em diferentes contextos.</p>
+    </div>
+    <div>
+      <div class="retranca">
+        <span class="lbl">A função da Biblioteca</span>
+        <p class="sup">Eliminar o retrabalho e garantir que a equipe interna, corretores e parceiros sempre operem com a versão correta e atualizada dos ativos da marca.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">33 / 53</span>
+  </div>
+</div>
+<!-- ══════════════════════════════════════════════════════
+     34 — ENTREGÁVEL 04: CREATIVE & ART DIRECTION PLAYBOOK
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s33">
+  <div>
+    <span class="eyebrow">05 — Entregável 04 de 06</span>
+    <h2 class="t2" style="margin-bottom:4px;">Creative and Art Direction Playbook</h2>
+  </div>
+  <div class="divider"></div>
+  <div class="g21" style="flex:1; align-items:start;">
+    <div>
+      <p class="body">Guia que estabelece os princípios da direção criativa da marca.</p>
+      <p class="sup">Define critérios para fotografia, vídeo, composição, tratamento de imagem, direção de arte e linguagem visual, assegurando que futuras produções preservem a identidade estética e a densidade simbólica construídas ao longo do projeto.</p>
+    </div>
+    <div>
+      <div class="retranca">
+        <span class="lbl">O que este playbook resolve</span>
+        <p class="sup">Garante que qualquer produção futura — interna ou terceirizada — preserve o padrão visual e a coerência estética da marca, independentemente de quem a executa.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">34 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     35 — ENTREGÁVEL 05: EDITORIAL PLAYBOOK
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s34">
+  <div>
+    <span class="eyebrow">05 — Entregável 05 de 06</span>
+    <h2 class="t2" style="margin-bottom:4px;">Editorial Playbook</h2>
+  </div>
+  <div class="divider"></div>
+  <div class="g21" style="flex:1; align-items:start;">
+    <div>
+      <p class="body">Sistema de governança da comunicação responsável por orientar a forma como a marca se expressa.</p>
+      <p class="sup">Define princípios editoriais, tom de voz, critérios de escrita e diretrizes de aplicação para diferentes contextos e canais, garantindo que cada mensagem fortaleça o posicionamento e preserve a identidade da marca.</p>
+    </div>
+    <div>
+      <div class="retranca">
+        <span class="lbl">O que este playbook resolve</span>
+        <p class="sup">Que qualquer texto produzido pela marca — seja um anúncio, um e-mail ou uma legenda — soe como a mesma voz, independentemente de quem o escreve.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">35 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     36 — ENTREGÁVEL 06: WEBSITE
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s35">
+  <div>
+    <span class="eyebrow">05 — Entregável 06 de 06</span>
+    <h2 class="t2" style="margin-bottom:4px;">Website</h2>
+  </div>
+  <div class="divider"></div>
+  <div class="g2" style="flex:1; align-items:start;">
+    <div>
+      <p class="sup">Desenvolvimento do website institucional como principal manifestação digital da marca. A arquitetura de informação será construída tomando como referência a estrutura do website atual, reorganizada de acordo com o novo posicionamento e sistema de marca.</p>
+      <p class="sup">Design, estratégia, conteúdo e desenvolvimento são conduzidos de forma integrada para garantir uma experiência coerente em todos os níveis da navegação.</p>
+      <p class="sup">O projeto será desenvolvido em Framer utilizando uma base estrutural atualizável, permitindo evolução contínua, manutenção simplificada e autonomia operacional para futuras expansões do website.</p>
+    </div>
+    <div>
+      <span class="lbl">Esta entrega contempla</span>
+      <p class="sup">Arquitetura de informação, UX, UI, direção criativa, copywriting, desenvolvimento e publicação da estrutura do website.</p>
+      <div class="retranca">
+        <span class="lbl">Não contempla</span>
+        <p class="sup">A produção de ativos de conteúdo visual, incluindo fotografias, filmagens, ilustrações, imagens geradas por inteligência artificial, modelagens, perspectivas tridimensionais ou demais materiais de produção. Caso necessário, esses conteúdos poderão ser contratados em etapa específica de produção.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">36 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     37 — TIME
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s36">
+  <div>
+    <span class="eyebrow">05 — Time</span>
+    <h2 class="h1" style="max-width:800px; margin-bottom:4px;">Cada papel existe para preservar a inteligência construída ao longo do processo até seu ponto de contato com o mercado.</h2>
+  </div>
+  <div class="divider"></div>
+  <div class="g2" style="flex:1; align-items:start;">
+    <div style="display:flex; flex-direction:column; gap:22px;">
+      <div>
+        <span class="lbl">Creative and Art Director</span>
+        <p class="sup">Responde pela integridade simbólica. Atua na curadoria da percepção, assegurando que linguagem, imagem e expressão permaneçam coerentes com o território estratégico. Sua função é garantir a densidade do posicionamento e a clareza da projeção da marca.</p>
+      </div>
+      <div>
+        <span class="lbl">Creative Operations Director</span>
+        <p class="sup">Sustenta a arquitetura operacional e a viabilidade da autonomia da marca. Organiza fluxos, critérios de decisão e parâmetros de execução para que o sistema preserve estabilidade e eficiência. É o elo entre a visão estratégica e a consistência da implementação.</p>
+      </div>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:22px;">
+      <div>
+        <span class="lbl">Brand Designer</span>
+        <p class="sup">Traduz o direcionamento estratégico em sistema visual. Identidade, tipografia e cor deixam de ser escolhas isoladas e passam a operar como componentes integrados de um mesmo corpo. Sua entrega materializa o rigor técnico e a clareza formal da marca.</p>
+      </div>
+      <div>
+        <span class="lbl">Brand Copywriter</span>
+        <p class="sup">Estrutura a linguagem como extensão da essência do negócio. Define narrativa, tom e mensagens-chave que consolidam o posicionamento e garantem que a voz da marca seja uma manifestação direta de sua identidade.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Operamos como um sistema coordenado e curado para assegurar que cada movimento do processo responda à sua lógica estrutural.</span>
+    <span class="rod-n">37 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     38 — INVESTIMENTO E PRAZO
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s37">
+  <div>
+    <span class="eyebrow">Investimento e Prazo Total</span>
+    <h2 class="h1">Condições comerciais.</h2>
+  </div>
+  <div class="divider"></div>
+  <div class="g21" style="flex:1; align-items:start;">
+    <div>
+      <div class="invest-v">R$ 180.000</div>
+      <p class="invest-s" style="margin-bottom:28px;">6 parcelas de R$ 30.000 — assinatura + 30, 60, 90, 120 e 150 dias</p>
+      <p class="sup" style="margin-bottom:12px; padding-top:20px; border-top:1px solid var(--cinza-claro);">A execução é dividida em seis etapas iguais distribuídas entre a assinatura do contrato e parcelas subsequentes. O fluxo acompanha o avanço estratégico e a conclusão do projeto, proporcionando previsibilidade financeira durante sua implementação.</p>
+      <p class="sup" style="margin-top:12px;"><strong style="font-weight:500; color:var(--preto);">Prazo total estimado:</strong> até 22 semanas.<br>Conclusão prevista para o lançamento de dezembro de 2026.</p>
+    </div>
+    <div>
+      <span class="lbl">Processo de Naming</span>
+      <p class="sup">R$ 10.000, considerado separadamente do investimento principal.</p>
+      <div class="retranca">
+        <span class="lbl">O que esse investimento estrutura</span>
+        <p class="sup">Um novo ativo de negócio para a Rottas — uma marca própria, com trajetória, governança e potencial de crescimento independentes. O retorno não está apenas no lançamento, mas na construção de um segundo pilar de valor para a empresa nos próximos anos.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">38 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     39 — TRANSIÇÃO: GOVERNANÇA
+══════════════════════════════════════════════════════ -->
+<div class="slide preto s-tr" id="s38">
+  <div>
+    <p class="tr-seq">06</p>
+  </div>
+  <div>
+    <p class="tr-ey">Condições e limites do projeto</p>
+    <h2 class="tr-titulo">Diretrizes de Governança</h2>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">39 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     40 — GOVERNANÇA: NAMING + VIAGENS + CONTEÚDO
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s39">
+  <div>
+    <span class="eyebrow">06 — Diretrizes de Governança</span>
+  </div>
+  <div style="flex:1; display:flex; flex-direction:column; gap:16px; padding-top:20px;">
+    <div class="gov">
+      <p class="gov-t">Validação Jurídica do Naming</p>
+      <p class="gov-d">A definição do Naming é conduzida em conjunto com o escritório jurídico responsável pela verificação de disponibilidade e viabilidade de registro antes da apresentação das propostas finais. Os custos relacionados à pesquisa, pareceres e registros são de responsabilidade do cliente.</p>
+    </div>
+    <div class="gov">
+      <p class="gov-t">Deslocamentos e Viagens</p>
+      <p class="gov-d">Custos relacionados a deslocamentos, hospedagem, alimentação e demais despesas de viagem necessárias para atividades presenciais não estão incluídos nesta proposta e poderão ser orçados separadamente quando aplicáveis. Para projetos realizados em Curitiba, disponibilizamos hospedagem sem custo adicional, conforme disponibilidade.</p>
+    </div>
+    <div class="gov">
+      <p class="gov-t">Produção de Conteúdo</p>
+      <p class="gov-d">Esta proposta não contempla a produção de ativos de conteúdo, incluindo fotografias, filmagens, ilustrações, imagens geradas por inteligência artificial, modelagens ou perspectivas tridimensionais. Caso necessário, esses materiais poderão ser contratados em etapa específica de produção.</p>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">40 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     41 — GOVERNANÇA: CONSULTORIA + ATIVAÇÃO + PROCESSO
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s40">
+  <div>
+    <span class="eyebrow">06 — Diretrizes de Governança</span>
+  </div>
+  <div style="flex:1; display:flex; flex-direction:column; gap:16px; padding-top:20px;">
+    <div class="gov">
+      <p class="gov-t">Consultoria Estratégica</p>
+      <p class="gov-d">Após a conclusão do projeto, o acompanhamento estratégico poderá ser contratado em formato de Consultoria Estratégica, destinado ao suporte em decisões, implementação e evolução da marca. As imersões possuem duração estimada de quatro horas e investimento a partir de R$ 4.000 por encontro. Formato: Google Meet.</p>
+    </div>
+    <div class="gov">
+      <p class="gov-t">Projetos de Ativação</p>
+      <p class="gov-d">Projetos de lançamento, implementação e ativação — incluindo websites, campanhas, materiais institucionais, apresentações comerciais, comunicação, experiências e demais desdobramentos executivos — não integram o escopo desta proposta. Quando contratados, possuem investimento estimado a partir de R$ 80.000 e prazo médio de execução de aproximadamente três meses, podendo variar conforme escopo, complexidade e prioridades estratégicas.</p>
+    </div>
+    <div class="gov">
+      <p class="gov-t">Processo Decisório</p>
+      <p class="gov-d">A qualidade do sistema desenvolvido depende da agilidade e consistência das validações realizadas durante o projeto. Alterações estruturais após a aprovação de cada etapa poderão impactar cronograma, escopo e investimento, sendo avaliadas conjuntamente antes de sua implementação.</p>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">41 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     42 — GOVERNANÇA: VALIDADE + PI + CUSTÓDIA + LIMITES + TREINAMENTO + PORTFÓLIO
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s41">
+  <div>
+    <span class="eyebrow">06 — Diretrizes de Governança</span>
+  </div>
+  <div class="g2" style="flex:1; align-items:start; row-gap:20px;">
+    <div class="gov">
+      <p class="gov-t">Validade Estratégica</p>
+      <p class="gov-d">Esta proposta e suas condições comerciais são válidas por 15 dias. Após esse período, prazos, escopo e disponibilidade da equipe poderão ser reavaliados conforme agenda e prioridades estratégicas.</p>
+    </div>
+    <div class="gov">
+      <p class="gov-t">Propriedade Intelectual e Confidencialidade</p>
+      <p class="gov-d">O conteúdo deste documento — incluindo metodologia, estrutura de camadas e arquitetura metodológica — constitui propriedade intelectual da Paladino Inc. e possui caráter confidencial. É vedada sua reprodução, compartilhamento ou utilização por terceiros sem autorização formal.</p>
+    </div>
+    <div class="gov">
+      <p class="gov-t">Custódia e Softwares de Terceiros</p>
+      <p class="gov-d">A contratação, manutenção e licenciamento de plataformas externas (como Figma, fontes tipográficas, plataformas de e-commerce e demais softwares) são de responsabilidade do cliente. A Paladino Inc. entrega a estrutura estratégica e técnica para utilização desses ambientes, não incluindo custos de licenciamento, hospedagem ou infraestrutura digital.</p>
+    </div>
+    <div class="gov">
+      <p class="gov-t">Limites de Implementação</p>
+      <p class="gov-d">A eficácia do sistema depende da adoção consistente das diretrizes estabelecidas. Demandas adicionais, expansões de escopo ou acompanhamentos posteriores à entrega poderão ser contratados separadamente mediante orçamento complementar.</p>
+    </div>
+    <div class="gov">
+      <p class="gov-t">Treinamento</p>
+      <p class="gov-d">Esta proposta contempla a apresentação e o treinamento referentes aos entregáveis desenvolvidos durante o projeto, incluindo a estrutura estratégica, o Brand System Guidelines, os Playbooks, o Design System e os demais materiais produzidos pela Paladino. Não estão incluídos treinamentos voltados à capacitação da equipe em novas ferramentas, plataformas ou processos de trabalho, como Figma, Framer, Jitter ou outras soluções utilizadas na implementação e operação da marca. Caso haja interesse, esses programas poderão ser estruturados e orçados separadamente, conforme os objetivos, a profundidade e o número de participantes.</p>
+    </div>
+    <div class="gov">
+      <p class="gov-t">Direito de Portfólio</p>
+      <p class="gov-d">Salvo acordo formal de confidencialidade integral entre as partes, a Paladino Inc. reserva-se o direito de apresentar o projeto em seu portfólio institucional.</p>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Paladino × Rottas</span>
+    <span class="rod-n">42 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     43 — EQUIPE FUNDADORA
+══════════════════════════════════════════════════════ -->
+<div class="slide preto" id="s42">
+  <div>
+    <span class="eyebrow">Equipe Fundadora</span>
+  </div>
+  <div>
+    <h2 class="t1" style="margin-bottom:32px;">Marco Chaparro<br>Marco Anuschek</h2>
+    <div class="g2" style="max-width:860px; margin-bottom:28px;">
+      <div>
+        <p class="body" style="color:var(--branco); margin-bottom:4px;">Marco Chaparro</p>
+        <p class="sup">Founder &amp; Creative Director</p>
+      </div>
+      <div>
+        <p class="body" style="color:var(--branco); margin-bottom:4px;">Marco Anuschek</p>
+        <p class="sup">Founder &amp; Operations Director</p>
+      </div>
+    </div>
+    <p class="sup" style="max-width:760px; margin-bottom:12px;">Apoiados por equipes multidisciplinares de alta especialização.</p>
+    <p class="sup" style="max-width:760px;">Após um sabático de três anos dedicado à pesquisa, reflexão e desenvolvimento de pensamento de longo prazo, Marco Chaparro inicia, ao lado de Marco Anuschek, o próximo capítulo de sua trajetória: Paladino Inc.</p>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Baseados no Brasil e na Argentina. Atuando globalmente.</span>
+    <span class="rod-n">43 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     44 — TRANSIÇÃO: DECUPAGEM
+══════════════════════════════════════════════════════ -->
+<div class="slide preto s-tr" id="s43">
+  <div>
+    <p class="tr-seq">Anexo</p>
+  </div>
+  <div>
+    <p class="tr-ey">Estrutura detalhada do entregável principal</p>
+    <h2 class="tr-titulo">Decupagem: Brand System Guidelines</h2>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">12 capítulos</span>
+    <span class="rod-n">44 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     45 — DECUPAGEM: 1. ESSÊNCIA
+══════════════════════════════════════════════════════ -->
+<div class="slide branco" id="s44">
+  <div>
+    <span class="eyebrow">Brand System Guidelines — Capítulo 01</span>
+    <h2 class="h2" style="margin-bottom:4px;">1. Essência (Reframe)</h2>
+    <p class="cap">Define a fundação conceitual da marca, estabelecendo aquilo que permanece constante independentemente do tempo, do mercado ou dos produtos.</p>
+  </div>
+  <div class="divider"></div>
+  <div class="g2" style="flex:1; align-items:start; padding-top:18px;">
+    <div class="dec-grupo">
+      <div class="dec-item"><b>Introdução</b> Apresenta a finalidade da dimensão Essência e seu papel como fundamento de todo o sistema.</div>
+      <div class="dec-item"><b>Nome</b> Explica origem, significado, pronúncia e critérios de utilização do nome da marca.</div>
+      <div class="dec-item"><b>Conciliação de Marca</b> Demonstra como a nova marca se relaciona com marcas anteriores, submarcas ou legados.</div>
+      <div class="dec-item"><b>Missão</b> Define o compromisso permanente da organização com seus clientes e sociedade.</div>
+      <div class="dec-item"><b>Visão</b> Descreve a direção de longo prazo que orienta todas as decisões estratégicas.</div>
+      <div class="dec-item"><b>Valores</b> Estabelece os princípios que orientam comportamento, cultura e tomada de decisão.</div>
+    </div>
+    <div class="dec-grupo">
+      <div class="dec-item"><b>Atributos</b> Sintetiza as características essenciais que diferenciam a personalidade da marca.</div>
+      <div class="dec-item"><b>Golden Circle</b> Organiza o Why, How e What como estrutura narrativa da organização.</div>
+      <div class="dec-item"><b>Somos / Não Somos</b> Delimita claramente aquilo que pertence e o que não pertence ao território da marca.</div>
+      <div class="dec-item"><b>Tagline Racional</b> Define a assinatura orientada pela proposta de valor.</div>
+      <div class="dec-item"><b>Tagline Emocional</b> Define a assinatura voltada para conexão afetiva.</div>
+      <div class="dec-item"><b>Short Bio</b> Apresenta uma descrição curta e institucional da marca.</div>
+      <div class="dec-item"><b>Breve Histórico</b> Resume a trajetória da empresa e seus principais marcos.</div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Brand System Guidelines</span>
+    <span class="rod-n">45 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     46 — DECUPAGEM: 2. ARQUITETURA + 3. NAMING
+══════════════════════════════════════════════════════ -->
+<div class="slide branco" id="s45">
+  <div>
+    <span class="eyebrow">Brand System Guidelines — Capítulos 02 e 03</span>
+  </div>
+  <div class="g2" style="flex:1; align-items:start; gap:44px;">
+    <div>
+      <span class="dec-titulo-grupo">2. Arquitetura de Marca</span>
+      <p class="cap">Define como todas as marcas, linhas de produtos e empreendimentos se organizam dentro de um único sistema.</p>
+      <div class="dec-item"><b>Introdução</b> Explica o papel da arquitetura na escalabilidade da marca.</div>
+      <div class="dec-item"><b>Marca Institucional</b> Define a marca principal da organização.</div>
+      <div class="dec-item"><b>Submarcas</b> Estabelece critérios para criação e relacionamento entre submarcas.</div>
+      <div class="dec-item"><b>Linhas de Produto</b> Organiza categorias comerciais e seus respectivos posicionamentos.</div>
+      <div class="dec-item"><b>Empreendimentos</b> Define como cada empreendimento deve ser apresentado dentro do sistema.</div>
+      <div class="dec-item"><b>Hierarquia Visual</b> Determina níveis de protagonismo entre marcas.</div>
+      <div class="dec-item"><b>Sistema de Endosso</b> Define quando e como utilizar o endorsement da marca principal.</div>
+      <div class="dec-item"><b>Arquiteturas Permitidas</b> Explica modelos monolítico, endorsed e house of brands quando aplicáveis.</div>
+      <div class="dec-item"><b>Critérios de Expansão</b> Estabelece regras para novas marcas e futuros negócios.</div>
+    </div>
+    <div>
+      <span class="dec-titulo-grupo">3. Naming System</span>
+      <p class="cap">Formaliza a lógica de criação, avaliação e expansão dos nomes da organização.</p>
+      <div class="dec-item"><b>Introdução</b> Explica a importância estratégica da nomenclatura.</div>
+      <div class="dec-item"><b>Territórios Semânticos</b> Define os universos conceituais permitidos.</div>
+      <div class="dec-item"><b>Estrutura dos Nomes</b> Estabelece padrões de composição e construção.</div>
+      <div class="dec-item"><b>Critérios Linguísticos</b> Determina aspectos fonéticos, ortográficos e culturais.</div>
+      <div class="dec-item"><b>Palavras Permitidas</b> Identifica famílias semânticas prioritárias.</div>
+      <div class="dec-item"><b>Palavras Restritas</b> Define termos incompatíveis com o posicionamento.</div>
+      <div class="dec-item"><b>Empreendimentos</b> Estabelece regras para nomeação de novos projetos.</div>
+      <div class="dec-item"><b>Ambientes</b> Padroniza nomes de áreas comuns e espaços compartilhados.</div>
+      <div class="dec-item"><b>Produtos</b> Define nomenclatura para linhas e soluções.</div>
+      <div class="dec-item"><b>Checklist de Validação</b> Organiza critérios para aprovação jurídica, estratégica e mercadológica.</div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Brand System Guidelines</span>
+    <span class="rod-n">46 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     47 — DECUPAGEM: 4. IDENTIDADE VERBAL
+══════════════════════════════════════════════════════ -->
+<div class="slide branco" id="s46">
+  <div>
+    <span class="eyebrow">Brand System Guidelines — Capítulo 04</span>
+    <h2 class="h2" style="margin-bottom:4px;">4. Identidade Verbal</h2>
+    <p class="cap">Organiza toda a linguagem institucional da marca.</p>
+  </div>
+  <div class="divider"></div>
+  <div class="g2" style="flex:1; align-items:start; padding-top:16px;">
+    <div>
+      <div class="dec-item"><b>Introdução</b> Explica como a linguagem sustenta percepção e posicionamento.</div>
+      <div class="dec-item"><b>Key Messages</b> Define mensagens prioritárias para todos os públicos.</div>
+      <div class="dec-item"><b>Voz da Marca</b> Caracteriza a personalidade verbal.</div>
+      <div class="dec-item"><b>Tom de Voz</b> Define adaptações conforme contexto e audiência.</div>
+      <div class="dec-item"><b>Características</b> Lista atributos que devem estar presentes em toda comunicação.</div>
+      <div class="dec-item"><b>Gatilhos Mentais</b> Define mecanismos legítimos de persuasão.</div>
+      <div class="dec-item"><b>CTAs</b> Padroniza chamadas para ação.</div>
+    </div>
+    <div>
+      <div class="dec-item"><b>Dos</b> Exemplifica boas práticas.</div>
+      <div class="dec-item"><b>Don'ts</b> Demonstra comportamentos de linguagem proibidos.</div>
+      <div class="dec-item"><b>Palavras Interessantes</b> Reforça vocabulário prioritário.</div>
+      <div class="dec-item"><b>Palavras não Interessantes</b> Elimina expressões incompatíveis.</div>
+      <div class="dec-item"><b>Storytelling</b> Estrutura narrativas institucionais.</div>
+      <div class="dec-item"><b>Elevator Pitch</b> Padroniza apresentações rápidas da empresa.</div>
+      <div class="dec-item"><b>Pitch Comercial</b> Organiza discursos para vendas e relacionamento.</div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Brand System Guidelines</span>
+    <span class="rod-n">47 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     48 — DECUPAGEM: 5. IDENTIDADE VISUAL (Logo + Cores + Tipografia)
+══════════════════════════════════════════════════════ -->
+<div class="slide branco" id="s47">
+  <div>
+    <span class="eyebrow">Brand System Guidelines — Capítulo 05</span>
+    <h2 class="h2" style="margin-bottom:4px;">5. Identidade Visual</h2>
+    <p class="cap">Define os elementos fundamentais que tornam a marca reconhecível.</p>
+  </div>
+  <div class="divider"></div>
+  <div class="g3" style="flex:1; align-items:start; padding-top:16px;">
+    <div>
+      <span class="dec-titulo-grupo">Logo</span>
+      <div class="dec-item"><b>Introdução</b> Apresenta o sistema visual da marca.</div>
+      <div class="dec-item"><b>Símbolo</b> Define construção e significado.</div>
+      <div class="dec-item"><b>Logotipo</b> Explica estrutura tipográfica.</div>
+      <div class="dec-item"><b>Assinaturas</b> Organiza todas as versões oficiais.</div>
+      <div class="dec-item"><b>Área de Proteção</b> Determina espaçamentos mínimos.</div>
+      <div class="dec-item"><b>Positivo &amp; Negativo</b> Define versões cromáticas.</div>
+      <div class="dec-item"><b>Redução Máxima</b> Estabelece limites de legibilidade.</div>
+      <div class="dec-item"><b>Posicionamento</b> Demonstra alinhamentos corretos.</div>
+      <div class="dec-item"><b>Avatar</b> Define uso em plataformas digitais.</div>
+      <div class="dec-item"><b>Arquitetura</b> Organiza assinaturas compostas.</div>
+      <div class="dec-item"><b>Logo em Textos</b> Explica aplicação tipográfica.</div>
+      <div class="dec-item"><b>Usos Indevidos</b> Demonstra aplicações incorretas.</div>
+    </div>
+    <div>
+      <span class="dec-titulo-grupo">Cores</span>
+      <div class="dec-item"><b>Introdução</b> Apresenta o sistema cromático.</div>
+      <div class="dec-item"><b>Primárias</b> Define cores institucionais.</div>
+      <div class="dec-item"><b>Secundárias</b> Organiza paleta complementar.</div>
+      <div class="dec-item"><b>Suplementares</b> Amplia possibilidades gráficas.</div>
+      <div class="dec-item"><b>Contrastes</b> Garante acessibilidade.</div>
+      <div class="dec-item"><b>Proporção de Uso</b> Equilibra presença das cores.</div>
+      <div class="dec-item"><b>Combinação de Cores</b> Demonstra harmonizações permitidas.</div>
+    </div>
+    <div>
+      <span class="dec-titulo-grupo">Tipografia</span>
+      <div class="dec-item"><b>Introdução</b> Explica papel da tipografia.</div>
+      <div class="dec-item"><b>Família Tipográfica</b> Define fontes oficiais.</div>
+      <div class="dec-item"><b>Google Fonts</b> Estabelece alternativas abertas.</div>
+      <div class="dec-item"><b>Pesos</b> Organiza hierarquias.</div>
+      <div class="dec-item"><b>Escala Tipográfica</b> Define títulos e textos.</div>
+      <div class="dec-item"><b>Entrelinhas</b> Padroniza legibilidade.</div>
+      <div class="dec-item"><b>Espaçamentos</b> Organiza respiros.</div>
+      <div class="dec-item"><b>Usos Indevidos</b> Demonstra erros comuns.</div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Brand System Guidelines</span>
+    <span class="rod-n">48 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     49 — DECUPAGEM: 5. IDENTIDADE VISUAL (Iconografia + Ilustração + Motion)
+══════════════════════════════════════════════════════ -->
+<div class="slide branco" id="s48">
+  <div>
+    <span class="eyebrow">Brand System Guidelines — Capítulo 05 (continuação)</span>
+    <h2 class="h2" style="margin-bottom:4px;">5. Identidade Visual — Iconografia, Ilustração e Motion</h2>
+  </div>
+  <div class="divider"></div>
+  <div class="g3" style="flex:1; align-items:start; padding-top:16px;">
+    <div>
+      <span class="dec-titulo-grupo">Iconografia</span>
+      <div class="dec-item"><b>Introdução</b> Explica o sistema de ícones.</div>
+      <div class="dec-item"><b>Biblioteca</b> Organiza todo acervo.</div>
+      <div class="dec-item"><b>Grid</b> Define construção geométrica.</div>
+      <div class="dec-item"><b>Peso</b> Uniformiza espessuras.</div>
+      <div class="dec-item"><b>Alinhamento</b> Garante consistência.</div>
+      <div class="dec-item"><b>Estilo</b> Define linguagem visual.</div>
+    </div>
+    <div>
+      <span class="dec-titulo-grupo">Ilustração</span>
+      <div class="dec-item"><b>Introdução</b> Explica quando utilizar ilustrações.</div>
+      <div class="dec-item"><b>Estilo</b> Define linguagem gráfica.</div>
+      <div class="dec-item"><b>Paleta</b> Organiza aplicação cromática.</div>
+      <div class="dec-item"><b>Composição</b> Define construção visual.</div>
+      <div class="dec-item"><b>Usos Permitidos</b> Exemplifica aplicações.</div>
+    </div>
+    <div>
+      <span class="dec-titulo-grupo">Motion</span>
+      <div class="dec-item"><b>Introdução</b> Define linguagem em movimento.</div>
+      <div class="dec-item"><b>Animação do Logo</b> Padroniza abertura institucional.</div>
+      <div class="dec-item"><b>Transições</b> Organiza movimentos.</div>
+      <div class="dec-item"><b>Lower Thirds</b> Define legendas.</div>
+      <div class="dec-item"><b>Vídeos Institucionais</b> Estrutura narrativa audiovisual.</div>
+      <div class="dec-item"><b>Reels &amp; Shorts</b> Padroniza conteúdo curto.</div>
+      <div class="dec-item"><b>Tempo e Ritmo</b> Define comportamento das animações.</div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Brand System Guidelines</span>
+    <span class="rod-n">49 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     50 — DECUPAGEM: 6. FOTOGRAFIA + 7. LAYOUT SYSTEM
+══════════════════════════════════════════════════════ -->
+<div class="slide branco" id="s49">
+  <div>
+    <span class="eyebrow">Brand System Guidelines — Capítulos 06 e 07</span>
+  </div>
+  <div class="g2" style="flex:1; align-items:start; gap:44px;">
+    <div>
+      <span class="dec-titulo-grupo">6. Fotografia</span>
+      <p class="cap">Define os critérios para construção da identidade fotográfica.</p>
+      <div class="dec-item"><b>Introdução</b> Explica o papel da fotografia.</div>
+      <div class="dec-item"><b>Coloração</b> Define tratamento cromático.</div>
+      <div class="dec-item"><b>Composição</b> Organiza enquadramentos.</div>
+      <div class="dec-item"><b>Elementos</b> Determina objetos e cenários.</div>
+      <div class="dec-item"><b>Iluminação</b> Define direção luminosa.</div>
+      <div class="dec-item"><b>Pessoas</b> Estabelece critérios de casting.</div>
+      <div class="dec-item"><b>Arquitetura</b> Orienta fotografia dos empreendimentos.</div>
+      <div class="dec-item"><b>Lifestyle</b> Define representação das experiências.</div>
+      <div class="dec-item"><b>Pós-produção</b> Padroniza edição.</div>
+    </div>
+    <div>
+      <span class="dec-titulo-grupo">7. Layout System</span>
+      <p class="cap">Organiza a composição gráfica de todos os materiais.</p>
+      <div class="dec-item"><b>Introdução</b> Explica o sistema de composição.</div>
+      <div class="dec-item"><b>Grid</b> Define estrutura modular.</div>
+      <div class="dec-item"><b>Relações do Logo</b> Organiza proporções.</div>
+      <div class="dec-item"><b>Escala do Logo</b> Define presença institucional.</div>
+      <div class="dec-item"><b>Logo sobre Imagens</b> Garante legibilidade.</div>
+      <div class="dec-item"><b>Hierarquia Tipográfica</b> Organiza leitura.</div>
+      <div class="dec-item"><b>Espaçamentos</b> Define ritmo visual.</div>
+      <div class="dec-item"><b>Enquadramento</b> Organiza margens.</div>
+      <div class="dec-item"><b>Flexibilidade</b> Demonstra adaptações.</div>
+      <div class="dec-item"><b>Componentes</b> Organiza módulos reutilizáveis.</div>
+      <div class="dec-item"><b>Templates</b> Estrutura modelos oficiais.</div>
+      <div class="dec-item"><b>Matriz de Aplicação</b> Resume regras de utilização.</div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Brand System Guidelines</span>
+    <span class="rod-n">50 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     51 — DECUPAGEM: 8. JORNADA DO CLIENTE + 9. APLICAÇÕES
+══════════════════════════════════════════════════════ -->
+<div class="slide branco" id="s50">
+  <div>
+    <span class="eyebrow">Brand System Guidelines — Capítulos 08 e 09</span>
+  </div>
+  <div class="g2" style="flex:1; align-items:start; gap:44px;">
+    <div>
+      <span class="dec-titulo-grupo">8. Jornada do Cliente</span>
+      <p class="cap">Conecta a identidade da marca aos principais momentos da experiência do comprador.</p>
+      <div class="dec-item"><b>Descoberta</b> Primeiro contato com a marca.</div>
+      <div class="dec-item"><b>Interesse</b> Construção de consideração.</div>
+      <div class="dec-item"><b>Visita</b> Experiência presencial ou digital.</div>
+      <div class="dec-item"><b>Negociação</b> Comunicação comercial.</div>
+      <div class="dec-item"><b>Compra</b> Formalização da aquisição.</div>
+      <div class="dec-item"><b>Obra</b> Relacionamento durante a construção.</div>
+      <div class="dec-item"><b>Entrega</b> Ritual de entrega das chaves.</div>
+      <div class="dec-item"><b>Pós-venda</b> Continuidade da experiência.</div>
+      <div class="dec-item"><b>Indicação</b> Estratégias para fidelização.</div>
+    </div>
+    <div>
+      <span class="dec-titulo-grupo">9. Aplicações</span>
+      <p class="cap">Materializa o sistema de marca em todos os pontos de contato. Sugestões sujeitas à avaliação de formato, prioridade e necessidade estratégica.</p>
+      <div class="dec-item"><b>Deck Institucional</b> Modelo oficial para apresentações.</div>
+      <div class="dec-item"><b>Sales Center Kit</b> Stands, plantões de venda e experiência comercial.</div>
+      <div class="dec-item"><b>Realtor Kit</b> Ferramentas para corretores e parceiros comerciais.</div>
+      <div class="dec-item"><b>Buyer Kit</b> Comunicação para o comprador durante toda sua jornada.</div>
+      <div class="dec-item"><b>Investor Kit</b> Materiais para investidores, bancos e parceiros estratégicos.</div>
+      <div class="dec-item"><b>Launch Kit</b> Guidelines para campanhas e eventos de lançamento.</div>
+      <div class="dec-item"><b>Onboarding Kit</b> Integração de colaboradores e parceiros.</div>
+      <div class="dec-item"><b>Customer Care Kit</b> Atendimento e relacionamento pós-venda.</div>
+      <div class="dec-item"><b>Handover Kit</b> Materiais de entrega das chaves e início de ocupação.</div>
+      <div class="dec-item"><b>Office Kit</b> Ambientes corporativos e papelaria institucional.</div>
+      <div class="dec-item"><b>Construction Site Kit</b> Canteiros de obra, sinalização e segurança.</div>
+      <div class="dec-item"><b>Signage Kit</b> Sinalização interna e externa.</div>
+      <div class="dec-item"><b>Digital Kit</b> Website, redes sociais, CRM, e-mails e canais digitais.</div>
+      <div class="dec-item"><b>Outdoor Kit</b> Mídia exterior e comunicação urbana.</div>
+      <div class="dec-item"><b>Hospitality Kit</b> Relacionamento, presentes, eventos e experiências premium.</div>
+      <div class="dec-item"><b>Lifestyle Kit</b> Eventos, ativações esportivas e iniciativas de comunidade.</div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Brand System Guidelines</span>
+    <span class="rod-n">51 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     52 — DECUPAGEM: 10. GOVERNANÇA + 11. INTELIGÊNCIA + 12. CRÉDITOS
+══════════════════════════════════════════════════════ -->
+<div class="slide branco" id="s51">
+  <div>
+    <span class="eyebrow">Brand System Guidelines — Capítulos 10, 11 e 12</span>
+  </div>
+  <div class="g3" style="flex:1; align-items:start; padding-top:14px;">
+    <div>
+      <span class="dec-titulo-grupo">10. Governança</span>
+      <p class="cap">Define como o sistema permanece consistente ao longo do tempo.</p>
+      <div class="dec-item"><b>Introdução</b> Explica a importância da governança da marca.</div>
+      <div class="dec-item"><b>Fluxo de Aprovação</b> Define responsáveis e níveis de aprovação.</div>
+      <div class="dec-item"><b>Controle de Versões</b> Organiza atualizações do sistema.</div>
+      <div class="dec-item"><b>Gestão de Ativos</b> Estrutura bibliotecas e arquivos oficiais.</div>
+      <div class="dec-item"><b>Atualização Contínua</b> Define processo evolutivo do guideline.</div>
+      <div class="dec-item"><b>Auditoria de Marca</b> Estabelece critérios periódicos de avaliação.</div>
+      <div class="dec-item"><b>Compliance da Marca</b> Garante aderência às diretrizes.</div>
+      <div class="dec-item"><b>Gestão de Parceiros</b> Orienta fornecedores e agências externas.</div>
+    </div>
+    <div>
+      <span class="dec-titulo-grupo">11. Inteligência Sistêmica</span>
+      <p class="cap" style="margin-bottom:12px; color:#c0392b;">Não contemplado no orçamento — possível escopo futuro.</p>
+      <p class="cap">Documenta como ferramentas digitais e inteligência artificial operam preservando a integridade da marca.</p>
+      <div class="dec-item"><b>Introdução</b> Define o papel da IA como ferramenta de consistência e produtividade.</div>
+      <div class="dec-item"><b>Prompt Library</b> Organiza prompts oficiais da organização.</div>
+      <div class="dec-item"><b>Voz da Marca em IA</b> Garante coerência em conteúdos gerados.</div>
+      <div class="dec-item"><b>Templates Inteligentes</b> Padroniza automações e fluxos.</div>
+      <div class="dec-item"><b>Revisão Humana</b> Define critérios obrigatórios de validação.</div>
+      <div class="dec-item"><b>Gestão do Conhecimento</b> Organiza documentação viva da marca.</div>
+      <div class="dec-item"><b>Integrações</b> Estrutura conexões entre Figma, Framer, CRM e demais plataformas.</div>
+      <div class="dec-item"><b>Evolução do Sistema</b> Define como novas práticas são incorporadas ao Brand System.</div>
+    </div>
+    <div>
+      <span class="dec-titulo-grupo">12. Créditos</span>
+      <p class="cap">Documenta autoria, colaboradores, histórico de versões, licenciamento, direitos de uso e informações institucionais do Brand System Guideline.</p>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Brand System Guidelines</span>
+    <span class="rod-n">52 / 53</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     53 — ENCERRAMENTO
+══════════════════════════════════════════════════════ -->
+<div class="slide preto" id="s52">
+  <div>
+    <span class="eyebrow">Paladino Inc.</span>
+  </div>
+  <div>
+    <h2 class="t1" style="max-width:780px; margin-bottom:36px;">Prontos para o próximo passo.</h2>
+    <div class="g2" style="max-width:880px; margin-bottom:44px;">
+      <p class="sup" style="color:#888;">A partir do alinhamento estratégico construído nas reuniões anteriores, o próximo passo é validar a direção proposta e aprovar o início do projeto.</p>
+      <p class="sup" style="color:#888;">Esta proposta e suas condições comerciais são válidas por 15 dias a partir desta data.</p>
+    </div>
+    <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+      <div>
+        <p class="sup" style="color:#555; margin-bottom:4px;">hi@paladino.inc</p>
+        <a class="rod-link" href="https://paladino.inc" target="_blank" style="color:#555; border-bottom-color:#333; font-size:13px;">paladino.inc</a>
+      </div>
+      <div style="display:flex; gap:64px; text-align:right;">
+        <div>
+          <p class="body" style="color:var(--branco); margin-bottom:4px;">Marco Chaparro</p>
+          <p class="sup" style="color:#555;">Founder &amp; Creative Director</p>
+        </div>
+        <div>
+          <p class="body" style="color:var(--branco); margin-bottom:4px;">Marco Anuschek</p>
+          <p class="sup" style="color:#555;">Founder &amp; Operations Director</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="rodape">
+    <span class="rod-t">Julho de 2026 · Versão 2.0 · Confidencial</span>
+    <span class="rod-n">53 / 53</span>
+  </div>
+</div>
+</div></div><!-- /scaler /stage -->
+
+<div id="nav">
+  <button id="btn-prev" onclick="mover(-1)" disabled>←</button>
+  <span id="nav-info">01 / 53</span>
+  <button id="btn-next" onclick="mover(1)">→</button>
+</div>
+
+<script>
+  const TOTAL = 53;
+  let atual = 0;
+
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+  function mover(dir) {
+    const prox = atual + dir;
+    if (prox < 0 || prox >= TOTAL) return;
+    document.getElementById('s' + atual).classList.remove('ativo');
+    atual = prox;
+    document.getElementById('s' + atual).classList.add('ativo');
+    document.getElementById('nav-info').textContent = pad(atual + 1) + ' / 53';
+    document.getElementById('btn-prev').disabled = atual === 0;
+    document.getElementById('btn-next').disabled = atual === TOTAL - 1;
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); mover(1); }
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')                    { e.preventDefault(); mover(-1); }
+  });
+
+  function escalar() {
+    const s = document.getElementById('scaler');
+    const r = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+    s.style.transform = 'scale(' + r + ')';
+  }
+  escalar();
+  window.addEventListener('resize', escalar);
+</script>
+</body>
+</html>
