@@ -55,9 +55,9 @@
 
     .logo-video {
       position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
+      inset: -4px;
+      width: calc(100% + 8px);
+      height: calc(100% + 8px);
       object-fit: cover;
       z-index: 0;
       backface-visibility: hidden;
@@ -66,9 +66,9 @@
 
     .bg {
       position: absolute;
-      inset: -2px;
-      width: calc(100% + 4px);
-      height: calc(100% + 4px);
+      inset: -4px;
+      width: calc(100% + 8px);
+      height: calc(100% + 8px);
       object-fit: cover;
       z-index: 0;
       backface-visibility: hidden;
@@ -79,8 +79,8 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 100%;
-      height: 100%;
+      width: calc(100% + 8px);
+      height: calc(100% + 8px);
       object-fit: cover;
       z-index: 0;
       transform: translate(-50%, -50%) translateX(var(--motion-x, 0px)) translateY(var(--motion-y, 0px)) scale(var(--motion-scale, 1));
@@ -92,6 +92,17 @@
     .motion-shift-right {
       --motion-x: 300px;
       background: var(--black);
+    }
+
+    .payment-motion-mask {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 720px;
+      height: 100%;
+      background: var(--black);
+      z-index: 1;
+      pointer-events: none;
     }
 
     .logo-top {
@@ -629,7 +640,7 @@
 
     <!-- Slide 41 -->
     <section class="slide motion-shift-right" data-slide="41">
-      <video class="motion-bg" src="assets/videos/slide_40-motion-conta-pj.mp4" muted playsinline></video>
+      <video class="motion-bg" src="assets/videos/slide_40-motion-conta-pj.mp4" muted playsinline loop></video>
       <img class="brand-footer fintech" src="assets/logos/logo-atf-fintech-white.svg" alt="ATF Fintech" />
       <h1 class="text-display-medium white text-layer" style="left:64px; top:64px; width:441px; height:110px;">Conta PJ</h1>
       <p class="text-body-large white text-layer fade-up delay-1" style="left:64px; top:540px; width:602px; height:385px;">Abertura ágil e digital, com suporte a múltiplos operadores na mesma conta — para empresas que precisam de controle distribuído e segurança em cada acesso.</p>
@@ -644,7 +655,7 @@
 
     <!-- Slide 43 -->
     <section class="slide motion-shift-right" data-slide="43">
-      <video class="motion-bg" src="assets/videos/slide_41-motion-seguranca.mp4" muted playsinline></video>
+      <video class="motion-bg" src="assets/videos/slide_41-motion-seguranca.mp4" muted playsinline loop></video>
       <img class="brand-footer fintech" src="assets/logos/logo-atf-fintech-white.svg" alt="ATF Fintech" />
       <h1 class="text-display-medium white text-layer" style="left:64px; top:64px; width:558px; height:110px;">Segurança</h1>
       <p class="text-body-large white text-layer fade-up delay-1" style="left:64px; top:540px; width:647px; height:385px;">Complexas camadas de segurança aplicadas em cada acesso, transação e aprovação — com autenticação avançada e controle granular por perfil de usuário.</p>
@@ -674,7 +685,7 @@
 
     <!-- Slide 47 -->
     <section class="slide motion-shift-right" data-slide="47">
-      <video class="motion-bg" src="assets/videos/slide_43-motion-app-atf.mp4" muted playsinline></video>
+      <video class="motion-bg" src="assets/videos/slide_43-motion-app-atf.mp4" muted playsinline loop></video>
       <img class="brand-footer fintech" src="assets/logos/logo-atf-fintech-white.svg" alt="ATF Fintech" />
       <h1 class="text-display-medium white text-layer" style="left:64px; top:64px; width:429px; height:110px;">App ATF</h1>
       <p class="text-body-large white text-layer fade-up delay-1" style="left:64px; top:540px; width:661px; height:385px;">A experiência robusta do Internet Banking também no smartphone — com design cuidadoso, fluidez de uso e toda a profundidade de gestão financeira na<br>palma da mão.</p>
@@ -704,7 +715,7 @@
 
     <!-- Slide 51 -->
     <section class="slide motion-shift-right" data-slide="51">
-      <video class="motion-bg" src="assets/videos/slide_45-motion-boleto.mp4" muted playsinline></video>
+      <video class="motion-bg" src="assets/videos/slide_45-motion-boleto.mp4" muted playsinline loop></video>
       <img class="brand-footer fintech" src="assets/logos/logo-atf-fintech-white.svg" alt="ATF Fintech" />
       <h1 class="text-display-medium white text-layer" style="left:64px; top:64px; width:470px; height:220px;">Boleto Bancário</h1>
       <p class="text-body-large white text-layer fade-up delay-1" style="left:64px; top:705px; width:555px; height:220px;">Emissão, gestão e conciliação integrada ao fluxo de recebimento da empresa.</p>
@@ -719,7 +730,8 @@
 
     <!-- Slide 53 -->
     <section class="slide motion-shift-right" data-slide="53">
-      <video class="motion-bg" src="assets/videos/slide_46-motion-pagamentos.mp4" muted playsinline></video>
+      <video class="motion-bg" src="assets/videos/slide_46-motion-pagamentos.mp4" muted playsinline loop></video>
+      <div class="payment-motion-mask" aria-hidden="true"></div>
       <img class="brand-footer fintech" src="assets/logos/logo-atf-fintech-white.svg" alt="ATF Fintech" />
       <h1 class="text-display-medium white text-layer" style="left:64px; top:64px; width:653px; height:110px;">Pagamentos</h1>
       <p class="text-body-large white text-layer fade-up delay-1" style="left:64px; top:705px; width:555px; height:220px;">Processamento de pagamentos com visibilidade e controle sobre cada etapa.</p>
