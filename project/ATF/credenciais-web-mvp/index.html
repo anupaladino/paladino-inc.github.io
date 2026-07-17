@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ATF Credentials — Slides 01–59</title>
+  <title>Credencial ATF</title>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
@@ -331,47 +331,47 @@
 
       .mobile-fullscreen-button {
         position: fixed;
-        right: 14px;
-        bottom: 14px;
+        right: 12px;
+        bottom: 12px;
         z-index: 10002;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        height: 34px;
-        padding: 0 14px;
+        width: 38px;
+        height: 38px;
+        padding: 0;
         border: 1px solid rgba(255, 255, 255, 0.22);
         border-radius: 999px;
-        background: rgba(0, 0, 0, 0.62);
+        background: rgba(0, 0, 0, 0.42);
         color: var(--white);
-        font-family: var(--font-primary);
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: -0.01em;
         -webkit-backdrop-filter: blur(14px);
         backdrop-filter: blur(14px);
+        opacity: 0.72;
+        transition: opacity 180ms ease, background 180ms ease, transform 180ms ease;
       }
 
-      .mobile-hint {
-        position: fixed;
-        left: 14px;
-        bottom: 14px;
-        z-index: 10001;
-        display: inline-flex;
-        align-items: center;
-        height: 34px;
-        padding: 0 14px;
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        border-radius: 999px;
-        background: rgba(0, 0, 0, 0.46);
-        color: rgba(255, 255, 255, 0.78);
-        font-family: var(--font-primary);
-        font-size: 12px;
-        font-weight: 600;
-        letter-spacing: -0.01em;
-        -webkit-backdrop-filter: blur(14px);
-        backdrop-filter: blur(14px);
+      .mobile-fullscreen-button::before {
+        content: "";
+        width: 18px;
+        height: 18px;
+        display: block;
+        background: currentColor;
+        -webkit-mask: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 5h6v2H7v4H5V5Zm8 0h6v6h-2V7h-4V5ZM5 13h2v4h4v2H5v-6Zm12 0h2v6h-6v-2h4v-4Z'/%3E%3C/svg%3E") center / contain no-repeat;
+        mask: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 5h6v2H7v4H5V5Zm8 0h6v6h-2V7h-4V5ZM5 13h2v4h4v2H5v-6Zm12 0h2v6h-6v-2h4v-4Z'/%3E%3C/svg%3E") center / contain no-repeat;
+      }
+
+      .mobile-fullscreen-button:hover,
+      .mobile-fullscreen-button:focus-visible {
+        opacity: 1;
+        background: rgba(0, 0, 0, 0.62);
+        transform: translateY(-1px);
+      }
+
+      body.is-fullscreen .mobile-fullscreen-button {
+        opacity: 0;
         pointer-events: none;
       }
+
     }
 
     @media (max-width: 900px) and (orientation: portrait) {
@@ -391,13 +391,62 @@
         font-family: var(--font-primary);
       }
 
-      .mobile-rotate-icon {
-        width: 54px;
-        height: 54px;
+      .mobile-rotate-graphic {
+        width: 96px;
+        height: 72px;
+        position: relative;
+        opacity: 0.94;
+      }
+
+      .mobile-phone-icon {
+        position: absolute;
+        left: 16px;
+        top: 14px;
+        width: 30px;
+        height: 46px;
         border: 3px solid var(--white);
-        border-radius: 14px;
-        transform: rotate(90deg);
-        opacity: 0.92;
+        border-radius: 9px;
+        transform: rotate(-90deg);
+        box-sizing: border-box;
+      }
+
+      .mobile-phone-icon::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: 4px;
+        width: 5px;
+        height: 5px;
+        border-radius: 999px;
+        background: var(--white);
+        transform: translateX(-50%);
+      }
+
+      .mobile-rotate-arrow {
+        position: absolute;
+        right: 12px;
+        top: 12px;
+        width: 44px;
+        height: 44px;
+        border: 3px solid rgba(255, 255, 255, 0.92);
+        border-left-color: transparent;
+        border-bottom-color: transparent;
+        border-radius: 50%;
+        transform: rotate(34deg);
+        box-sizing: border-box;
+      }
+
+      .mobile-rotate-arrow::after {
+        content: "";
+        position: absolute;
+        right: 0px;
+        top: 3px;
+        width: 12px;
+        height: 12px;
+        border-top: 3px solid var(--white);
+        border-right: 3px solid var(--white);
+        transform: rotate(8deg);
+        transform-origin: center;
       }
 
       .mobile-rotate-title {
@@ -417,9 +466,6 @@
       }
 
       .mobile-fullscreen-button,
-      .mobile-hint {
-        display: none;
-      }
     }
 
     @media (max-width: 900px) and (orientation: landscape) {
@@ -434,12 +480,11 @@
 <body>
 
   <div class="mobile-rotate-notice" aria-hidden="true">
-    <div class="mobile-rotate-icon"></div>
-    <div class="mobile-rotate-title">Gire o celular para visualizar</div>
+    <div class="mobile-rotate-graphic" aria-hidden="true"><div class="mobile-phone-icon"></div><div class="mobile-rotate-arrow"></div></div>
+    <div class="mobile-rotate-title">Gire o celular para visualizar.</div>
     <div class="mobile-rotate-copy">Esta apresentação foi desenhada em formato horizontal. Para melhor leitura, use o aparelho na orientação paisagem.</div>
   </div>
-  <button class="mobile-fullscreen-button" type="button" aria-label="Abrir em tela cheia">Tela cheia</button>
-  <div class="mobile-hint" aria-hidden="true">Swipe ou toque para navegar</div>
+  <button class="mobile-fullscreen-button" type="button" aria-label="Abrir em tela cheia" title="Tela cheia"></button>
   <main class="presentation">
 
     <!-- Slide 01 -->
@@ -923,7 +968,6 @@
   <script>
     const slides = Array.from(document.querySelectorAll('.slide'));
     const fullscreenButton = document.querySelector('.mobile-fullscreen-button');
-    const mobileHint = document.querySelector('.mobile-hint');
     let current = 0;
     let touchStartX = 0;
     let touchStartY = 0;
@@ -1078,6 +1122,16 @@
         if (touchEndX < viewport.width * 0.34) previousSlide();
       }
     }, { passive: true });
+
+
+    function updateFullscreenState() {
+      const isFullscreen = Boolean(document.fullscreenElement || document.webkitFullscreenElement);
+      document.body.classList.toggle('is-fullscreen', isFullscreen);
+    }
+
+    document.addEventListener('fullscreenchange', updateFullscreenState);
+    document.addEventListener('webkitfullscreenchange', updateFullscreenState);
+    updateFullscreenState();
 
     if (fullscreenButton) {
       fullscreenButton.addEventListener('click', (event) => {
