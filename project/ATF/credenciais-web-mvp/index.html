@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Credenciais ATF</title>
+  <title>ATF Credentials — Slides 01–59</title>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
@@ -98,7 +98,7 @@
       position: absolute;
       left: 0;
       top: 0;
-      width: 720px;
+      width: 740px;
       height: 100%;
       background: var(--black);
       z-index: 1;
@@ -302,14 +302,149 @@
       z-index: 3;
     }
 
+
+    /* Mobile horizontal support: keeps the 16:9 presentation intact and adds a lightweight companion layer. */
+    .mobile-rotate-notice,
+    .mobile-fullscreen-button,
+    .mobile-hint {
+      display: none;
+    }
+
+    @media (max-width: 900px) {
+      html,
+      body {
+        width: 100dvw;
+        height: 100dvh;
+        overscroll-behavior: none;
+        -webkit-text-size-adjust: 100%;
+        touch-action: manipulation;
+      }
+
+      .presentation {
+        width: 100dvw;
+        height: 100dvh;
+      }
+
+      .slide {
+        will-change: opacity, transform;
+      }
+
+      .mobile-fullscreen-button {
+        position: fixed;
+        right: 14px;
+        bottom: 14px;
+        z-index: 10002;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 34px;
+        padding: 0 14px;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.62);
+        color: var(--white);
+        font-family: var(--font-primary);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        -webkit-backdrop-filter: blur(14px);
+        backdrop-filter: blur(14px);
+      }
+
+      .mobile-hint {
+        position: fixed;
+        left: 14px;
+        bottom: 14px;
+        z-index: 10001;
+        display: inline-flex;
+        align-items: center;
+        height: 34px;
+        padding: 0 14px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.46);
+        color: rgba(255, 255, 255, 0.78);
+        font-family: var(--font-primary);
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        -webkit-backdrop-filter: blur(14px);
+        backdrop-filter: blur(14px);
+        pointer-events: none;
+      }
+    }
+
+    @media (max-width: 900px) and (orientation: portrait) {
+      .mobile-rotate-notice {
+        position: fixed;
+        inset: 0;
+        z-index: 10003;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        padding: 32px;
+        background: var(--black);
+        color: var(--white);
+        text-align: center;
+        font-family: var(--font-primary);
+      }
+
+      .mobile-rotate-icon {
+        width: 54px;
+        height: 54px;
+        border: 3px solid var(--white);
+        border-radius: 14px;
+        transform: rotate(90deg);
+        opacity: 0.92;
+      }
+
+      .mobile-rotate-title {
+        max-width: 320px;
+        font-size: 24px;
+        line-height: 110%;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      .mobile-rotate-copy {
+        max-width: 320px;
+        font-size: 14px;
+        line-height: 140%;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.68);
+      }
+
+      .mobile-fullscreen-button,
+      .mobile-hint {
+        display: none;
+      }
+    }
+
+    @media (max-width: 900px) and (orientation: landscape) {
+      .mobile-rotate-notice {
+        display: none;
+      }
+    }
+
+
   </style>
 </head>
 <body>
+
+  <div class="mobile-rotate-notice" aria-hidden="true">
+    <div class="mobile-rotate-icon"></div>
+    <div class="mobile-rotate-title">Gire o celular para visualizar</div>
+    <div class="mobile-rotate-copy">Esta apresentação foi desenhada em formato horizontal. Para melhor leitura, use o aparelho na orientação paisagem.</div>
+  </div>
+  <button class="mobile-fullscreen-button" type="button" aria-label="Abrir em tela cheia">Tela cheia</button>
+  <div class="mobile-hint" aria-hidden="true">Swipe ou toque para navegar</div>
   <main class="presentation">
 
     <!-- Slide 01 -->
     <section class="slide active" data-slide="1">
-      <video class="logo-video" src="assets/videos/atf-logo-animation.mp4" autoplay muted playsinline loop></video>
+      <video preload="metadata" webkit-playsinline class="logo-video" src="assets/videos/atf-logo-animation.mp4" autoplay muted playsinline loop></video>
     </section>
 
     <!-- Slide 02 -->
@@ -351,7 +486,7 @@
 
     <!-- Slide 07 -->
     <section class="slide" data-slide="7">
-      <video class="motion-bg" src="assets/videos/slide-7-animation-background.mp4" muted playsinline></video>
+      <video preload="metadata" webkit-playsinline class="motion-bg" src="assets/videos/slide-7-animation-background.mp4" muted playsinline></video>
       <img class="symbol-footer" src="assets/logos/symbol-atf-black.svg" alt="" />
       <img class="highlight highlight-reveal" src="assets/text-highlight-background/slide-07-highlight-01.svg" style="left:54px; top:546px; width:902px; height:80px;" alt="" />
       <h1 class="text-statement-medium black text-layer fade-up" style="left:64px; top:300px; width:923px; height:480px;">Escolhemos com quem operar, estruturamos cada solução com rigor e acompanhamos de perto o que colocamos em movimento.</h1>
@@ -366,7 +501,7 @@
 
     <!-- Slide 09 -->
     <section class="slide" data-slide="9">
-      <video class="motion-bg" src="assets/videos/slide-9-animation-background.mp4" muted playsinline></video>
+      <video preload="metadata" webkit-playsinline class="motion-bg" src="assets/videos/slide-9-animation-background.mp4" muted playsinline></video>
       <img class="symbol-footer" src="assets/logos/symbol-atf-black.svg" alt="" />
       <img class="highlight highlight-reveal" src="assets/text-highlight-background/slide-09-highlight-01.svg" style="left:508px; top:469px; width:464px; height:80px;" alt="" />
       <img class="highlight highlight-reveal delay-1" src="assets/text-highlight-background/slide-09-highlight-02.svg" style="left:61px; top:548px; width:315px; height:80px;" alt="" />
@@ -454,7 +589,7 @@
 
     <!-- Slide 18 -->
     <section class="slide" data-slide="18">
-      <video class="motion-bg" src="assets/videos/slide-18-animation-background.mp4" muted playsinline></video>
+      <video preload="metadata" webkit-playsinline class="motion-bg" src="assets/videos/slide-18-animation-background.mp4" muted playsinline></video>
       <img class="symbol-footer" src="assets/logos/symbol-atf-black.svg" alt="" />
       <img class="highlight highlight-reveal" src="assets/text-highlight-background/slide-18-highlight-01.svg" style="left:549px; top:551px; width:562px; height:110px;" alt="" />
       <img class="highlight highlight-reveal delay-1" src="assets/text-highlight-background/slide-18-highlight-02.svg" style="left:51px; top:661px; width:888px; height:110px;" alt="" />
@@ -498,7 +633,7 @@
 
     <!-- Slide 23 -->
     <section class="slide" data-slide="23">
-      <video class="logo-video" src="assets/videos/atf-asset-logo-animation.mp4" muted playsinline loop></video>
+      <video preload="metadata" webkit-playsinline class="logo-video" src="assets/videos/atf-asset-logo-animation.mp4" muted playsinline loop></video>
     </section>
 
 
@@ -581,7 +716,7 @@
 
     <!-- Slide 33 -->
     <section class="slide" data-slide="33">
-      <video class="motion-bg" src="assets/videos/slide-33-animation-background.mp4" muted playsinline></video>
+      <video preload="metadata" webkit-playsinline class="motion-bg" src="assets/videos/slide-33-animation-background.mp4" muted playsinline></video>
       <img class="brand-footer asset" src="assets/logos/logo-atf-asset-black.svg" alt="ATF Asset" />
       <h1 class="text-display-medium black text-layer fade-up" style="left:64px; top:153px; width:809px; height:220px;">Antecipação de Recebíveis</h1>
       <p class="text-statement-small black text-layer fade-up delay-1" style="left:64px; top:511px; width:764px; height:412px;">Transforme faturamento previsto em capital disponível, sem criar novas obrigações no passivo.</p>
@@ -589,7 +724,7 @@
 
     <!-- Slide 34 -->
     <section class="slide" data-slide="34">
-      <video class="motion-bg" src="assets/videos/slide-34-animation-background.mp4" muted playsinline></video>
+      <video preload="metadata" webkit-playsinline class="motion-bg" src="assets/videos/slide-34-animation-background.mp4" muted playsinline></video>
       <img class="brand-footer asset" src="assets/logos/logo-atf-asset-black.svg" alt="ATF Asset" />
       <h1 class="text-display-medium black text-layer fade-up" style="left:64px; top:153px; width:522px; height:220px;">Capital de Giro</h1>
       <p class="text-statement-small black text-layer fade-up delay-1" style="left:64px; top:511px; width:684px; height:353px;">Crédito estruturado para manter o ritmo da operação nos momentos de pressão ou expansão.</p>
@@ -597,7 +732,7 @@
 
     <!-- Slide 35 -->
     <section class="slide" data-slide="35">
-      <video class="motion-bg" src="assets/videos/slide-35-animation-background.mp4" muted playsinline></video>
+      <video preload="metadata" webkit-playsinline class="motion-bg" src="assets/videos/slide-35-animation-background.mp4" muted playsinline></video>
       <img class="brand-footer asset" src="assets/logos/logo-atf-asset-black.svg" alt="ATF Asset" />
       <h1 class="text-display-medium black text-layer fade-up" style="left:64px; top:153px; width:246px; height:110px;">CDC</h1>
       <p class="text-statement-small black text-layer fade-up delay-1" style="left:64px; top:511px; width:766px; height:368px;">Sua empresa recebe à vista. Seus clientes compram com prazo. Um mecanismo que beneficia os dois lados.</p>
@@ -605,7 +740,7 @@
 
     <!-- Slide 36 -->
     <section class="slide" data-slide="36">
-      <video class="motion-bg" src="assets/videos/slide-36-animation-background.mp4" muted playsinline></video>
+      <video preload="metadata" webkit-playsinline class="motion-bg" src="assets/videos/slide-36-animation-background.mp4" muted playsinline></video>
       <img class="brand-footer asset" src="assets/logos/logo-atf-asset-black.svg" alt="ATF Asset" />
       <h1 class="text-display-medium black text-layer fade-up" style="left:64px; top:153px; width:522px; height:220px;">Risco Sacado</h1>
       <p class="text-statement-small black text-layer fade-up delay-1" style="left:64px; top:511px; width:1001px; height:350px;">Mais prazo para sua empresa, mais previsibilidade para seus fornecedores. Uma operação que fortalece relações comerciais estratégicas.</p>
@@ -613,7 +748,7 @@
 
     <!-- Slide 37 -->
     <section class="slide" data-slide="37">
-      <video class="logo-video" src="assets/videos/atf-fintech-logo-animation.mp4" muted playsinline loop></video>
+      <video preload="metadata" webkit-playsinline class="logo-video" src="assets/videos/atf-fintech-logo-animation.mp4" muted playsinline loop></video>
     </section>
 
 
@@ -640,7 +775,7 @@
 
     <!-- Slide 41 -->
     <section class="slide motion-shift-right" data-slide="41">
-      <video class="motion-bg" src="assets/videos/slide_40-motion-conta-pj.mp4" muted playsinline loop></video>
+      <video preload="metadata" webkit-playsinline class="motion-bg" src="assets/videos/slide_40-motion-conta-pj.mp4" muted playsinline loop></video>
       <img class="brand-footer fintech" src="assets/logos/logo-atf-fintech-white.svg" alt="ATF Fintech" />
       <h1 class="text-display-medium white text-layer" style="left:64px; top:64px; width:441px; height:110px;">Conta PJ</h1>
       <p class="text-body-large white text-layer fade-up delay-1" style="left:64px; top:540px; width:602px; height:385px;">Abertura ágil e digital, com suporte a múltiplos operadores na mesma conta — para empresas que precisam de controle distribuído e segurança em cada acesso.</p>
@@ -655,7 +790,7 @@
 
     <!-- Slide 43 -->
     <section class="slide motion-shift-right" data-slide="43">
-      <video class="motion-bg" src="assets/videos/slide_41-motion-seguranca.mp4" muted playsinline loop></video>
+      <video preload="metadata" webkit-playsinline class="motion-bg" src="assets/videos/slide_41-motion-seguranca.mp4" muted playsinline loop></video>
       <img class="brand-footer fintech" src="assets/logos/logo-atf-fintech-white.svg" alt="ATF Fintech" />
       <h1 class="text-display-medium white text-layer" style="left:64px; top:64px; width:558px; height:110px;">Segurança</h1>
       <p class="text-body-large white text-layer fade-up delay-1" style="left:64px; top:540px; width:647px; height:385px;">Complexas camadas de segurança aplicadas em cada acesso, transação e aprovação — com autenticação avançada e controle granular por perfil de usuário.</p>
@@ -670,7 +805,7 @@
 
     <!-- Slide 45 -->
     <section class="slide" data-slide="45">
-      <video class="motion-bg" src="assets/videos/slide_42-motion-internet-banking.mp4" muted playsinline></video>
+      <video preload="metadata" webkit-playsinline class="motion-bg" src="assets/videos/slide_42-motion-internet-banking.mp4" muted playsinline></video>
       <img class="brand-footer fintech" src="assets/logos/logo-atf-fintech-white.svg" alt="ATF Fintech" />
       <h1 class="text-display-medium white text-layer" style="left:64px; top:64px; width:419px; height:220px;">Internet Banking</h1>
       <p class="text-body-large white text-layer fade-up delay-1" style="left:64px; top:597px; width:671px; height:330px;">Uma plataforma pensada para ser intuitiva, visualmente clara e eficiente — onde cada funcionalidade está onde precisa estar, sem ruído e sem fricção.</p>
@@ -685,7 +820,7 @@
 
     <!-- Slide 47 -->
     <section class="slide motion-shift-right" data-slide="47">
-      <video class="motion-bg" src="assets/videos/slide_43-motion-app-atf.mp4" muted playsinline loop></video>
+      <video preload="metadata" webkit-playsinline class="motion-bg" src="assets/videos/slide_43-motion-app-atf.mp4" muted playsinline loop></video>
       <img class="brand-footer fintech" src="assets/logos/logo-atf-fintech-white.svg" alt="ATF Fintech" />
       <h1 class="text-display-medium white text-layer" style="left:64px; top:64px; width:429px; height:110px;">App ATF</h1>
       <p class="text-body-large white text-layer fade-up delay-1" style="left:64px; top:540px; width:661px; height:385px;">A experiência robusta do Internet Banking também no smartphone — com design cuidadoso, fluidez de uso e toda a profundidade de gestão financeira na<br>palma da mão.</p>
@@ -700,7 +835,7 @@
 
     <!-- Slide 49 -->
     <section class="slide" data-slide="49">
-      <video class="motion-bg" src="assets/videos/slide_44-motion-pix-empresarial.mp4" muted playsinline loop></video>
+      <video preload="metadata" webkit-playsinline class="motion-bg" src="assets/videos/slide_44-motion-pix-empresarial.mp4" muted playsinline loop></video>
       <img class="brand-footer fintech" src="assets/logos/logo-atf-fintech-white.svg" alt="ATF Fintech" />
       <h1 class="text-display-medium white text-layer" style="left:64px; top:64px; width:616px; height:220px;">Pix Empresarial</h1>
       <p class="text-body-large white text-layer fade-up delay-1" style="left:64px; top:760px; width:630px; height:165px;">Liquidez imediata com rastreabilidade e controle para cada transação.</p>
@@ -715,7 +850,7 @@
 
     <!-- Slide 51 -->
     <section class="slide motion-shift-right" data-slide="51">
-      <video class="motion-bg" src="assets/videos/slide_45-motion-boleto.mp4" muted playsinline loop></video>
+      <video preload="metadata" webkit-playsinline class="motion-bg" src="assets/videos/slide_45-motion-boleto.mp4" muted playsinline loop></video>
       <img class="brand-footer fintech" src="assets/logos/logo-atf-fintech-white.svg" alt="ATF Fintech" />
       <h1 class="text-display-medium white text-layer" style="left:64px; top:64px; width:470px; height:220px;">Boleto Bancário</h1>
       <p class="text-body-large white text-layer fade-up delay-1" style="left:64px; top:705px; width:555px; height:220px;">Emissão, gestão e conciliação integrada ao fluxo de recebimento da empresa.</p>
@@ -730,7 +865,7 @@
 
     <!-- Slide 53 -->
     <section class="slide motion-shift-right" data-slide="53">
-      <video class="motion-bg" src="assets/videos/slide_46-motion-pagamentos.mp4" muted playsinline loop></video>
+      <video preload="metadata" webkit-playsinline class="motion-bg" src="assets/videos/slide_46-motion-pagamentos.mp4" muted playsinline loop></video>
       <div class="payment-motion-mask" aria-hidden="true"></div>
       <img class="brand-footer fintech" src="assets/logos/logo-atf-fintech-white.svg" alt="ATF Fintech" />
       <h1 class="text-display-medium white text-layer" style="left:64px; top:64px; width:653px; height:110px;">Pagamentos</h1>
@@ -787,11 +922,43 @@
 
   <script>
     const slides = Array.from(document.querySelectorAll('.slide'));
+    const fullscreenButton = document.querySelector('.mobile-fullscreen-button');
+    const mobileHint = document.querySelector('.mobile-hint');
     let current = 0;
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchStartTime = 0;
+
+    function viewportSize() {
+      const visualViewport = window.visualViewport;
+      return {
+        width: visualViewport ? visualViewport.width : window.innerWidth,
+        height: visualViewport ? visualViewport.height : window.innerHeight,
+      };
+    }
 
     function setScale() {
-      const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+      const viewport = viewportSize();
+      const scale = Math.min(viewport.width / 1920, viewport.height / 1080);
       document.documentElement.style.setProperty('--scale', scale);
+    }
+
+    function updateMobileHint() {
+      if (!mobileHint) return;
+      mobileHint.textContent = `${current + 1} / ${slides.length} · swipe ou toque`;
+    }
+
+    function prepareVideos() {
+      document.querySelectorAll('video').forEach((video) => {
+        video.muted = true;
+        video.playsInline = true;
+        video.setAttribute('muted', '');
+        video.setAttribute('playsinline', '');
+        video.setAttribute('webkit-playsinline', '');
+        if (!video.hasAttribute('preload')) {
+          video.setAttribute('preload', 'metadata');
+        }
+      });
     }
 
     function restartAnimations(slide) {
@@ -811,6 +978,7 @@
 
     function playVideos(slide) {
       slide.querySelectorAll('video').forEach((video) => {
+        video.setAttribute('preload', 'auto');
         try { video.currentTime = 0; } catch (error) {}
         video.play().catch(() => {});
       });
@@ -829,6 +997,7 @@
 
       restartAnimations(nextSlide);
       playVideos(nextSlide);
+      updateMobileHint();
 
       // Avoid visual flash: reset the outgoing video's currentTime only after
       // the fade transition has completed and the slide is no longer visible.
@@ -839,14 +1008,89 @@
       }, 650);
     }
 
+    function nextSlide() {
+      showSlide(current + 1);
+    }
+
+    function previousSlide() {
+      showSlide(current - 1);
+    }
+
+    function isInteractiveTarget(target) {
+      return Boolean(target.closest('a, button, input, textarea, select, summary'));
+    }
+
+    function requestPresentationFullscreen() {
+      const target = document.documentElement;
+      const request = target.requestFullscreen || target.webkitRequestFullscreen || target.msRequestFullscreen;
+      if (request) {
+        request.call(target).catch?.(() => {});
+      }
+    }
+
     window.addEventListener('resize', setScale);
-    setScale();
-    playVideos(slides[current]);
+    window.addEventListener('orientationchange', () => window.setTimeout(setScale, 250));
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', setScale);
+    }
 
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'ArrowRight' || event.key === ' ') showSlide(current + 1);
-      if (event.key === 'ArrowLeft') showSlide(current - 1);
+      if (event.key === 'ArrowRight' || event.key === ' ') {
+        event.preventDefault();
+        nextSlide();
+      }
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        previousSlide();
+      }
+      if (event.key.toLowerCase() === 'f') {
+        requestPresentationFullscreen();
+      }
     });
+
+    document.addEventListener('touchstart', (event) => {
+      if (event.changedTouches.length !== 1) return;
+      touchStartX = event.changedTouches[0].clientX;
+      touchStartY = event.changedTouches[0].clientY;
+      touchStartTime = Date.now();
+    }, { passive: true });
+
+    document.addEventListener('touchend', (event) => {
+      if (event.changedTouches.length !== 1 || isInteractiveTarget(event.target)) return;
+
+      const touchEndX = event.changedTouches[0].clientX;
+      const touchEndY = event.changedTouches[0].clientY;
+      const deltaX = touchEndX - touchStartX;
+      const deltaY = touchEndY - touchStartY;
+      const elapsed = Date.now() - touchStartTime;
+      const viewport = viewportSize();
+
+      // Swipe navigation.
+      if (Math.abs(deltaX) > 48 && Math.abs(deltaX) > Math.abs(deltaY) * 1.25) {
+        if (deltaX < 0) nextSlide();
+        if (deltaX > 0) previousSlide();
+        return;
+      }
+
+      // Tap navigation in landscape: left side = previous, right side = next.
+      if (Math.abs(deltaX) < 18 && Math.abs(deltaY) < 18 && elapsed < 450 && viewport.width > viewport.height) {
+        if (touchEndX > viewport.width * 0.66) nextSlide();
+        if (touchEndX < viewport.width * 0.34) previousSlide();
+      }
+    }, { passive: true });
+
+    if (fullscreenButton) {
+      fullscreenButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        requestPresentationFullscreen();
+        playVideos(slides[current]);
+      });
+    }
+
+    prepareVideos();
+    setScale();
+    updateMobileHint();
+    playVideos(slides[current]);
   </script>
 </body>
 </html>
