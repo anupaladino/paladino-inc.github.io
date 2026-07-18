@@ -34,6 +34,20 @@
       background: var(--black);
     }
 
+
+    .presentation {
+      position: relative;
+    }
+
+    .presentation .slide {
+      will-change: opacity;
+    }
+
+    img[data-src]:not([src]),
+    video[data-src]:not([src]) {
+      visibility: hidden;
+    }
+
     .slide {
       position: absolute;
       width: 1920px;
@@ -51,10 +65,6 @@
       opacity: 1;
       pointer-events: auto;
       z-index: 2;
-    }
-
-    img[data-src]:not([src]) {
-      visibility: hidden;
     }
 
     .logo-video {
@@ -309,8 +319,7 @@
 
     /* Mobile horizontal support: keeps the 16:9 presentation intact and adds a lightweight companion layer. */
     .mobile-rotate-notice,
-    .mobile-fullscreen-button,
-    .mobile-hint {
+    .mobile-fullscreen-button {
       display: none;
     }
 
@@ -438,7 +447,9 @@
     <div class="mobile-rotate-copy">Esta apresentação foi desenhada em formato horizontal. Para melhor leitura, use o aparelho na orientação paisagem.</div>
   </div>
   <button class="mobile-fullscreen-button" type="button" aria-label="Abrir em tela cheia" title="Tela cheia"></button>
-  <main class="presentation">
+  <main class="presentation" aria-label="Credencial ATF"></main>
+
+  <template id="slides-template">
 
     <!-- Slide 01 -->
     <section class="slide active" data-slide="1">
@@ -915,13 +926,18 @@
       <p class="text-contact white text-layer fade-up delay-1" style="left:1531px; top:932px; width:325px; height:84px;"><a href="mailto:falecom@atf.com.br">falecom@atf.com.br</a><br>0800 888 5151</p>
     </section>
 
-  </main>
+  </template>
 
 
   <script>
-    const slides = Array.from(document.querySelectorAll('.slide'));
+    const presentation = document.querySelector('.presentation');
+    const template = document.querySelector('#slides-template');
+    const slideTemplates = Array.from(template.content.querySelectorAll('.slide'));
     const fullscreenButton = document.querySelector('.mobile-fullscreen-button');
+
     let current = 0;
+    let currentSlide = null;
+    let isTransitioning = false;
     let touchStartX = 0;
     let touchStartY = 0;
     let touchStartTime = 0;
@@ -938,168 +954,126 @@
       const viewport = viewportSize();
       const scale = Math.min(viewport.width / 1920, viewport.height / 1080);
       document.documentElement.style.setProperty('--scale', scale);
-
-      // On iPhone, avoid loading media under the portrait rotation notice.
-      // Assets are loaded only when the presentation can actually be viewed.
-      if (!isPortraitMobile()) {
-        ensureSlideAssets(slides[current]);
-        playVideos(slides[current]);
-        preloadNearbyImages();
-      }
     }
 
-    const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) || (
-      navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1
-    );
-
-    function isMobileViewport() {
-      const viewport = viewportSize();
-      return viewport.width <= 900 || viewport.height <= 900;
+    function prepareVideo(video) {
+      video.muted = true;
+      video.playsInline = true;
+      video.setAttribute('muted', '');
+      video.setAttribute('playsinline', '');
+      video.setAttribute('webkit-playsinline', '');
+      video.setAttribute('preload', 'auto');
+      video.disablePictureInPicture = true;
     }
 
-    function isPortraitMobile() {
-      const viewport = viewportSize();
-      return isMobileViewport() && viewport.height > viewport.width;
+    function ensureMedia(node) {
+      node.querySelectorAll('img[data-src]').forEach((img) => {
+        if (!img.getAttribute('src')) {
+          img.setAttribute('src', img.dataset.src);
+        }
+      });
+
+      node.querySelectorAll('video[data-src]').forEach((video) => {
+        prepareVideo(video);
+        if (!video.getAttribute('src')) {
+          video.setAttribute('src', video.dataset.src);
+          try { video.load(); } catch (error) {}
+        }
+      });
     }
 
-    function ensureImageSource(img) {
-      const source = img.getAttribute('src') || img.dataset.src;
-      if (!source) return;
-      if (!img.getAttribute('src')) {
-        img.setAttribute('src', source);
-      }
-    }
+    function releaseMedia(node) {
+      if (!node) return;
 
-    function releaseImage(img) {
-      if (isIOSDevice && img.dataset.src) {
+      node.querySelectorAll('video').forEach((video) => {
+        video.pause();
+        try { video.currentTime = 0; } catch (error) {}
+        if (video.dataset.src) {
+          video.removeAttribute('src');
+          video.setAttribute('preload', 'none');
+          try { video.load(); } catch (error) {}
+        }
+      });
+
+      node.querySelectorAll('img[data-src]').forEach((img) => {
         img.removeAttribute('src');
-      }
-    }
-
-    function ensureSlideImages(slide) {
-      slide.querySelectorAll('img[data-src]').forEach(ensureImageSource);
-    }
-
-    function releaseSlideImages(slide) {
-      slide.querySelectorAll('img[data-src]').forEach(releaseImage);
-    }
-
-    function ensureSlideAssets(slide) {
-      ensureSlideImages(slide);
-    }
-
-    function releaseSlideAssets(slide) {
-      resetVideos(slide);
-      releaseSlideImages(slide);
-    }
-
-    function preloadNearbyImages() {
-      if (isIOSDevice) return;
-
-      [current - 1, current + 1].forEach((index) => {
-        if (!slides[index]) return;
-        ensureSlideImages(slides[index]);
       });
     }
 
-    function prepareVideos() {
-      document.querySelectorAll('video').forEach((video) => {
-        video.muted = true;
-        video.playsInline = true;
-        video.setAttribute('muted', '');
-        video.setAttribute('playsinline', '');
-        video.setAttribute('webkit-playsinline', '');
-        video.setAttribute('preload', 'none');
-        video.disablePictureInPicture = true;
+    function playVideos(node) {
+      if (!node) return;
+      node.querySelectorAll('video').forEach((video) => {
+        prepareVideo(video);
+        if (!video.getAttribute('src') && video.dataset.src) {
+          video.setAttribute('src', video.dataset.src);
+          try { video.load(); } catch (error) {}
+        }
+        try { video.currentTime = 0; } catch (error) {}
+        video.play().catch(() => {});
       });
     }
 
-    function ensureVideoSource(video, preloadMode = 'auto') {
-      const source = video.getAttribute('src') || video.dataset.src;
-      if (!source) return;
-
-      if (!video.getAttribute('src')) {
-        video.setAttribute('src', source);
-      }
-
-      video.setAttribute('preload', preloadMode);
-      try { video.load(); } catch (error) {}
-    }
-
-    function releaseVideo(video) {
-      video.pause();
-      try { video.currentTime = 0; } catch (error) {}
-
-      // iOS Safari is aggressive with memory when many MP4s remain decoded.
-      // Releasing inactive videos keeps the mobile version stable.
-      if (isIOSDevice && video.dataset.src) {
-        video.removeAttribute('src');
-        video.setAttribute('preload', 'none');
-        try { video.load(); } catch (error) {}
-      }
-    }
-
-    function restartAnimations(slide) {
-      slide.querySelectorAll('*').forEach((el) => {
+    function restartAnimations(node) {
+      if (!node) return;
+      node.querySelectorAll('*').forEach((el) => {
         el.style.animation = 'none';
         el.offsetHeight;
         el.style.animation = '';
       });
     }
 
-    function resetVideos(slide) {
-      slide.querySelectorAll('video').forEach((video) => {
-        releaseVideo(video);
-      });
+    function buildSlide(index) {
+      const source = slideTemplates[index];
+      if (!source) return null;
+
+      const slide = source.cloneNode(true);
+      slide.classList.remove('active');
+      slide.setAttribute('data-rendered-slide', String(index + 1));
+      ensureMedia(slide);
+      return slide;
     }
 
-    function preloadNearbyVideos() {
-      if (isIOSDevice) return;
+    function mountInitialSlide() {
+      const firstSlide = buildSlide(current);
+      if (!firstSlide) return;
 
-      [current - 1, current + 1].forEach((index) => {
-        if (!slides[index]) return;
-        slides[index].querySelectorAll('video').forEach((video) => {
-          ensureVideoSource(video, 'metadata');
-        });
-      });
-    }
+      presentation.appendChild(firstSlide);
+      firstSlide.offsetHeight;
+      firstSlide.classList.add('active');
+      currentSlide = firstSlide;
 
-    function playVideos(slide) {
-      slide.querySelectorAll('video').forEach((video) => {
-        ensureVideoSource(video, 'auto');
-        try { video.currentTime = 0; } catch (error) {}
-        video.play().catch(() => {});
-      });
-
-      preloadNearbyVideos();
+      restartAnimations(firstSlide);
+      playVideos(firstSlide);
     }
 
     function showSlide(index) {
-      const next = Math.max(0, Math.min(index, slides.length - 1));
-      if (next === current) return;
+      const next = Math.max(0, Math.min(index, slideTemplates.length - 1));
+      if (next === current || isTransitioning) return;
 
-      const previousSlide = slides[current];
-      const nextSlide = slides[next];
+      const previousSlide = currentSlide;
+      const nextSlide = buildSlide(next);
+      if (!nextSlide) return;
 
-      ensureSlideAssets(nextSlide);
+      isTransitioning = true;
+      presentation.appendChild(nextSlide);
 
-      previousSlide.classList.remove('active');
+      // Force layout so the opacity transition starts from 0.
+      nextSlide.offsetHeight;
+
+      if (previousSlide) previousSlide.classList.remove('active');
       current = next;
       nextSlide.classList.add('active');
+      currentSlide = nextSlide;
 
       restartAnimations(nextSlide);
+      playVideos(nextSlide);
 
-      if (!isPortraitMobile()) {
-        playVideos(nextSlide);
-        preloadNearbyImages();
-      }
-
-      // Avoid visual flash: release outgoing assets only after
-      // the fade transition has completed and the slide is no longer visible.
       window.setTimeout(() => {
-        if (!previousSlide.classList.contains('active')) {
-          releaseSlideAssets(previousSlide);
+        if (previousSlide && previousSlide !== currentSlide) {
+          releaseMedia(previousSlide);
+          previousSlide.remove();
         }
+        isTransitioning = false;
       }, 650);
     }
 
@@ -1123,11 +1097,28 @@
       }
     }
 
+    function updateFullscreenState() {
+      const isFullscreen = Boolean(document.fullscreenElement || document.webkitFullscreenElement);
+      document.body.classList.toggle('is-fullscreen', isFullscreen);
+    }
+
     window.addEventListener('resize', setScale);
-    window.addEventListener('orientationchange', () => window.setTimeout(setScale, 450));
+    window.addEventListener('orientationchange', () => window.setTimeout(setScale, 350));
+
     if (window.visualViewport) {
       window.visualViewport.addEventListener('resize', setScale);
     }
+
+    document.addEventListener('fullscreenchange', updateFullscreenState);
+    document.addEventListener('webkitfullscreenchange', updateFullscreenState);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        currentSlide?.querySelectorAll('video').forEach((video) => video.pause());
+      } else {
+        playVideos(currentSlide);
+      }
+    });
 
     document.addEventListener('keydown', (event) => {
       if (event.key === 'ArrowRight' || event.key === ' ') {
@@ -1160,48 +1151,29 @@
       const elapsed = Date.now() - touchStartTime;
       const viewport = viewportSize();
 
-      // Swipe navigation.
       if (Math.abs(deltaX) > 48 && Math.abs(deltaX) > Math.abs(deltaY) * 1.25) {
         if (deltaX < 0) nextSlide();
         if (deltaX > 0) previousSlide();
         return;
       }
 
-      // Tap navigation in landscape: left side = previous, right side = next.
       if (Math.abs(deltaX) < 18 && Math.abs(deltaY) < 18 && elapsed < 450 && viewport.width > viewport.height) {
         if (touchEndX > viewport.width * 0.66) nextSlide();
         if (touchEndX < viewport.width * 0.34) previousSlide();
       }
     }, { passive: true });
 
-
-    function updateFullscreenState() {
-      const isFullscreen = Boolean(document.fullscreenElement || document.webkitFullscreenElement);
-      document.body.classList.toggle('is-fullscreen', isFullscreen);
-    }
-
-    document.addEventListener('fullscreenchange', updateFullscreenState);
-    document.addEventListener('webkitfullscreenchange', updateFullscreenState);
-    updateFullscreenState();
-
     if (fullscreenButton) {
       fullscreenButton.addEventListener('click', (event) => {
         event.stopPropagation();
         requestPresentationFullscreen();
-        if (!isPortraitMobile()) {
-          ensureSlideAssets(slides[current]);
-          playVideos(slides[current]);
-        }
+        playVideos(currentSlide);
       });
     }
 
-    prepareVideos();
     setScale();
-    if (!isPortraitMobile()) {
-      ensureSlideAssets(slides[current]);
-      playVideos(slides[current]);
-      preloadNearbyImages();
-    }
+    updateFullscreenState();
+    mountInitialSlide();
   </script>
 </body>
 </html>
