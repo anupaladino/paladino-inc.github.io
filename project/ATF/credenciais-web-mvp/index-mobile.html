@@ -150,7 +150,6 @@
     }
 
 
-
     .brand-footer {
       position: absolute;
       left: 64px;
@@ -318,8 +317,7 @@
 
 
     /* Mobile horizontal support: keeps the 16:9 presentation intact and adds a lightweight companion layer. */
-    .mobile-rotate-notice,
-    .mobile-fullscreen-button {
+    .mobile-rotate-notice {
       display: none;
     }
 
@@ -341,51 +339,7 @@
       .slide {
         will-change: opacity, transform;
       }
-
-      .mobile-fullscreen-button {
-        position: fixed;
-        right: 12px;
-        bottom: 12px;
-        z-index: 10002;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 38px;
-        height: 38px;
-        padding: 0;
-        border: 1px solid rgba(255, 255, 255, 0.22);
-        border-radius: 999px;
-        background: rgba(0, 0, 0, 0.42);
-        color: var(--white);
-        -webkit-backdrop-filter: blur(14px);
-        backdrop-filter: blur(14px);
-        opacity: 0.72;
-        transition: opacity 180ms ease, background 180ms ease, transform 180ms ease;
-      }
-
-      .mobile-fullscreen-button::before {
-        content: "";
-        width: 18px;
-        height: 18px;
-        display: block;
-        background: currentColor;
-        -webkit-mask: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 5h6v2H7v4H5V5Zm8 0h6v6h-2V7h-4V5ZM5 13h2v4h4v2H5v-6Zm12 0h2v6h-6v-2h4v-4Z'/%3E%3C/svg%3E") center / contain no-repeat;
-        mask: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 5h6v2H7v4H5V5Zm8 0h6v6h-2V7h-4V5ZM5 13h2v4h4v2H5v-6Zm12 0h2v6h-6v-2h4v-4Z'/%3E%3C/svg%3E") center / contain no-repeat;
-      }
-
-      .mobile-fullscreen-button:hover,
-      .mobile-fullscreen-button:focus-visible {
-        opacity: 1;
-        background: rgba(0, 0, 0, 0.62);
-        transform: translateY(-1px);
-      }
-
-      body.is-fullscreen .mobile-fullscreen-button {
-        opacity: 0;
-        pointer-events: none;
-      }
-
-    }
+}
 
     @media (max-width: 900px) and (orientation: portrait) {
       .mobile-rotate-notice {
@@ -426,11 +380,7 @@
         font-weight: 500;
         color: rgba(255, 255, 255, 0.68);
       }
-
-      .mobile-fullscreen-button {
-        display: none;
-      }
-    }
+}
 
     @media (max-width: 900px) and (orientation: landscape) {
       .mobile-rotate-notice {
@@ -448,7 +398,6 @@
     <div class="mobile-rotate-title">Gire o celular para visualizar.</div>
     <div class="mobile-rotate-copy">Esta apresentação foi desenhada em formato horizontal. Para melhor leitura, use o aparelho na orientação paisagem.</div>
   </div>
-  <button class="mobile-fullscreen-button" type="button" aria-label="Abrir em tela cheia" title="Tela cheia"></button>
   <main class="presentation" aria-label="Credencial ATF"></main>
 
   <template id="slides-template">
@@ -935,8 +884,6 @@
     const presentation = document.querySelector('.presentation');
     const template = document.querySelector('#slides-template');
     const slideTemplates = Array.from(template.content.querySelectorAll('.slide'));
-    const fullscreenButton = document.querySelector('.mobile-fullscreen-button');
-
     let current = 0;
     let currentSlide = null;
     let isTransitioning = false;
@@ -1091,52 +1038,12 @@
       return Boolean(target.closest('a, button, input, textarea, select, summary'));
     }
 
-    function enterPresentationModeFallback() {
-      document.body.classList.add('is-pseudo-fullscreen');
-      document.body.classList.add('is-fullscreen');
-
-      // iOS não permite fullscreen real para páginas abertas como link comum.
-      // Esse fallback mantém a apresentação no viewport e remove o controle visual.
-      try { window.scrollTo(0, 1); } catch (error) {}
-      window.setTimeout(setScale, 120);
-    }
-
-    function requestPresentationFullscreen() {
-      const target = document.documentElement;
-      const request = target.requestFullscreen || target.webkitRequestFullscreen || target.msRequestFullscreen;
-
-      if (!request) {
-        enterPresentationModeFallback();
-        return;
-      }
-
-      try {
-        const result = request.call(target);
-        if (result && typeof result.catch === 'function') {
-          result.catch(() => enterPresentationModeFallback());
-        } else {
-          window.setTimeout(updateFullscreenState, 180);
-        }
-      } catch (error) {
-        enterPresentationModeFallback();
-      }
-    }
-
-    function updateFullscreenState() {
-      const isNativeFullscreen = Boolean(document.fullscreenElement || document.webkitFullscreenElement);
-      const isPseudoFullscreen = document.body.classList.contains('is-pseudo-fullscreen');
-      document.body.classList.toggle('is-fullscreen', isNativeFullscreen || isPseudoFullscreen);
-    }
-
-    window.addEventListener('resize', setScale);
+window.addEventListener('resize', setScale);
     window.addEventListener('orientationchange', () => window.setTimeout(setScale, 350));
 
     if (window.visualViewport) {
       window.visualViewport.addEventListener('resize', setScale);
     }
-
-    document.addEventListener('fullscreenchange', updateFullscreenState);
-    document.addEventListener('webkitfullscreenchange', updateFullscreenState);
 
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
@@ -1155,10 +1062,7 @@
         event.preventDefault();
         previousSlide();
       }
-      if (event.key.toLowerCase() === 'f') {
-        requestPresentationFullscreen();
-      }
-    });
+});
 
     document.addEventListener('touchstart', (event) => {
       if (event.changedTouches.length !== 1) return;
@@ -1189,17 +1093,8 @@
       }
     }, { passive: true });
 
-    if (fullscreenButton) {
-      fullscreenButton.addEventListener('click', (event) => {
-        event.stopPropagation();
-        requestPresentationFullscreen();
-        playVideos(currentSlide);
-      });
-    }
-
-    setScale();
-    updateFullscreenState();
-    mountInitialSlide();
+setScale();
+mountInitialSlide();
   </script>
 </body>
 </html>

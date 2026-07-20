@@ -4,9 +4,9 @@
 
 This repository contains the HTML implementation, assets, references and documentation for the ATF Credentials presentation.
 
-The original presentation was designed in Figma. After testing Figma Slides and other presentation formats, the team chose an HTML-based approach to preserve the visual quality of the design while adding richer motion, video handling, controlled transitions and fullscreen presentation behavior.
+The original presentation was designed in Figma. After testing Figma Slides and other presentation formats, the team chose an HTML-based approach to preserve the visual quality of the design while adding richer motion, video handling, controlled transitions and browser-based presentation behavior.
 
-The project has evolved from a five-slide MVP into a complete 52-slide web presentation.
+The project evolved from a five-slide MVP into a complete 59-slide web presentation with dedicated desktop and mobile versions.
 
 ---
 
@@ -14,9 +14,12 @@ The project has evolved from a five-slide MVP into a complete 52-slide web prese
 
 The current version includes the full ATF Credentials presentation:
 
-* 52 slides
-* Fullscreen 1920 × 1080 presentation canvas
-* Keyboard navigation
+* 59 slides
+* Full 1920 × 1080 presentation canvas
+* Desktop version optimized for browser presentation
+* Mobile version optimized for horizontal viewing on smartphones
+* Keyboard navigation on desktop
+* Swipe/tap navigation on mobile
 * Image backgrounds
 * Animated logo intros
 * Animated illustration backgrounds
@@ -27,19 +30,73 @@ The current version includes the full ATF Credentials presentation:
 
 ---
 
-## Live URL
+## Local / Hosted Usage
 
-The presentation is published through GitHub Pages at:
+This package is environment-agnostic. It can be hosted in any static web environment, as long as the folder structure is preserved and the HTML files can access the relative assets.
 
-```text
-https://paladino.inc/project/ATF/credenciais-web-mvp/index.html
-```
-
-For cache-busting after deploys, use:
+### Desktop version
 
 ```text
-https://paladino.inc/project/ATF/credenciais-web-mvp/index.html?v=latest
+index-desktop.html
 ```
+
+### Mobile version
+
+```text
+index-mobile.html
+```
+
+If hosted on a server or CDN, the final URLs should follow the structure defined by the ATF development team. Example:
+
+```text
+https://{host}/{path}/index-desktop.html
+https://{host}/{path}/index-mobile.html
+```
+
+For cache-busting after deploys, append a query parameter such as:
+
+```text
+index-desktop.html?v=latest
+index-mobile.html?v=latest
+```
+
+### Important note
+
+The previous `index.html` entry point was intentionally removed. The current delivery uses separate desktop and mobile HTML files.
+
+---
+
+## Recommended Usage
+
+### Desktop / notebook
+
+Use:
+
+```text
+index-desktop.html
+```
+
+Recommended environment:
+
+* Chrome, Safari or Edge on desktop
+* 16:9 screen or fullscreen browser window
+* Keyboard navigation with arrow keys or spacebar
+
+### Mobile
+
+Use:
+
+```text
+index-mobile.html
+```
+
+Recommended environment:
+
+* Smartphone in horizontal / landscape orientation
+* Open directly in browser whenever possible
+* Use swipe or tap navigation
+
+The mobile version includes a portrait notice asking the user to rotate the device. The fullscreen button was removed because fullscreen behavior is inconsistent across mobile browsers, especially on iOS/Safari.
 
 ---
 
@@ -88,14 +145,20 @@ credenciais-web-mvp
 │       ├── atf-logo-animation.mp4
 │       ├── atf-asset-logo-animation.mp4
 │       ├── atf-fintech-logo-animation.mp4
-│       ├── atf-motion-slide-43-conta-pj.mp4
 │       ├── slide-7-animation-background.mp4
 │       ├── slide-9-animation-background.mp4
 │       ├── slide-18-animation-background.mp4
 │       ├── slide-33-animation-background.mp4
 │       ├── slide-34-animation-background.mp4
 │       ├── slide-35-animation-background.mp4
-│       └── slide-36-animation-background.mp4
+│       ├── slide-36-animation-background.mp4
+│       ├── slide_40-motion-conta-pj.mp4
+│       ├── slide_41-motion-seguranca.mp4
+│       ├── slide_42-motion-internet-banking.mp4
+│       ├── slide_43-motion-app-atf.mp4
+│       ├── slide_44-motion-pix-empresarial.mp4
+│       ├── slide_45-motion-boleto.mp4
+│       └── slide_46-motion-pagamentos.mp4
 │
 ├── references
 │   ├── slide_01.jpg
@@ -106,7 +169,8 @@ credenciais-web-mvp
 ├── slides
 │   └── slides-full-brief.md
 │
-├── index.html
+├── index-desktop.html
+├── index-mobile.html
 └── README.md
 ```
 
@@ -132,11 +196,11 @@ Contains:
 * Animation behavior
 * Presentation requirements
 
-This file should be treated as the source of truth for future updates.
+This file should be treated as the source of truth for future visual and structural updates.
 
-### `index.html`
+### `index-desktop.html`
 
-Main presentation file.
+Desktop presentation file.
 
 Contains:
 
@@ -144,7 +208,21 @@ Contains:
 * Embedded CSS
 * Animation rules
 * Keyboard navigation
-* Video handling
+* Desktop-oriented video handling
+* Final contact links
+
+### `index-mobile.html`
+
+Mobile presentation file.
+
+Contains:
+
+* Mobile-optimized slide rendering
+* Embedded CSS
+* Portrait rotate notice
+* Swipe and tap navigation
+* Dynamic media handling with lazy loading
+* iOS-oriented video and image release behavior
 * Final contact links
 
 ---
@@ -251,6 +329,30 @@ Slide 23 — ATF Asset logo animation
 Slide 37 — ATF Fintech logo animation
 ```
 
+### Product Motion Videos
+
+```text
+assets/videos/slide_40-motion-conta-pj.mp4
+assets/videos/slide_41-motion-seguranca.mp4
+assets/videos/slide_42-motion-internet-banking.mp4
+assets/videos/slide_43-motion-app-atf.mp4
+assets/videos/slide_44-motion-pix-empresarial.mp4
+assets/videos/slide_45-motion-boleto.mp4
+assets/videos/slide_46-motion-pagamentos.mp4
+```
+
+Usage:
+
+```text
+Slide 41 — Conta PJ
+Slide 43 — Segurança
+Slide 45 — Internet Banking
+Slide 47 — App ATF
+Slide 49 — Pix Empresarial
+Slide 51 — Boleto Bancário
+Slide 53 — Pagamentos
+```
+
 ### Text Highlight Backgrounds
 
 Text highlights are exported as individual SVG files per slide and per occurrence.
@@ -290,15 +392,17 @@ This approach is used instead of a single master SVG because each highlight requ
 | Slide | Description |
 |---:|---|
 | 37 | ATF Fintech animated logo intro |
-| 38–49 | Fintech platform, product and infrastructure narrative |
+| 38–39 | Fintech platform positioning |
+| 40–53 | Fintech product and interface motion sequence |
+| 54–56 | Service, infrastructure and technology positioning |
 
 ### Closing
 
 | Slide | Description |
 |---:|---|
-| 50 | Final positioning statement |
-| 51 | “Confie no futuro.” |
-| 52 | Final contact slide with website and email links |
+| 57 | Final positioning statement |
+| 58 | “Confie no futuro.” |
+| 59 | Final contact slide with website, email and phone |
 
 ---
 
@@ -341,7 +445,7 @@ Y: 988px
 
 ### Final Slide Symbol
 
-Slide 52 uses a special ATF symbol size and position:
+Slide 59 uses a special ATF symbol size and position:
 
 ```text
 Width: 279.11px
@@ -354,7 +458,9 @@ Y: 479px
 
 ## Presentation Behavior
 
-The presentation is optimized for desktop fullscreen use.
+### Desktop
+
+The desktop version is optimized for browser-based presentation use.
 
 Keyboard controls:
 
@@ -369,61 +475,141 @@ Videos:
 * Restart from the beginning on slide entry
 * Remain muted
 * Use `playsinline`
-* Logo intro videos play once
+* Logo intro videos loop
 * Background illustration videos are used as full-canvas visual layers
+* Product motion videos are used in the Fintech product sequence
 
 Navigation UI:
 
 * No visible navigation indicator in the final version
 
+### Mobile
+
+The mobile version keeps the same 16:9 presentation experience while adapting the technical behavior for smartphone browsers.
+
+Mobile controls:
+
+```text
+Swipe left — Next slide
+Swipe right — Previous slide
+Tap right side — Next slide
+Tap left side — Previous slide
+```
+
+Mobile behavior:
+
+* Designed for landscape orientation
+* Portrait mode displays a rotate-device notice
+* Fullscreen button removed
+* Slides are rendered dynamically
+* Media assets are loaded only when needed
+* Videos and images are released when a slide is removed
+* Optimized to reduce iOS/Safari memory issues
+
 ---
 
 ## Final Slide Links
 
-Slide 52 includes:
+Slide 59 includes:
 
 ```text
 https://atf.com.br
 mailto:falecom@atf.com.br
+0800 888 5151
 ```
 
 ---
 
 ## Deploy Workflow
 
-From the local repository:
+This package does not depend on a specific repository, domain or hosting provider.
+
+To deploy:
+
+1. Upload the complete `credenciais-web-mvp` folder to the desired static hosting environment.
+2. Preserve the internal folder structure.
+3. Confirm that both HTML files can access the relative asset paths.
+4. Test the desktop and mobile entry points.
+5. Use cache-busting query parameters after updates if needed.
+
+Entry points:
+
+```text
+index-desktop.html
+index-mobile.html
+```
+
+If using Git, commit the full folder or the specific changed files according to the team's deployment workflow.
+
+Example:
 
 ```bash
 git status
-git add project/ATF/credenciais-web-mvp
-git commit -m "Update ATF credentials HTML presentation"
-git push origin main
-```
-
-Published URL:
-
-```text
-https://paladino.inc/project/ATF/credenciais-web-mvp/index.html
+git add path/to/credenciais-web-mvp
+git commit -m "Update ATF credentials presentation"
+git push
 ```
 
 If the live site does not update immediately:
 
-1. Check GitHub Actions / Pages deploy status.
+1. Check the hosting/deploy status.
 2. Open the URL with a cache-busting query parameter.
 3. Hard refresh the browser.
-4. Test in an incognito window.
+4. Test in an incognito/private window.
+
+---
+
+## Packaging / Client Handoff
+
+When preparing a ZIP for client handoff, include the complete `credenciais-web-mvp` folder with:
+
+```text
+assets/
+references/
+slides/
+index-desktop.html
+index-mobile.html
+README.md
+```
+
+Do not rename or move files inside `assets`, because the HTML files use relative paths.
+
+Recommended package name:
+
+```text
+ATF-Credentials-Web-Final.zip
+```
+
+Recommended hosted links should be defined by the ATF development team after installation in the final environment.
+
+Suggested public routes:
+
+```text
+Desktop:
+https://{host}/{path}/index-desktop.html
+
+Mobile:
+https://{host}/{path}/index-mobile.html
+```
+
+---
+
+### Environment note
+
+Any staging URLs used during development are not required for the final installation and should not be treated as production dependencies.
 
 ---
 
 ## Technical Notes
 
-* The project is implemented as a self-contained HTML presentation.
-* CSS is embedded in `index.html`.
+* The project is implemented as a self-contained HTML presentation with external relative assets.
+* CSS is embedded in each HTML file.
 * Assets are loaded through relative paths.
-* The current version is not responsive beyond proportional canvas scaling.
-* The target environment is desktop presentation mode.
+* The desktop version prioritizes the approved presentation experience.
+* The mobile version prioritizes stability and media handling on smartphone browsers.
 * Figma fidelity sometimes requires manual line breaks or locked line spans.
 * Highlights use slide-specific SVG files for better rendering accuracy.
+* Mobile fullscreen was intentionally removed due to inconsistent support across mobile browsers.
 
 ---
 
@@ -432,28 +618,31 @@ If the live site does not update immediately:
 Current phase:
 
 ```text
-Full HTML Presentation — Final Review
+Final client handoff
 ```
 
 Slides included:
 
 ```text
-01–52
+01–59
 ```
 
 Latest updates:
 
-* Full presentation assembled
+* Desktop and mobile versions separated
+* Full 59-slide presentation assembled
+* Product motion sequence added to the Fintech section
+* App ATF motion video updated
 * Slide-specific highlights implemented
 * Typography and line-break fixes applied
-* Slides 12 and 19 line locking corrected
-* Navigation indicator removed
+* Mobile dynamic rendering implemented
+* Mobile fullscreen button removed
 * Final slide links added
 
 Next step:
 
 ```text
-Final QA, GitHub deploy and client review.
+Package ZIP, share live links and hand off files to the client / DevOps team.
 ```
 
 ---
