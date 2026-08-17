@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paladino × Galo Cinza — Síntese</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #1A1A18;
+  --white: #F8F7F4;
+  --off:   #F0EEE9;
+  --mid:   #E2DED7;
+  --subtle:#A8A49C;
+  --ink:   #5C5850;
+  --warm:  #8B6F47;
+  --green: #4A7A5A;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:100%; height:100%; overflow:hidden; font-family:"DM Sans",sans-serif; background:var(--black); }
+
+/* MOBILE */
+.mobile-warning {
+  display:none; position:fixed; inset:0; background:#1A1A18; z-index:9999;
+  flex-direction:column; align-items:center; justify-content:center; padding:40px 32px; text-align:center;
+}
+.mobile-warning .mw-label { font-size:10px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.3); margin-bottom:16px; }
+.mobile-warning h2 { font-size:26px; font-weight:500; color:#F8F7F4; line-height:1.1; letter-spacing:-.02em; margin-bottom:16px; }
+.mobile-warning p { font-size:14px; font-weight:300; color:rgba(255,255,255,.45); line-height:1.65; max-width:280px; }
+.mobile-warning .mw-divider { width:32px; height:1px; background:rgba(255,255,255,.12); margin:24px auto; }
+.mobile-warning .mw-contact { font-size:12px; font-weight:400; color:rgba(255,255,255,.25); letter-spacing:.03em; }
+@media (max-width:900px) { .mobile-warning { display:flex; } .nav { display:none; } }
+
+/* NAV */
+.nav {
+  position:fixed; top:18px; right:22px; z-index:200;
+  display:flex; gap:6px; align-items:center;
+  background:rgba(26,26,24,.18); backdrop-filter:blur(12px);
+  padding:7px 14px; border-radius:100px;
+}
+.nav button {
+  background:none; border:none; cursor:pointer;
+  font-family:"DM Sans",sans-serif; font-size:13px; font-weight:500;
+  color:#fff; padding:3px 8px; border-radius:5px; transition:background .15s;
+}
+.nav button:hover { background:rgba(255,255,255,.12); }
+.nav .ctr { font-size:11px; color:rgba(255,255,255,.5); width:52px; text-align:center; letter-spacing:.03em; }
+
+/* SLIDES */
+.slide { position:fixed; inset:0; width:100vw; height:100vh; background:var(--white); display:none; animation:fu .2s ease; }
+.slide.active { display:flex; }
+@keyframes fu { from{opacity:.5} to{opacity:1} }
+
+/* LAYOUTS */
+.si { width:100%; height:100%; display:flex; flex-direction:column; padding:48px 64px 72px; overflow:hidden; }
+.si-scroll { flex:1; overflow-y:auto; overflow-x:hidden; padding-bottom:8px; }
+.si-scroll::-webkit-scrollbar { width:3px; }
+.si-scroll::-webkit-scrollbar-thumb { background:var(--mid); border-radius:2px; }
+.g2 { display:grid; grid-template-columns:1fr 1fr; width:100%; height:100%; }
+.gc { padding:48px 64px 72px; display:flex; flex-direction:column; overflow:hidden; }
+.gc-scroll { flex:1; overflow-y:auto; overflow-x:hidden; }
+.gc-scroll::-webkit-scrollbar { width:3px; }
+.gc-scroll::-webkit-scrollbar-thumb { background:var(--mid); border-radius:2px; }
+.gl { border-right:1px solid var(--mid); }
+.g3 { display:grid; grid-template-columns:1fr 1fr 1fr; width:100%; height:100%; }
+.g3c { padding:48px 48px 72px; display:flex; flex-direction:column; border-right:1px solid var(--mid); }
+.g3c:last-child { border-right:none; }
+
+/* CHROME */
+.sh { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:36px; flex-shrink:0; }
+.sl { font-size:10px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--subtle); }
+.sn { font-size:10px; color:var(--subtle); letter-spacing:.05em; }
+
+/* FOOTER */
+.bb { position:absolute; bottom:0; left:0; right:0; height:46px; border-top:1px solid var(--mid); display:flex; align-items:center; justify-content:space-between; padding:0 64px; background:var(--white); z-index:10; }
+.bb span { font-size:11px; color:var(--subtle); letter-spacing:.03em; }
+.bb svg { height:13px; width:auto; display:block; }
+.dk .bb { background:var(--black); border-color:rgba(255,255,255,.08); }
+.dk .bb span { color:rgba(255,255,255,.25); }
+
+/* TYPE */
+h1 { font-size:68px; font-weight:500; line-height:.94; letter-spacing:-.03em; color:var(--black); }
+h2 { font-size:42px; font-weight:500; line-height:1.0; letter-spacing:-.025em; color:var(--black); }
+h3 { font-size:22px; font-weight:500; line-height:1.15; letter-spacing:-.015em; color:var(--black); }
+h4 { font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--subtle); margin-bottom:16px; }
+p { font-size:15px; font-weight:300; line-height:1.65; color:var(--ink); }
+p.lg { font-size:19px; font-weight:300; line-height:1.5; color:var(--black); }
+p.sm { font-size:13px; font-weight:300; line-height:1.6; color:var(--ink); }
+strong { font-weight:500; color:var(--black); }
+
+/* DARK */
+.dk { background:var(--black) !important; }
+.dk .sl,.dk .sn { color:rgba(255,255,255,.28) !important; }
+.dk h1,.dk h2,.dk h3 { color:var(--white) !important; }
+.dk p,.dk p.lg,.dk p.sm { color:rgba(255,255,255,.48) !important; }
+.dk h4 { color:rgba(255,255,255,.32) !important; }
+.dk strong { color:var(--white) !important; }
+
+/* COMPONENTS */
+.tag { display:inline-block; font-size:10px; font-weight:600; letter-spacing:.09em; text-transform:uppercase; padding:4px 10px; border:1px solid var(--mid); border-radius:100px; color:var(--ink); }
+.tag.bk { border-color:var(--black); color:var(--black); }
+.tag.wh { border-color:rgba(255,255,255,.25); color:rgba(255,255,255,.5); }
+.tag.int { border-color:rgba(255,255,255,.18); color:rgba(255,255,255,.38); background:rgba(255,255,255,.05); }
+.tag.scope { border-color:#B87E4A; color:#B87E4A; background:rgba(184,126,74,.07); }
+.tag.new { border-color:#4A7FA8; color:#4A7FA8; background:rgba(74,127,168,.07); }
+.div-line { width:36px; height:1px; background:var(--mid); margin:24px 0; }
+
+/* ROW LIST */
+.rl { display:flex; flex-direction:column; }
+.rr { display:grid; grid-template-columns:26px 1fr; gap:12px; padding:14px 0; border-bottom:1px solid var(--mid); align-items:start; }
+.rr:first-child { border-top:1px solid var(--mid); }
+.rn { font-size:11px; color:var(--subtle); padding-top:2px; }
+.rt { font-size:14px; font-weight:300; color:var(--black); line-height:1.45; }
+.rt em { font-style:normal; font-size:12px; color:var(--ink); display:block; margin-top:3px; }
+
+/* SIGNAL GRID — sinais superficiais */
+.sgrid4 { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:1px; background:var(--mid); border:1px solid var(--mid); margin-top:20px; }
+.sc4 { background:var(--white); padding:22px 20px; }
+.sc4-num { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--subtle); margin-bottom:10px; }
+.sc4-title { font-size:15px; font-weight:500; color:var(--black); margin-bottom:8px; line-height:1.2; letter-spacing:-.01em; }
+.sc4-body { font-size:12px; font-weight:300; color:var(--ink); line-height:1.6; }
+
+/* TERRITORY CARDS */
+.tcard-wrap { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--mid); border:1px solid var(--mid); flex:1; margin-top:20px; }
+.tcard { background:var(--white); padding:32px 36px; display:flex; flex-direction:column; }
+.tcard-eyebrow { font-size:9px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--subtle); margin-bottom:16px; }
+.tcard-name { font-size:28px; font-weight:500; color:var(--black); letter-spacing:-.02em; line-height:1.0; margin-bottom:16px; }
+.tcard-desc { font-size:13px; font-weight:300; color:var(--ink); line-height:1.7; flex:1; max-width:420px; }
+.tcard-attrs { display:flex; flex-wrap:wrap; gap:6px; margin-top:20px; }
+.tcard-attr { font-size:10px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; padding:4px 10px; border:1px solid var(--mid); border-radius:100px; color:var(--ink); }
+.tcard-decide { margin-top:24px; padding-top:16px; border-top:1px solid var(--mid); font-size:11px; color:var(--subtle); display:flex; align-items:center; gap:8px; }
+.tcard-decide::before { content:''; display:inline-block; width:6px; height:6px; border-radius:50%; background:#B87E4A; flex-shrink:0; }
+
+/* DNA PILLARS */
+.dna3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1px; background:var(--mid); border:1px solid var(--mid); margin-top:20px; }
+.dna-item { background:var(--white); padding:24px 22px; }
+.dna-word { font-size:32px; font-weight:500; color:var(--black); letter-spacing:-.025em; line-height:1; margin-bottom:12px; }
+.dna-def { font-size:12px; font-weight:300; color:var(--ink); line-height:1.65; }
+.dna-not { font-size:11px; color:var(--subtle); margin-top:10px; padding-top:10px; border-top:1px solid var(--mid); }
+
+/* PORTFOLIO ARCHITECTURE */
+.port-anchor { background:var(--black); padding:24px 28px; margin-bottom:1px; }
+.port-anchor-label { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.35); margin-bottom:8px; }
+.port-anchor-name { font-size:20px; font-weight:500; color:var(--white); margin-bottom:6px; letter-spacing:-.01em; }
+.port-anchor-desc { font-size:12px; font-weight:300; color:rgba(255,255,255,.45); line-height:1.55; }
+.port-row { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--mid); border:1px solid var(--mid); margin-bottom:1px; }
+.port-row.three { grid-template-columns:1fr 1fr 1fr; }
+.port-cell { background:var(--white); padding:20px 22px; }
+.port-cell-label { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--subtle); margin-bottom:8px; display:flex; align-items:center; justify-content:space-between; }
+.port-cell-name { font-size:15px; font-weight:500; color:var(--black); margin-bottom:5px; letter-spacing:-.01em; }
+.port-cell-desc { font-size:12px; font-weight:300; color:var(--ink); line-height:1.55; }
+.port-cell.dim { background:var(--off); }
+.port-cell.dim .port-cell-name { color:var(--subtle); }
+
+/* EXPANSION INSTRUMENT */
+.exp-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--mid); border:1px solid var(--mid); margin-top:20px; }
+.exp-item { background:var(--white); padding:22px 24px; position:relative; }
+.exp-bar { position:absolute; top:0; left:0; width:3px; height:100%; }
+.exp-item:nth-child(1) .exp-bar { background:#C05F5F; }
+.exp-item:nth-child(2) .exp-bar { background:#B87E4A; }
+.exp-item:nth-child(3) .exp-bar { background:#4A7FA8; }
+.exp-item:nth-child(4) .exp-bar { background:var(--subtle); }
+.exp-num { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--subtle); margin-bottom:8px; padding-left:14px; }
+.exp-q { font-size:15px; font-weight:500; color:var(--black); margin-bottom:8px; padding-left:14px; line-height:1.2; letter-spacing:-.01em; }
+.exp-desc { font-size:12px; font-weight:300; color:var(--ink); line-height:1.6; padding-left:14px; }
+
+/* GAP PERCEPTION */
+.gap-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1px; background:var(--mid); border:1px solid var(--mid); margin-top:20px; }
+.gap-cell { background:var(--white); padding:22px; }
+.gap-label { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; margin-bottom:10px; }
+.gap-label.pt1 { color:#C05F5F; }
+.gap-label.pt2 { color:#4A7FA8; }
+.gap-label.pt3 { color:#5A8F6A; }
+.gap-title { font-size:15px; font-weight:500; color:var(--black); margin-bottom:8px; letter-spacing:-.01em; }
+.gap-desc { font-size:12px; font-weight:300; color:var(--ink); line-height:1.6; }
+
+/* MOODBOARD PLACEHOLDER */
+.mood-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-top:20px; flex:1; }
+.mood-cell { background:var(--off); border:1px solid var(--mid); border-radius:4px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; min-height:120px; }
+.mood-cell-label { font-size:9px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--subtle); }
+.mood-cell-mark { font-size:11px; color:var(--mid); }
+.mood-wide { grid-column: span 2; }
+
+/* NEXT STEPS */
+.ns5 { display:grid; grid-template-columns:repeat(5,1fr); gap:1px; background:var(--mid); border:1px solid var(--mid); margin-top:20px; }
+.ns-cell { background:var(--white); padding:20px 18px; display:flex; flex-direction:column; }
+.ns-num { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--subtle); margin-bottom:8px; }
+.ns-title { font-size:14px; font-weight:500; color:var(--black); margin-bottom:6px; line-height:1.2; letter-spacing:-.01em; }
+.ns-body { font-size:11px; font-weight:300; color:var(--ink); line-height:1.55; flex:1; }
+.ns-pill { margin-top:12px; padding-top:10px; border-top:1px solid var(--mid); display:inline-block; font-size:9px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; padding:3px 8px; border-radius:100px; }
+.ns-pill.now { background:var(--black); color:white; padding:3px 8px; }
+.ns-pill.next { background:var(--off); color:var(--subtle); border:1px solid var(--mid); padding:3px 8px; }
+.ns-pill.scope { color:#B87E4A; background:rgba(184,126,74,.08); border:1px solid rgba(184,126,74,.25); padding:3px 8px; }
+
+/* MACRO STAGES */
+.macro { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--mid); border:1px solid var(--mid); margin-top:20px; }
+.mc { background:var(--white); padding:22px 20px; }
+.mc.act { background:var(--black); }
+.mc .mn { font-size:10px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; margin-bottom:10px; color:var(--subtle); }
+.mc.act .mn { color:rgba(255,255,255,.32); }
+.mc .mt { font-size:16px; font-weight:500; line-height:1.2; margin-bottom:8px; color:var(--black); }
+.mc.act .mt { color:white; }
+.mc .md { font-size:12px; font-weight:300; line-height:1.55; color:var(--ink); }
+.mc.act .md { color:rgba(255,255,255,.5); }
+
+/* REFRAME BLOCK */
+.reframe-block { display:grid; grid-template-columns:1fr 2fr; gap:1px; background:var(--mid); border:1px solid var(--mid); margin-top:20px; }
+.rf-left { background:var(--black); padding:28px 28px; display:flex; flex-direction:column; justify-content:space-between; }
+.rf-right { background:var(--white); display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--mid); }
+.rf-cell { background:var(--white); padding:22px; }
+.rf-cell-num { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--subtle); margin-bottom:8px; }
+.rf-cell-title { font-size:14px; font-weight:500; color:var(--black); margin-bottom:6px; letter-spacing:-.01em; }
+.rf-cell-desc { font-size:12px; font-weight:300; color:var(--ink); line-height:1.6; }
+
+/* PHASE 2 DELIVERABLES */
+.ph2-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1px; background:var(--mid); border:1px solid var(--mid); margin-top:20px; }
+.ph2-cell { background:var(--white); padding:22px; }
+.ph2-label { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; margin-bottom:10px; }
+.ph2-label.inc { color:#5A8F6A; }
+.ph2-label.out { color:#B87E4A; }
+.ph2-label.def { color:#4A7FA8; }
+.ph2-title { font-size:15px; font-weight:500; color:var(--black); margin-bottom:8px; letter-spacing:-.01em; }
+.ph2-item { padding:10px 0; border-bottom:1px solid var(--mid); font-size:12px; font-weight:300; color:var(--ink); line-height:1.5; display:flex; gap:8px; }
+.ph2-item:last-child { border-bottom:none; }
+.ph2-item::before { content:'→'; color:var(--subtle); flex-shrink:0; font-size:11px; margin-top:1px; }
+
+/* INT BADGE */
+.int-badge { display:inline-flex; align-items:center; gap:5px; font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:3px 10px; border-radius:100px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.14); color:rgba(255,255,255,.35); }
+.int-badge::before { content:''; width:4px; height:4px; border-radius:50%; background:rgba(255,255,255,.4); }
+</style>
+</head>
+<body>
+
+<div class="mobile-warning">
+  <div class="mw-label">Paladino × Galo Cinza</div>
+  <h2>Desenvolvido para desktop.</h2>
+  <p>Acesse pelo computador para visualização completa.</p>
+  <div class="mw-divider"></div>
+  <div class="mw-contact">paladino.inc</div>
+</div>
+
+<div class="nav">
+  <button onclick="prev()">←</button>
+  <span class="ctr" id="ctr">1 / 17</span>
+  <button onclick="next()">→</button>
+</div>
+
+<script>
+function logo(fill='#1A1A18',h=13){
+  const p=`<path d="M40.87,51.69h-22.84l-1.2,1.2v31.25l-1.2,1.2H1.2l-1.2-1.2V2.4l1.2-1.2h39.67c16.83,0,28.85,8.41,28.85,25.24s-12.02,25.24-28.85,25.24ZM40.87,15.63h-22.84l-1.2,1.2v19.23l1.2,1.2h22.84c7.21,0,12.02-2.4,12.02-10.82s-4.81-10.82-12.02-10.82Z" fill="${fill}"/><path d="M161.67,85.34h-10.82l-1.2-1.2-6.01-15.63-2.4-1.2h-30.05l-2.4,1.2-6.01,15.63-1.2,1.2h-10.82l-1.2-1.2v-12.02L117.2,2.4l1.2-1.2h15.63l1.2,1.2,27.65,69.72v12.02l-1.2,1.2ZM126.81,22.84h-1.2l-10.82,28.85,1.2,1.2h20.43l1.2-1.2-10.82-28.85Z" fill="${fill}"/><path d="M253.43,85.34h-54.09l-1.2-1.2V2.4l1.2-1.2h14.42l1.2,1.2v67.31l1.2,1.2h37.26l1.2,1.2v12.02l-1.2,1.2Z" fill="${fill}"/><path d="M355.4,85.34h-10.82l-1.2-1.2-6.01-15.63-2.4-1.2h-30.05l-2.4,1.2-6.01,15.63-1.2,1.2h-10.82l-1.2-1.2v-12.02L310.93,2.4l1.2-1.2h15.63l1.2,1.2,27.65,69.72v12.02l-1.2,1.2ZM320.55,22.84h-1.2l-10.82,28.85,1.2,1.2h20.43l1.2-1.2-10.82-28.85Z" fill="${fill}"/><path d="M454.25,12.24c-7.4-7.36-17.83-11.04-31.28-11.04h-29.86l-1.23,1.23v81.68l1.23,1.23h29.86c13.54,0,23.99-3.66,31.35-10.98,7.36-7.32,11.04-17.66,11.04-31.03s-3.7-23.73-11.1-31.09ZM441.17,64.02c-4.44,4.49-11.23,6.73-20.37,6.73h-10.83l-1.23-1.23V17.03l1.23-1.23h10.83c9.14,0,15.93,2.24,20.37,6.73,4.44,4.49,6.66,11.38,6.66,20.69s-2.22,16.33-6.66,20.81Z" fill="${fill}"/><path d="M519.7,2.43v81.68l-1.23,1.23h-14.42l-1.23-1.23V2.43l1.23-1.23h14.42l1.23,1.23Z" fill="${fill}"/><path d="M636.52,1.2h-14.42l-1.23,1.23v53.83h-1.13l-34.79-54.08c-.64-.35-1.16-.63-1.8-.98h-18.16l-1.23,1.23v81.68l1.23,1.23h14.42l1.23-1.23V27.85h1.13l36.56,56.51c.64.35,1.16.63,1.8.98h16.38l1.23-1.23V2.43l-1.23-1.23Z" fill="${fill}"/><path d="M694.49,81.25c-6.3-3.53-11.09-8.54-14.36-15.05-3.28-6.51-4.91-14.17-4.91-22.99s1.64-16.48,4.91-22.99c3.28-6.51,8.06-11.5,14.36-14.99,6.3-3.48,13.86-5.23,22.68-5.23s16.25,1.76,22.55,5.29c6.3,3.53,11.09,8.55,14.36,15.05,3.28,6.51,4.91,14.13,4.91,22.86s-1.64,16.48-4.91,22.99c-3.28,6.51-8.06,11.53-14.36,15.05-6.3,3.53-13.82,5.29-22.55,5.29s-16.38-1.76-22.68-5.29ZM735.31,64.56c4.11-4.91,6.17-12.03,6.17-21.35s-2.06-16.31-6.17-21.23c-4.12-4.91-10.16-7.37-18.14-7.37s-14.05,2.46-18.2,7.37c-4.16,4.91-6.24,11.99-6.24,21.23s2.06,16.44,6.17,21.35c4.11,4.91,10.2,7.37,18.27,7.37s14.02-2.46,18.14-7.37Z" fill="${fill}"/>`;
+  return `<svg style="height:${h}px;width:auto;display:block;" viewBox="0 0 758.99 86.54" xmlns="http://www.w3.org/2000/svg">${p}</svg>`;
+}
+function footer(label,dark=false){
+  return `<div class="bb">${logo(dark?'rgba(255,255,255,0.7)':'#1A1A18')}<span>${label}</span></div>`;
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('[data-footer]').forEach(el=>{
+    el.insertAdjacentHTML('beforeend',footer(el.dataset.footer,el.classList.contains('dk')));
+  });
+  document.querySelectorAll('[data-logo]').forEach(el=>{
+    const fill=el.dataset.logo==='white'?'rgba(255,255,255,0.85)':'#1A1A18';
+    const h=parseInt(el.dataset.h)||13;
+    el.outerHTML=logo(fill,h);
+  });
+});
+</script>
+
+<!-- ═══ S01 — CAPA ═══ -->
+<div class="slide active dk" id="s1">
+  <div style="width:100%;height:100%;padding:52px 64px;display:grid;grid-template-rows:auto 1fr auto;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+      <span data-logo="white" data-h="14"></span>
+      <div style="text-align:right;">
+        <div style="font-size:10px;color:rgba(255,255,255,.2);letter-spacing:.03em;">Agosto 2026</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;justify-content:center;">
+      <div style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.32);margin-bottom:20px;">Imersão Ontológica — Síntese</div>
+      <h1 style="color:white;font-size:66px;line-height:.93;max-width:620px;margin-bottom:24px;">O Galo<br>Cinza.</h1>
+      <p style="font-size:16px;font-weight:300;color:rgba(255,255,255,.42);max-width:480px;line-height:1.65;">O que o processo revelou. O que a marca é. Para onde vai.</p>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);">
+      <span style="font-size:11px;color:rgba(255,255,255,.22);">Etapa 01 — Imersão Ontológica</span>
+      <div style="display:flex;gap:16px;align-items:center;">
+        <button onclick="exportMD()" style="background:none;border:1px solid rgba(255,255,255,.18);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.45);padding:5px 12px;border-radius:100px;transition:all .15s;" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='rgba(255,255,255,.75)'" onmouseout="this.style.background='none';this.style.color='rgba(255,255,255,.45)'">Exportar .md</button>
+        <span style="font-size:11px;color:rgba(255,255,255,.22);">chaparro@paladino.inc</span>
+        <span style="font-size:11px;color:rgba(255,255,255,.22);">anuschek@paladino.inc</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ S02 — O QUE O MATERIAL REVELOU ═══ -->
+<div class="slide" id="s2" data-footer="Imersão Ontológica — Síntese">
+  <div class="si">
+    <div class="sh">
+      <span class="sl">01 — O que o material revelou</span>
+      <span class="sn">Leitura superficial antes de aprofundar</span>
+    </div>
+    <p class="lg" style="max-width:680px;">Antes de qualquer definição, o processo deixou quatro sinais claros. São fatos sobre o negócio que existem independentemente de qualquer decisão estratégica.</p>
+    <div class="sgrid4">
+      <div class="sc4">
+        <div class="sc4-num">Sinal 01</div>
+        <div class="sc4-title">O rigor existe. A reputação também.</div>
+        <div class="sc4-body">Mais de uma década de operação construiu algo raro: uma base de clientes que não precisa ser convencida. O diferencial já existe. Não foi comunicado ainda.</div>
+      </div>
+      <div class="sc4">
+        <div class="sc4-num">Sinal 02</div>
+        <div class="sc4-title">A percepção chega tarde.</div>
+        <div class="sc4-body">O cliente novo vê "boa comida". O cliente recorrente sabe que é outra coisa. O gap entre a primeira e a segunda visita é o principal problema de crescimento.</div>
+      </div>
+      <div class="sc4">
+        <div class="sc4-num">Sinal 03</div>
+        <div class="sc4-title">O negócio está pronto para expandir.</div>
+        <div class="sc4-body">A limitação não é capacidade nem qualidade. É estrutura. Não existe arquitetura que organize o que o Galo Cinza já sabe fazer.</div>
+      </div>
+      <div class="sc4">
+        <div class="sc4-num">Sinal 04</div>
+        <div class="sc4-title">O território existe. Falta nomeá-lo.</div>
+        <div class="sc4-body">Os valores que guiam a operação há décadas nunca foram declarados como posição. Isso não é fraqueza — é oportunidade. Está disponível para ser ocupado.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ S03 — AFIRMAÇÃO CENTRAL ═══ -->
+<div class="slide dk" id="s3">
+  <div style="width:100%;height:100%;padding:52px 64px;display:grid;grid-template-rows:auto 1fr auto;">
+    <div style="display:flex;justify-content:space-between;">
+      <span data-logo="white" data-h="13"></span>
+      <span style="font-size:10px;color:rgba(255,255,255,.2);letter-spacing:.03em;">Imersão Ontológica — Síntese</span>
+    </div>
+    <div style="display:flex;flex-direction:column;justify-content:center;max-width:800px;">
+      <div style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:28px;">02 — A afirmação central</div>
+      <h2 style="font-size:52px;color:white;line-height:.95;letter-spacing:-.025em;margin-bottom:32px;">O Galo Cinza não é<br>um restaurante.<br><span style="color:rgba(255,255,255,.45);">É uma marca que</span><br>tem um restaurante.</h2>
+      <p style="font-size:16px;font-weight:300;color:rgba(255,255,255,.42);line-height:1.65;max-width:560px;">Essa distinção muda tudo. Um restaurante tem limitações físicas. Uma marca tem possibilidades. A operação atual é a âncora. Não é o limite.</p>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);">
+      <span style="font-size:11px;color:rgba(255,255,255,.22);">Esta afirmação é o ponto de partida de tudo que segue.</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ S04 — DOIS TERRITÓRIOS ═══ -->
+<div class="slide" id="s4" data-footer="Imersão Ontológica — Síntese">
+  <div class="si">
+    <div class="sh">
+      <span class="sl">03 — Territórios candidatos</span>
+      <span class="sn">Dois caminhos para nomear o que o Galo Cinza é</span>
+    </div>
+    <p class="sm" style="max-width:680px;margin-bottom:4px;">Ambos emergem do mesmo conjunto de valores. A diferença está na ênfase: o que vem primeiro quando o Galo Cinza se apresenta ao mundo.</p>
+    <div class="tcard-wrap">
+      <div class="tcard" style="border-top:3px solid var(--black);">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <div class="tcard-eyebrow" style="margin-bottom:0;">Território A</div>
+          <span style="font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:3px 9px;border-radius:100px;background:var(--black);color:white;">Recomendação Paladino</span>
+        </div>
+        <div class="tcard-name">Cozinha Brasileira<br>Afetiva</div>
+        <div class="tcard-desc">O eixo principal é o vínculo emocional com a cozinha brasileira — a memória, o pertencimento, a comida que reconforta e é verdadeira. O rigor e a integridade aparecem como consequência natural de quem cozinha com afeto, não como bandeira.</div>
+        <div class="tcard-attrs">
+          <span class="tcard-attr">Afetiva</span>
+          <span class="tcard-attr">Brasileira</span>
+          <span class="tcard-attr">Verdadeira</span>
+        </div>
+        <div class="tcard-decide">Validar nesta reunião</div>
+      </div>
+      <div class="tcard" style="border-left:1px solid var(--mid);border-top:3px solid var(--mid);opacity:.7;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <div class="tcard-eyebrow" style="margin-bottom:0;">Território B</div>
+          <span style="font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:3px 9px;border-radius:100px;background:var(--off);color:var(--subtle);border:1px solid var(--mid);">Alternativa</span>
+        </div>
+        <div class="tcard-name">Cozinha Ética<br>e Verdadeira</div>
+        <div class="tcard-desc">O eixo principal é a posição declarada: o que o Galo Cinza não faz, não usa, não aceita. A ética é o filtro de tudo — insumos, fornecedores, processo. A afetividade aparece como resultado de uma cozinha íntegra.</div>
+        <div class="tcard-attrs">
+          <span class="tcard-attr">Ética</span>
+          <span class="tcard-attr">Verdadeira</span>
+          <span class="tcard-attr">Rigorosa</span>
+        </div>
+        <div class="tcard-decide">Validar nesta reunião</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ S05 — DNA — OS TRÊS ADJETIVOS ═══ -->
+<div class="slide" id="s5" data-footer="Imersão Ontológica — Síntese">
+  <div class="si">
+    <div class="sh">
+      <span class="sl">04 — DNA da marca</span>
+      <span class="sn">Três adjetivos que definem o caráter do Galo Cinza</span>
+    </div>
+    <p class="sm" style="max-width:680px;">Independente do território escolhido, esses três termos são o núcleo. Eles descrevem o que o Galo Cinza já é — não uma aspiração.</p>
+    <div class="dna3">
+      <div class="dna-item">
+        <div class="dna-word">Íntegro.</div>
+        <div class="dna-def">Cada decisão operacional tem um critério. Insumos sem agrotóxico. Água filtrada com magnésio no preparo. Fornecedores conhecidos. Nada de reaproveitamento disfarçado. A integridade não é marketing — é método.</div>
+        <div class="dna-not">Não é: militância ou bandeira ideológica</div>
+      </div>
+      <div class="dna-item" style="border-left:1px solid var(--mid);">
+        <div class="dna-word">Afetivo.</div>
+        <div class="dna-def">A cozinha tem memória. O vínculo com o cliente se consolida com o tempo. A recorrência não é estratégia de retenção — é o resultado natural de uma comida que se reconhece como verdadeira.</div>
+        <div class="dna-not">Não é: nostálgico ou sentimental</div>
+      </div>
+      <div class="dna-item" style="border-left:1px solid var(--mid);">
+        <div class="dna-word">Verdadeiro.</div>
+        <div class="dna-def">O que aparece no prato é o que existe na cozinha. Sem promessa de ingrediente que não está lá. Sem comunicação que supera o produto. A confiança é construída por consistência — não por campanha.</div>
+        <div class="dna-not">Não é: humilde ou genérico</div>
+      </div>
+    </div>
+    <div style="margin-top:1px;padding:14px 20px;background:var(--off);border:1px solid var(--mid);">
+      <p class="sm" style="font-size:12px;"><strong>Nota:</strong> estes adjetivos não são slogan e não são aspiração. São o critério interno que já guia a operação — e que passará a guiar as decisões de comunicação, produto e expansão.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ S06 — ARQUITETURA DE PORTFÓLIO ═══ -->
+<div class="slide" id="s6" data-footer="Imersão Ontológica — Síntese">
+  <div class="si">
+    <div class="sh">
+      <span class="sl">05 — Arquitetura de portfólio</span>
+      <span class="sn">Âncora · Motor · Extensões</span>
+    </div>
+    <p class="sm" style="max-width:640px;margin-bottom:16px;">O Galo Cinza opera como marca guarda-chuva. O restaurante é a âncora — onde a reputação é construída e protegida. O que cresce a partir dele segue critério, não oportunismo.</p>
+    <div class="port-anchor">
+      <div class="port-anchor-label">Marca — Galo Cinza</div>
+      <div class="port-anchor-name">A marca que organiza tudo</div>
+      <div class="port-anchor-desc">Território, valores e linguagem que se aplicam a qualquer frente de negócio sob o guarda-chuva.</div>
+    </div>
+    <div class="port-row" style="margin-top:1px;">
+      <div class="port-cell">
+        <div class="port-cell-label">Âncora <span class="tag bk" style="font-size:8px;padding:2px 7px;">Ativo</span></div>
+        <div class="port-cell-name">Restaurante</div>
+        <div class="port-cell-desc">Base operacional e de reputação. Onde o cliente aprende o que o Galo Cinza é. Não escala por unidade — escala por referência.</div>
+      </div>
+      <div class="port-cell" style="border-left:1px solid var(--mid);">
+        <div class="port-cell-label">Motor <span class="tag bk" style="font-size:8px;padding:2px 7px;">Próximo passo</span></div>
+        <div class="port-cell-name">Linha de congelados</div>
+        <div class="port-cell-desc">Conveniência íntegra. A filosofia da cozinha acessível fora do restaurante. Primeira frente de expansão com geração de receita fora do espaço físico.</div>
+      </div>
+    </div>
+    <div class="port-row three" style="margin-top:1px;">
+      <div class="port-cell dim">
+        <div class="port-cell-label">Extensão <span class="tag scope" style="font-size:8px;padding:2px 7px;">Nova proposta</span></div>
+        <div class="port-cell-name">Modelo de assinatura</div>
+        <div class="port-cell-desc">Receita previsível e fidelização. Membership por perfil de cliente — começa como camada sobre os congelados e o restaurante, evolui como produto autônomo.</div>
+      </div>
+      <div class="port-cell dim" style="border-left:1px solid var(--mid);">
+        <div class="port-cell-label">Extensão <span class="tag scope" style="font-size:8px;padding:2px 7px;">Nova proposta</span></div>
+        <div class="port-cell-name">Linha infantil</div>
+        <div class="port-cell-desc">Derivado natural dos valores da marca. Alimentação infantil sem concessão de qualidade. Requer marca própria e modelo independente.</div>
+      </div>
+      <div class="port-cell dim" style="border-left:1px solid var(--mid);">
+        <div class="port-cell-label">Horizonte <span class="tag new" style="font-size:8px;padding:2px 7px;">Futuro</span></div>
+        <div class="port-cell-name">Alta gastronomia brasileira</div>
+        <div class="port-cell-desc">Um segundo conceito — intimista, culinária brasileira multicultural. Porto Alegre não tem isso. A marca Galo Cinza teria autoridade para fazer.</div>
+      </div>
+    </div>
+    <div style="margin-top:1px;padding:13px 20px;background:var(--off);border:1px solid var(--mid);display:flex;align-items:center;gap:12px;">
+      <span style="font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--subtle);white-space:nowrap;">Nota</span>
+      <p class="sm" style="font-size:12px;">O Instituto Galo Cinza foi avaliado durante o processo e não integra a arquitetura de marca neste momento. A estrutura acima representa o sistema que faz sentido agora.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ S07 — CRITÉRIO DE EXPANSÃO ═══ -->
+<div class="slide" id="s7" data-footer="Imersão Ontológica — Síntese">
+  <div class="g2">
+    <div class="gc gl">
+      <div class="sh">
+        <span class="sl">06 — Instrumento</span>
+        <span class="sn">Critério de Expansão</span>
+      </div>
+      <h3 style="margin-bottom:16px;">Como avaliar qualquer ideia nova.</h3>
+      <p class="sm">Este instrumento foi desenvolvido durante o processo e validado em reunião. A partir de agora funciona como protocolo — toda nova iniciativa passa por aqui antes de entrar na agenda.</p>
+      <div style="margin-top:20px;padding:20px 22px;background:var(--off);border:1px solid var(--mid);">
+        <div style="font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:10px;">Como usar</div>
+        <p class="sm">Antes de investir tempo ou dinheiro em qualquer expansão, aplique os quatro critérios. Se a ideia falhar em qualquer um deles, ela deve ser descartada ou reformulada antes de avançar.</p>
+      </div>
+      <div style="margin-top:12px;padding:20px 22px;background:var(--black);border:1px solid var(--black);">
+        <div style="font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:10px;">Para Gabriel</div>
+        <p style="font-size:13px;font-weight:300;color:rgba(255,255,255,.65);line-height:1.65;">Você concorda com estes quatro critérios como protocolo de decisão? Existe algum que acrescentaria com base na sua experiência do negócio?</p>
+      </div>
+    </div>
+    <div class="gc">
+      <div class="sh">
+        <span class="sl">06 — Instrumento</span>
+        <span class="sn">Quatro perguntas</span>
+      </div>
+      <div class="exp-grid">
+        <div class="exp-item">
+          <div class="exp-bar"></div>
+          <div class="exp-num">Critério 01</div>
+          <div class="exp-q">Reforça ou dilui a identidade?</div>
+          <div class="exp-desc">A iniciativa é reconhecível como Galo Cinza? Qualquer pessoa que conhece a marca entenderia por que faz sentido?</div>
+        </div>
+        <div class="exp-item">
+          <div class="exp-bar"></div>
+          <div class="exp-num">Critério 02</div>
+          <div class="exp-q">Aumenta ou fragmenta o valor percebido?</div>
+          <div class="exp-desc">A iniciativa adiciona algo ao que o cliente já enxerga — ou abre uma frente que compete com a reputação construída?</div>
+        </div>
+        <div class="exp-item">
+          <div class="exp-bar"></div>
+          <div class="exp-num">Critério 03</div>
+          <div class="exp-q">Cria dependência ou autonomia?</div>
+          <div class="exp-desc">A iniciativa exige que Gabriel esteja presente para funcionar? Toda expansão deve caminhar para operação independente.</div>
+        </div>
+        <div class="exp-item">
+          <div class="exp-bar"></div>
+          <div class="exp-num">Critério 04</div>
+          <div class="exp-q">O restaurante aguenta sem impacto?</div>
+          <div class="exp-desc">A operação atual suporta essa expansão sem perder qualidade ou ritmo? O restaurante é a âncora — não pode ser sacrificado por novidade.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ S08 — GAP DE PERCEPÇÃO ═══ -->
+<div class="slide" id="s8" data-footer="Imersão Ontológica — Síntese">
+  <div class="si">
+    <div class="sh">
+      <span class="sl">07 — Gap de percepção</span>
+      <span class="sn">O diferencial precisa ser legível no primeiro contato</span>
+    </div>
+    <p class="sm" style="max-width:680px;margin-bottom:4px;">O cliente recorrente sabe o que o Galo Cinza é. O cliente novo ainda não. Resolver esse gap é a alavanca de conversão mais direta disponível — sem mudar produto, sem mudar preço.</p>
+    <div class="gap-row">
+      <div class="gap-cell">
+        <div class="gap-label pt1">Ponto de contato 01</div>
+        <div class="gap-title">Espaço físico</div>
+        <div class="gap-desc" style="margin-bottom:12px;">As paredes, a identidade visual, a comunicação interna do restaurante não transmitem o nível de rigor que existe na cozinha. O espaço é um canvas subutilizado.</div>
+        <div style="font-size:11px;color:var(--subtle);padding-top:10px;border-top:1px solid var(--mid);">Próximo passo: brief para arquiteto</div>
+      </div>
+      <div class="gap-cell" style="border-left:1px solid var(--mid);">
+        <div class="gap-label pt2">Ponto de contato 02</div>
+        <div class="gap-title">Instagram e conteúdo</div>
+        <div class="gap-desc" style="margin-bottom:12px;">O canal existe mas não comunica o processo. Conteúdo estratégico de bastidores — o forno, a água, os fornecedores — conta a história sem declarar. É anti-marketing de serviço.</div>
+        <div style="font-size:11px;color:var(--subtle);padding-top:10px;border-top:1px solid var(--mid);">Próximo passo: workflow de produção de conteúdo</div>
+      </div>
+      <div class="gap-cell" style="border-left:1px solid var(--mid);">
+        <div class="gap-label pt3">Ponto de contato 03</div>
+        <div class="gap-title">Embalagem e entrega</div>
+        <div class="gap-desc" style="margin-bottom:12px;">A embalagem é o cartão de visita fora do restaurante. No modelo de assinatura e nos congelados, ela precisa comunicar o território com a mesma precisão que o prato.</div>
+        <div style="font-size:11px;color:var(--subtle);padding-top:10px;border-top:1px solid var(--mid);">Próximo passo: brief de embalagem</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ S09 — DIREÇÃO VISUAL ═══ -->
+<div class="slide dk" id="s9">
+  <div style="width:100%;height:100%;padding:52px 64px;display:grid;grid-template-rows:auto 1fr auto;">
+    <div style="display:flex;justify-content:space-between;">
+      <span data-logo="white" data-h="13"></span>
+      <span style="font-size:10px;color:rgba(255,255,255,.2);letter-spacing:.03em;">Imersão Ontológica — Síntese</span>
+    </div>
+    <div style="display:flex;flex-direction:column;justify-content:center;max-width:760px;">
+      <div style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:28px;">08 — Direção visual</div>
+      <h2 style="font-size:46px;color:white;line-height:.97;letter-spacing:-.025em;margin-bottom:32px;">Uma primeira leitura<br>visual do território.</h2>
+      <p style="font-size:16px;font-weight:300;color:rgba(255,255,255,.42);line-height:1.7;max-width:520px;margin-bottom:28px;">As referências a seguir não definem o sistema de identidade — isso acontece na Formulação Estratégica. Servem para calibrar a direção: o que ressoa, o que pertence, o que não pertence ao território.</p>
+      <div style="display:flex;gap:12px;align-items:center;">
+        <div style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.4);flex-shrink:0;"></div>
+        <p style="font-size:13px;font-weight:300;color:rgba(255,255,255,.5);line-height:1.5;">Referências curadas por Chaparro — apresentadas ao vivo a seguir.</p>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);">
+      <span style="font-size:11px;color:rgba(255,255,255,.22);">Moodboard direcional, não definitivo.</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ S10 — PRÓXIMOS PASSOS (cliente) ═══ -->
+<div class="slide" id="s10" data-footer="Imersão Ontológica — Síntese">
+  <div class="si">
+    <div class="sh">
+      <span class="sl">09 — Próximos passos</span>
+      <span class="sn">O que acontece após a aprovação da Síntese</span>
+    </div>
+    <p class="sm" style="max-width:640px;margin-bottom:4px;">A Síntese fecha a Fase 01. O que foi construído aqui é a base que orienta tudo que segue. A partir da aprovação desta apresentação, entramos na Formulação Estratégica.</p>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--mid);border:1px solid var(--mid);margin-top:20px;">
+      <div class="ns-cell">
+        <div class="ns-num">Passo 01</div>
+        <div class="ns-title">Definir o território</div>
+        <div class="ns-body">Escolha entre os dois candidatos apresentados. A aprovação é verbal e deve sair desta reunião.</div>
+        <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--mid);"><span class="ns-pill now">Esta reunião</span></div>
+      </div>
+      <div class="ns-cell" style="border-left:1px solid var(--mid);">
+        <div class="ns-num">Passo 02</div>
+        <div class="ns-title">Validar a direção visual</div>
+        <div class="ns-body">Feedback sobre o moodboard direcional apresentado. O que ressoa, o que não pertence ao território. Serve de base para a Fase 02.</div>
+        <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--mid);"><span class="ns-pill now">Esta reunião</span></div>
+      </div>
+      <div class="ns-cell" style="border-left:1px solid var(--mid);">
+        <div class="ns-num">Passo 03</div>
+        <div class="ns-title">Handover de materiais</div>
+        <div class="ns-body">Logo e arquivos de marca existentes, fotos de cardápio, contatos de fornecedores de embalagem. Necessário para iniciar a Fase 02.</div>
+        <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--mid);"><span class="ns-pill next">Próxima semana</span></div>
+      </div>
+      <div class="ns-cell" style="border-left:1px solid var(--mid);">
+        <div class="ns-num">Passo 04</div>
+        <div class="ns-title">Formulação Estratégica</div>
+        <div class="ns-body">Fase 02 do projeto: território nomeado, DNA verbal, Look & Feel aprovado. A marca começa a ganhar forma definitiva.</div>
+        <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--mid);"><span class="ns-pill next">Fase 02</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- DIVISOR — USO INTERNO                 -->
+<!-- ═══════════════════════════════════════ -->
+
+<!-- ═══ S12 — DIVISOR INTERNO ═══ -->
+<div class="slide" id="s12" style="background:var(--black);">
+  <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:64px;">
+    <div style="border:1px solid rgba(255,255,255,.1);padding:40px 60px;text-align:center;max-width:560px;">
+      <h2 style="color:white;font-size:40px;line-height:1.0;letter-spacing:-.02em;margin-bottom:20px;">Formulação<br>Estratégica.</h2>
+      <p style="color:rgba(255,255,255,.38);font-size:14px;font-weight:300;line-height:1.65;">O que acontece depois da Síntese — e o que será entregue ao final do projeto.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ S13 — O QUE É A IMERSÃO ONTOLÓGICA ═══ -->
+<div class="slide" id="s13" data-footer="Paladino × Galo Cinza — Síntese">
+  <div class="si">
+    <div class="sh">
+      <span class="sl">10 — O processo</span>
+      <span class="sn">O que a Imersão Ontológica fez</span>
+    </div>
+    <div class="reframe-block">
+      <div class="rf-left">
+        <div>
+          <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:12px;">Etapa 01</div>
+          <div style="font-size:32px;font-weight:500;color:white;letter-spacing:-.025em;line-height:1.05;margin-bottom:16px;">Imersão<br>Ontológica.</div>
+          <p style="font-size:13px;font-weight:300;color:rgba(255,255,255,.45);line-height:1.7;max-width:260px;">A primeira etapa do processo Paladino investiga os fundamentos do negócio: visão, modelo, contexto e tensões estruturais. O objetivo é extrair a substância que sustentará a singularidade da marca.</p>
+        </div>
+        <div style="padding-top:20px;border-top:1px solid rgba(255,255,255,.1);">
+          <div style="font-size:11px;color:rgba(255,255,255,.3);">Tese · Antítese · Síntese</div>
+        </div>
+      </div>
+      <div class="rf-right">
+        <div class="rf-cell">
+          <div class="rf-cell-num">O que fizemos</div>
+          <div class="rf-cell-title">Entendemos o negócio</div>
+          <div class="rf-cell-desc">Questionários, entrevistas e leitura crítica do material existente. A visão do Gabriel encontrou a leitura externa do Paladino.</div>
+        </div>
+        <div class="rf-cell" style="border-left:1px solid var(--mid);">
+          <div class="rf-cell-num">O que encontramos</div>
+          <div class="rf-cell-title">Identificamos as tensões</div>
+          <div class="rf-cell-desc">Lacunas entre o que o negócio é e como se apresenta. Oportunidades que existem mas não estavam nomeadas.</div>
+        </div>
+        <div class="rf-cell" style="border-top:1px solid var(--mid);">
+          <div class="rf-cell-num">O que estruturamos</div>
+          <div class="rf-cell-title">Organizamos o potencial</div>
+          <div class="rf-cell-desc">Arquitetura de portfólio, critério de expansão e território de marca. A base que orienta todas as decisões que vêm.</div>
+        </div>
+        <div class="rf-cell" style="border-left:1px solid var(--mid);border-top:1px solid var(--mid);">
+          <div class="rf-cell-num">O que entregamos hoje</div>
+          <div class="rf-cell-title">A Síntese</div>
+          <div class="rf-cell-desc">A conclusão do processo: o que o Galo Cinza é, onde está e para onde vai. O ponto de partida da próxima fase.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ S14 — AS 4 ETAPAS MACRO ═══ -->
+<div class="slide" id="s14" data-footer="Paladino × Galo Cinza — Síntese">
+  <div class="si">
+    <div class="sh">
+      <span class="sl">11 — O processo completo</span>
+      <span class="sn">Onde estamos e o que vem a seguir</span>
+    </div>
+    <p class="sm" style="max-width:640px;">O projeto Galo Cinza conclui hoje a Etapa 01. A aprovação desta Síntese abre a Etapa 02 — onde a marca começa a ganhar forma visual e verbal definitiva.</p>
+    <div class="macro">
+      <div class="mc act">
+        <div class="mn">01 — Concluída</div>
+        <div class="mt">Imersão<br>Ontológica</div>
+        <div class="md">Investigação de fundamentos. O negócio foi lido, questionado e estruturado. Território, portfólio e critério de expansão definidos.</div>
+        <div style="display:flex;gap:4px;margin-top:14px;">
+          <div style="padding:3px 8px;background:rgba(255,255,255,.12);border-radius:100px;font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.6);">Tese ✓</div>
+          <div style="padding:3px 8px;background:rgba(255,255,255,.12);border-radius:100px;font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.6);">Antítese ✓</div>
+          <div style="padding:3px 8px;background:rgba(255,255,255,.25);border-radius:100px;font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:white;">Síntese ✓</div>
+        </div>
+      </div>
+      <div class="mc" style="border-left:1px solid var(--mid);">
+        <div class="mn">02 — A seguir</div>
+        <div class="mt">Formulação<br>Estratégica</div>
+        <div class="md">Proposta de valor, território nomeado e aprovado, DNA verbal, Look & Feel direcional. A marca começa a ganhar forma.</div>
+      </div>
+      <div class="mc" style="border-left:1px solid var(--mid);">
+        <div class="mn">03</div>
+        <div class="mt">Estruturação<br>Simbólica</div>
+        <div class="md">Tipografia, cor, forma, tom de voz. Tradução rigorosa da estratégia em sistema de linguagem e identidade visual.</div>
+      </div>
+      <div class="mc" style="border-left:1px solid var(--mid);">
+        <div class="mn">04</div>
+        <div class="mt">Ativação<br>Sistêmica</div>
+        <div class="md">Guidelines, playbooks e autonomia operacional. A marca funciona com independência e sem diluição ao longo do tempo.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ S15 — O QUE É A FORMULAÇÃO ESTRATÉGICA ═══ -->
+<div class="slide" id="s15" data-footer="Paladino × Galo Cinza — Síntese">
+  <div class="g2">
+    <div class="gc gl">
+      <div class="sh">
+        <span class="sl">12 — Fase 02</span>
+        <span class="sn"><span class="int-badge" style="font-size:8px;">Interno</span></span>
+      </div>
+      <h3 style="margin-bottom:16px;">O que é a Formulação Estratégica.</h3>
+      <p class="sm" style="margin-bottom:20px;">É o momento de síntese intelectual. Onde a estratégia ganha estrutura e a marca começa a ter forma — conceitual antes de visual.</p>
+      <p class="sm">A Fase 01 revelou o que existe. A Fase 02 define o que será declarado. Não é execução — é a arquitetura que orienta toda execução posterior.</p>
+      <div style="margin-top:24px;padding:20px 22px;background:var(--off);border:1px solid var(--mid);">
+        <div style="font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:10px;">Diferença crítica</div>
+        <p class="sm" style="font-size:12px;">Na Fase 01, perguntamos: "o que o negócio é?" Na Fase 02, respondemos: "como isso se declara e se expressa?" São perguntas distintas que exigem métodos distintos.</p>
+      </div>
+      <div class="rl" style="margin-top:20px;">
+        <div class="rr">
+          <span class="rn">2.1</span>
+          <div class="rt"><strong>Look & Feel direcional</strong><em>Moodboard pesquisado e curado. Primeira tradução visual do território — não é o sistema de identidade, é a bússola.</em></div>
+        </div>
+        <div class="rr">
+          <span class="rn">2.2</span>
+          <div class="rt"><strong>DNA + ID Verbal</strong><em>Tom de voz, vocabulário de marca, o que a marca diz e como diz. Ponto de partida para guidelines.</em></div>
+        </div>
+      </div>
+    </div>
+    <div class="gc">
+      <div class="sh">
+        <span class="sl">12 — Fase 02</span>
+        <span class="sn">Output da etapa</span>
+      </div>
+      <h4>O que é entregue ao final da Fase 02</h4>
+      <div class="rl">
+        <div class="rr">
+          <span class="rn">01</span>
+          <div class="rt"><strong>Território nomeado e aprovado</strong><em>O nome definitivo. A declaração de posicionamento. A frase que define o que o Galo Cinza é para o mundo.</em></div>
+        </div>
+        <div class="rr">
+          <span class="rn">02</span>
+          <div class="rt"><strong>Proposta de valor estruturada</strong><em>O que a marca entrega, para quem, e por que ninguém mais entrega da mesma forma.</em></div>
+        </div>
+        <div class="rr">
+          <span class="rn">03</span>
+          <div class="rt"><strong>DNA verbal — primeiros traços</strong><em>Vocabulário de marca. Palavras que pertencem ao Galo Cinza. Palavras que não pertencem. Tom de voz documentado.</em></div>
+        </div>
+        <div class="rr">
+          <span class="rn">04</span>
+          <div class="rt"><strong>Look & Feel direcional</strong><em>Moodboard curado por Chaparro. Referências visuais que calibram a direção antes da criação da identidade.</em></div>
+        </div>
+        <div class="rr">
+          <span class="rn">05</span>
+          <div class="rt"><strong>Feedback aprovado do cliente</strong><em>A Fase 02 só fecha com aprovação de Gabriel sobre a direção. Sem isso, a Fase 03 não começa.</em></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ S16 — ENTREGÁVEIS DO PROJETO ═══ -->
+<div class="slide" id="s16" data-footer="Paladino × Galo Cinza — Síntese">
+  <div class="si" style="padding-bottom:80px;">
+    <div class="sh">
+      <span class="sl">13 — Entregáveis do projeto</span>
+      <span class="sn"><span class="int-badge" style="font-size:8px;">Interno</span></span>
+    </div>
+    <p class="sm" style="max-width:680px;flex-shrink:0;">O que foi contratado. Estes são os ativos que compõem o ecossistema entregue ao Galo Cinza ao final do projeto — não peças isoladas, mas um sistema de gestão de marca.</p>
+    <div class="si-scroll">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--mid);border:1px solid var(--mid);margin-top:16px;">
+      <div style="background:var(--white);padding:22px 24px;">
+        <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:6px;">Entregável 01</div>
+        <div style="font-size:15px;font-weight:500;color:var(--black);margin-bottom:8px;letter-spacing:-.01em;">Brand Guide — O Galo Cinza</div>
+        <div style="font-size:12px;font-weight:300;color:var(--ink);line-height:1.6;">Documento central da marca. Consolida posicionamento, propósito, missão, visão, valores, linguagem e diretrizes de uso. Formaliza a Camada Ontológica e a Camada Simbólica. É a fonte de verdade da marca.</div>
+      </div>
+      <div style="background:var(--white);padding:22px 24px;border-left:1px solid var(--mid);">
+        <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:6px;">Entregável 02</div>
+        <div style="font-size:15px;font-weight:500;color:var(--black);margin-bottom:8px;letter-spacing:-.01em;">Brand System — Figma</div>
+        <div style="font-size:12px;font-weight:300;color:var(--ink);line-height:1.6;">Ambiente de engenharia visual. Traduz a estratégia em sistema operativo com tokens e componentes inteligentes. Garante consistência absoluta entre produto e comunicação. A marca evolui sem perder integridade.</div>
+      </div>
+      <div style="background:var(--white);padding:22px 24px;border-top:1px solid var(--mid);">
+        <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:6px;">Entregável 03</div>
+        <div style="font-size:15px;font-weight:500;color:var(--black);margin-bottom:8px;letter-spacing:-.01em;">Biblioteca de Assets + Templates Digitais</div>
+        <div style="font-size:12px;font-weight:300;color:var(--ink);line-height:1.6;">Logos, elementos gráficos e materiais institucionais prontos para uso. Modelos editáveis para redes sociais, apresentações e comunicação. Ativação Sistêmica em formato prático — presença de mercado como extensão direta da estratégia.</div>
+      </div>
+      <div style="background:var(--white);padding:22px 24px;border-top:1px solid var(--mid);border-left:1px solid var(--mid);">
+        <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:6px;">Entregável 04</div>
+        <div style="font-size:15px;font-weight:500;color:var(--black);margin-bottom:8px;letter-spacing:-.01em;">Creative & Art Direction Playbook</div>
+        <div style="font-size:12px;font-weight:300;color:var(--ink);line-height:1.6;">Guia de alta curadoria para a Camada Simbólica. Define olhar, enquadramento, estilo de tratamento e narrativa visual. Qualquer produção futura — campanhas, sessões fotográficas — respeita a densidade visual da marca.</div>
+      </div>
+      <div style="background:var(--white);padding:22px 24px;border-top:1px solid var(--mid);">
+        <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:6px;">Entregável 05</div>
+        <div style="font-size:15px;font-weight:500;color:var(--black);margin-bottom:8px;letter-spacing:-.01em;">Editorial Playbook</div>
+        <div style="font-size:12px;font-weight:300;color:var(--ink);line-height:1.6;">Sistema de governança de conteúdo. Define Do's & Don'ts, linha editorial e comportamento verbal em cada canal — incluindo workflow de produção para o Instagram. A marca não apenas fala: se posiciona com autoridade.</div>
+      </div>
+      <div style="background:var(--white);padding:22px 24px;border-top:1px solid var(--mid);border-left:1px solid var(--mid);">
+        <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:6px;">Entregáveis 06 + 07</div>
+        <div style="font-size:15px;font-weight:500;color:var(--black);margin-bottom:8px;letter-spacing:-.01em;">Biblioteca de Embalagens + Indicação de Profissionais</div>
+        <div style="font-size:12px;font-weight:300;color:var(--ink);line-height:1.6;">Diretrizes visuais com mockups de embalagens para a linha de produtos congelados (faca + arte final não incluída). Mapeamento e sugestão de designers, fotógrafos e fornecedores para manutenção e evolução da marca após o projeto.</div>
+      </div>
+    </div>
+    </div><!-- end si-scroll -->
+  </div>
+</div>
+
+<!-- ═══ S17 — FECHAMENTO ═══ -->
+<div class="slide dk" id="s17">
+  <div style="width:100%;height:100%;padding:52px 64px;display:grid;grid-template-rows:auto 1fr auto;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+      <span data-logo="white" data-h="13"></span>
+      <span style="font-size:10px;color:rgba(255,255,255,.2);letter-spacing:.03em;">Agosto 2026</span>
+    </div>
+    <div style="display:flex;flex-direction:column;justify-content:center;">
+      <div style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:20px;">Imersão Ontológica — Síntese</div>
+      <h2 style="color:white;font-size:52px;max-width:620px;line-height:0.94;margin-bottom:32px;letter-spacing:-.025em;">O Galo Cinza<br>sabe o que é.<br><span style="color:rgba(255,255,255,.4);">Agora tem<br>linguagem pra dizer.</span></h2>
+      <p style="font-size:15px;font-weight:300;color:rgba(255,255,255,.38);max-width:460px;line-height:1.7;">Este processo revelou o que já existia. O próximo passo é transformar essa clareza em sistema — visual, verbal e operacional.</p>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);">
+      <span style="font-size:11px;color:rgba(255,255,255,.2);">paladino.inc</span>
+      <div style="display:flex;gap:24px;">
+        <span style="font-size:11px;color:rgba(255,255,255,.2);">chaparro@paladino.inc</span>
+        <span style="font-size:11px;color:rgba(255,255,255,.2);">anuschek@paladino.inc</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+let cur=0,tot=slides.length;
+function show(n){
+  slides[cur].classList.remove('active');
+  cur=((n%tot)+tot)%tot;
+  slides[cur].classList.add('active');
+  document.getElementById('ctr').textContent=`${cur+1} / ${tot}`;
+}
+function next(){show(cur+1);}
+function prev(){show(cur-1);}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown')next();
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp')prev();
+});
+
+function exportMD(){
+  const sections=[];
+  document.querySelectorAll('.slide').forEach((slide,i)=>{
+    const label=slide.querySelector('.sl')?slide.querySelector('.sl').textContent.trim():`Slide ${i+1}`;
+    const texts=[];
+    slide.querySelectorAll('h1,h2,h3,h4,p,strong,.sc4-title,.sc4-body,.tcard-name,.tcard-desc,.dna-word,.dna-def,.port-anchor-name,.port-anchor-desc,.port-cell-name,.port-cell-desc,.exp-q,.exp-desc,.gap-title,.gap-desc,.ns-title,.ns-body,.rt,.rf-cell-title,.rf-cell-desc,.mc .mt,.mc .md,.rr').forEach(el=>{
+      const t=el.textContent.trim();
+      if(t&&t.length>2&&!texts.includes(t)){
+        const tag=el.tagName.toLowerCase();
+        if(tag==='h1')texts.push(`# ${t}`);
+        else if(tag==='h2')texts.push(`## ${t}`);
+        else if(tag==='h3')texts.push(`### ${t}`);
+        else if(tag==='h4')texts.push(`#### ${t}`);
+        else texts.push(t);
+      }
+    });
+    if(texts.length){
+      sections.push(`---\n## ${label}\n\n${texts.join('\n\n')}`);
+    }
+  });
+  const md=`# Paladino × Galo Cinza — Síntese\n\n${sections.join('\n\n')}`;
+  const blob=new Blob([md],{type:'text/markdown'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='paladino-galo-cinza-sintese.md';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+</script>
+</body>
+</html>
