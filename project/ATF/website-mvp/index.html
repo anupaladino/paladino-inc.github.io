@@ -533,18 +533,98 @@ footer {
 
 
 <footer>
-  <span class="footer-brand">
-    <img src="logos/logo-atf-black.svg" alt="ATF" style="height:16px;width:auto;display:block;">
-  </span>
-  <ul class="footer-links">
-    <li><a href="asset.html">Asset</a></li>
-    <li><a href="fintech.html">Fintech</a></li>
-    <li><a href="sobre.html">A ATF</a></li>
-    <li><a href="governanca.html">Governança</a></li>
-    <li><a href="ajuda.html">Ajuda</a></li>
-    <li><a href="carreiras.html">Carreiras</a></li>
-  </ul>
-  <span class="footer-copy">IF nº 513 · Banco Central do Brasil · atf.com.br</span>
+  <div style="max-width:var(--page-max);margin:0 auto;padding:64px var(--pad-x) 40px;width:100%;">
+
+    <!-- TOP ROW: logo + social + ouvidoria | columns -->
+    <div style="display:grid;grid-template-columns:220px 1fr;gap:80px;padding-bottom:48px;border-bottom:1px solid var(--rule);">
+
+      <!-- LEFT: logo + social + ouvidoria -->
+      <div style="display:flex;flex-direction:column;gap:28px;align-items:flex-start;">
+        <img src="logos/logo-atf-black.svg" alt="ATF" style="height:18px;width:auto;display:block;align-self:flex-start;">
+
+        <div>
+          <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);margin-bottom:10px;">Siga a ATF</p>
+          <div style="display:flex;gap:10px;">
+            <a href="https://www.linkedin.com/company/atfbr/" target="_blank" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:1px solid var(--rule);color:var(--mid);font-size:11px;font-weight:700;letter-spacing:.04em;">in</a>
+            <a href="https://www.instagram.com/atf.com.br" target="_blank" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:1px solid var(--rule);color:var(--mid);font-size:11px;font-weight:700;letter-spacing:.04em;">ig</a>
+          </div>
+        </div>
+
+        <div>
+          <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);margin-bottom:12px;">Ouvidoria</p>
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <a href="https://www.contatoseguro.com.br/ouvidoriaatf" style="font-size:13px;color:var(--black);">Canal de Ouvidoria</a>
+            <a href="tel:08008000513" style="font-size:13px;color:var(--black);">0800 800 0513</a>
+            <p style="font-size:12px;color:var(--mid);margin:0;">09h00 às 12h00</p>
+            <p style="font-size:12px;color:var(--mid);margin:0;">14h00 às 17h30</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: link columns -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:40px;">
+
+        <!-- Para Você -->
+        <div>
+          <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--black);margin-bottom:16px;">Para Você</p>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <a href="consignado.html" style="font-size:13px;color:var(--mid);">Consignado PF</a>
+          </div>
+          <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--black);margin-top:28px;margin-bottom:16px;">Canal de Ajuda</p>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <a href="#" style="font-size:13px;color:var(--mid);">Central de Atendimento</a>
+            <a href="https://www.contatoseguro.com.br/atf" target="_blank" style="font-size:13px;color:var(--mid);">Canal de Ética</a>
+            <a href="ajuda.html" style="font-size:13px;color:var(--mid);">Perguntas Frequentes</a>
+          </div>
+        </div>
+
+        <!-- Para Empresa -->
+        <div>
+          <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--black);margin-bottom:16px;">Para Empresa</p>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <a href="conta-pj.html" style="font-size:13px;color:var(--mid);">Conta PJ</a>
+            <a href="antecipacao-recebiveis.html" style="font-size:13px;color:var(--mid);">Antecipação de Recebíveis</a>
+            <a href="capital-de-giro.html" style="font-size:13px;color:var(--mid);">Capital de Giro</a>
+            <a href="risco-sacado.html" style="font-size:13px;color:var(--mid);">Risco Sacado</a>
+            <a href="cdc.html" style="font-size:13px;color:var(--mid);">Crédito Direto ao Consumidor</a>
+            <a href="boleto-bancario.html" style="font-size:13px;color:var(--mid);">Boleto Bancário</a>
+            <a href="asset.html" style="font-size:13px;color:var(--mid);">ATF Asset</a>
+          </div>
+        </div>
+
+        <!-- A ATF -->
+        <div>
+          <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--black);margin-bottom:16px;">A ATF</p>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <a href="sobre.html" style="font-size:13px;color:var(--mid);">Quem Somos</a>
+            <a href="governanca.html" style="font-size:13px;color:var(--mid);">Governança</a>
+            <a href="carreiras.html" style="font-size:13px;color:var(--mid);">Carreiras</a>
+          </div>
+        </div>
+
+        <!-- Transparência -->
+        <div>
+          <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--black);margin-bottom:16px;">Transparência</p>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <a href="#" style="font-size:13px;color:var(--mid);">Termos e Políticas</a>
+            <a href="#" style="font-size:13px;color:var(--mid);">Tabela de Tarifas</a>
+            <a href="#" style="font-size:13px;color:var(--mid);">Correspondentes ATF SCD</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- BOTTOM: legal -->
+    <div style="padding-top:32px;display:flex;flex-direction:column;gap:16px;">
+      <p style="font-size:11px;line-height:1.65;color:var(--light);max-width:100%;margin:0;">As marcas registradas, logotipos e marcas de serviço que aparecem nos serviços e produtos, incluindo, entre outros, a marca registrada "ATF" são marcas registradas e marcas de serviço da ATF. Outros nomes e logotipos de empresas, produtos e serviços usados e exibidos nos serviços e produtos podem ser marcas comerciais ou marcas de serviço de seus respectivos proprietários que podem ou não apoiar ou ser afiliados ou conectados a nós. Nada nos serviços e produtos deve ser interpretado como concessão, implícita ou não, de qualquer licença ou direito de uso de qualquer marca registrada e marca de serviço exibida nos serviços e produtos, sem nossa permissão prévia por escrito em cada instância. Sobre Privacidade de Dados e Atendimento aos Direitos de Titulares de Dados, por favor, leia os nossos <a href="#" style="color:var(--mid);text-decoration:underline;">Termos de Uso e Política de Privacidade</a>.</p>
+      <div style="display:flex;gap:32px;flex-wrap:wrap;">
+        <p style="font-size:11px;color:var(--light);margin:0;">© 2026 ATF Sociedade de Crédito Direto S.A. · CNPJ: 44.728.700/0001-72</p>
+        <p style="font-size:11px;color:var(--light);margin:0;">Rua Mostardeiro, 322/12º andar · Porto Alegre/RS · 90430-000</p>
+      </div>
+    </div>
+
+  </div>
 </footer>
 
 </body>
