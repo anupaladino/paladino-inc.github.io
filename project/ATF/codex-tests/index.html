@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ATF — Testes de blocos de produto</title>
+<title>ATF — Biblioteca de componentes</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -34,6 +34,9 @@ header p { font-size: 1rem; color: #C9C4BE; max-width: 620px; }
 main { padding: 56px 0 100px; }
 
 .list { display: flex; flex-direction: column; }
+
+.group-label { font-size: .6875rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--light); padding: 28px 0 4px; }
+.list .group-label:first-child { padding-top: 0; }
 
 .round {
   display: grid;
@@ -72,17 +75,31 @@ footer p { font-size: .8125rem; color: var(--light); max-width: 620px; }
 
 <header>
   <div class="page">
-    <p class="eyebrow">Codex-tests · Product blocks</p>
-    <h1>Testes de blocos de produto — índice</h1>
-    <p>Cinco rodadas explorando como apresentar os 7 produtos da ATF na home — estrutura, conteúdo, tom e uso de assets reais das Credenciais. Nenhuma delas substitui o trabalho do Ronald no Figma; servem como referência e ponto de partida.</p>
+    <p class="eyebrow">Codex-tests · Biblioteca de componentes</p>
+    <h1>Biblioteca de componentes — índice</h1>
+    <p>Sete rodadas de testes exploratórios de componentes de interface pro site da ATF: um round de navegação (menu) e seis rounds de blocos de conteúdo — estrutura, tom e uso de assets reais das Credenciais. Nenhuma substitui o trabalho do Ronald no Figma; servem como referência e ponto de partida, migradas pra lá conforme validadas.</p>
   </div>
 </header>
 
 <main class="page">
   <div class="list">
 
-    <a class="round" href="product-blocks-v01/index.html">
+    <p class="group-label">Navegação</p>
+
+    <a class="round" href="menu-v01/index.html">
       <span class="round-num">01</span>
+      <div>
+        <p class="round-title">Menu</p>
+        <p class="round-desc">6 conceitos de navegação, cada um em desktop e mobile: faixa clássica evoluída, overlay em tela cheia, barra dividida assimétrica, mega-menu com produtos, pílula flutuante, e barra inferior mobile (tab bar).</p>
+        <div class="round-tags"><span>navegação</span><span>6 conceitos</span><span>desktop + mobile</span></div>
+      </div>
+      <span class="round-arrow">→</span>
+    </a>
+
+    <p class="group-label">Blocos de produto</p>
+
+    <a class="round" href="product-blocks-v01/index.html">
+      <span class="round-num">02</span>
       <div>
         <p class="round-title">Estrutura</p>
         <p class="round-desc">Três formas de organizar os 7 produtos: índice editorial em lista, grade agrupada por pilar (Asset / Fintech / Para Você), e carrossel horizontal com scroll-snap.</p>
@@ -92,7 +109,7 @@ footer p { font-size: .8125rem; color: var(--light); max-width: 620px; }
     </a>
 
     <a class="round" href="product-blocks-v02/index.html">
-      <span class="round-num">02</span>
+      <span class="round-num">03</span>
       <div>
         <p class="round-title">Conteúdo — primeira leva de assets reais</p>
         <p class="round-desc">Editorial em tela cheia e índice com preview interativo. Primeira vez usando componentes reais do Design System (botão, chip, slider dots) e um sublinhado dourado animado — abandonado depois.</p>
@@ -102,7 +119,7 @@ footer p { font-size: .8125rem; color: var(--light); max-width: 620px; }
     </a>
 
     <a class="round" href="product-blocks-v03/index.html">
-      <span class="round-num">03</span>
+      <span class="round-num">04</span>
       <div>
         <p class="round-title">Mural lúdico</p>
         <p class="round-desc">Cards inclinados e de tamanhos variados, tipo moodboard físico. Primeira vez usando os 7 vídeos corretos (ilustrações animadas das Credenciais). Inclui uma técnica alternativa: SVG parado com animação leve via CSS.</p>
@@ -112,7 +129,7 @@ footer p { font-size: .8125rem; color: var(--light); max-width: 620px; }
     </a>
 
     <a class="round" href="product-blocks-v04/index.html">
-      <span class="round-num">04</span>
+      <span class="round-num">05</span>
       <div>
         <p class="round-title">Tela cheia + paralaxe</p>
         <p class="round-desc">Texto acima, vídeo grande abaixo (sem crop, fundo branco se funde com a página), um bloco de 100vh por produto. Paralaxe alternando sentido a cada bloco.</p>
@@ -122,7 +139,7 @@ footer p { font-size: .8125rem; color: var(--light); max-width: 620px; }
     </a>
 
     <a class="round" href="product-blocks-v05/index.html">
-      <span class="round-num">05</span>
+      <span class="round-num">06</span>
       <div>
         <p class="round-title">Overlay em tela cheia + mosaico</p>
         <p class="round-desc">Duas variantes: vídeo cobrindo a tela inteira com texto sobre um cartão translúcido; e um mosaico (cheio / dois lado a lado / cheio / dois lado a lado / cheio). Sem indicadores "01/07" nem pills de pilar.</p>
@@ -132,7 +149,7 @@ footer p { font-size: .8125rem; color: var(--light); max-width: 620px; }
     </a>
 
     <a class="round" href="product-blocks-v06/index.html">
-      <span class="round-num">06</span>
+      <span class="round-num">07</span>
       <div>
         <p class="round-title">Catálogo de blocos</p>
         <p class="round-desc">Não é mais sobre os 7 produtos — 9 padrões de bloco reaproveitáveis em qualquer seção (corte diagonal, marquee, grade assimétrica, texto fixo com mídia rolando, pull-quote, números cinéticos, faixa de marcas, revelação por palavra, CTA em tela cheia), puxando de referências de fora em vez do que a ATF já fez.</p>
