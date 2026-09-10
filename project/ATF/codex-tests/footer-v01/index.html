@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATF — Catálogo de footers v01</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --font: 'Plus Jakarta Sans', sans-serif;
+  --black: #0A0A0A;
+  --mid: #6B6560;
+  --light: #9B9590;
+  --rule: #E8E7E5;
+  --gold: #FFCD7D;
+  --page-max: 1080px;
+  --pad-x: 64px;
+}
+body { font-family: var(--font); background: #fff; color: var(--black); -webkit-font-smoothing: antialiased; font-size: 16px; line-height: 1.7; }
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; display: block; }
+
+/* meta */
+.meta-header { background: var(--black); color: #fff; padding: 32px 64px 36px; }
+.meta-header .inner { max-width: 1280px; margin: 0 auto; }
+.meta-label { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+.meta-header h1 { font-size: 1.5rem; font-weight: 800; letter-spacing: -.01em; margin-bottom: 14px; }
+.meta-header p { font-size: .9375rem; color: #C9C4BE; max-width: 780px; margin-bottom: 6px; }
+.meta-nav { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 18px; }
+.meta-nav a { font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: #fff; border-bottom: 1.5px solid var(--gold); padding-bottom: 3px; }
+
+.block-label { display: flex; align-items: baseline; gap: 12px; padding: 40px 64px 0; max-width: 1280px; margin: 0 auto; flex-wrap: wrap; }
+.block-label .n { font-size: 1.4rem; font-weight: 800; color: var(--rule); }
+.block-label h2 { font-size: 1.1rem; font-weight: 800; letter-spacing: -.01em; }
+.block-label p.note { flex-basis: 100%; font-size: .875rem; color: var(--mid); max-width: 760px; }
+
+/* ── CTA dourado (constante nas 5 variações — o componente que o Chaparro curtiu) ── */
+.block-cta { background: var(--gold); padding: 130px var(--pad-x) 96px; text-align: center; }
+.block-cta h2 { font-size: clamp(2.6rem, 7vw, 5.5rem); font-weight: 800; letter-spacing: -.03em; line-height: 1; margin-bottom: 32px; color: var(--black); }
+.block-cta .btn { display: inline-block; font-size: .875rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; background: var(--black); color: #fff; padding: 16px 34px; border-radius: 999px; }
+.block-cta .reg-inline { margin-top: 30px; font-size: 12px; font-weight: 600; color: rgba(10,10,10,.55); }
+
+/* ── footer real, parametrizado por variante via custom properties ── */
+.rf-white { --rf-bg: #fff; --rf-fg: var(--black); --rf-mid: var(--mid); --rf-rule: var(--rule); --rf-light: var(--light); }
+.rf-gold  { --rf-bg: var(--gold); --rf-fg: var(--black); --rf-mid: rgba(10,10,10,.62); --rf-rule: rgba(10,10,10,.18); --rf-light: rgba(10,10,10,.48); }
+.rf-black { --rf-bg: var(--black); --rf-fg: #fff; --rf-mid: #C9C4BE; --rf-rule: rgba(255,255,255,.16); --rf-light: #8f8a84; }
+
+.rf { background: var(--rf-bg); color: var(--rf-fg); }
+.rf-reg { border-top: 1px solid var(--rf-rule); border-bottom: 1px solid var(--rf-rule); background: var(--rf-bg); }
+.rf-reg-inner { max-width: var(--page-max); margin: 0 auto; padding: 0 var(--pad-x); height: 60px; display: flex; align-items: center; }
+.rf-reg-inner p { font-size: 12px; font-weight: 600; color: var(--rf-mid); }
+
+.rf-inner { max-width: var(--page-max); margin: 0 auto; padding: 64px var(--pad-x) 40px; }
+.rf-top { display: grid; grid-template-columns: 220px 1fr; gap: 80px; padding-bottom: 48px; border-bottom: 1px solid var(--rf-rule); }
+.rf-left { display: flex; flex-direction: column; gap: 28px; align-items: flex-start; }
+.rf-left img.logo { height: 18px; }
+.rf-label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--rf-mid); margin-bottom: 10px; }
+.rf-social { display: flex; gap: 10px; }
+.rf-social a { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: 1px solid var(--rf-rule); color: var(--rf-mid); font-size: 11px; font-weight: 700; }
+.rf-ombuds a { display: block; font-size: 13px; color: var(--rf-fg); margin-bottom: 4px; }
+.rf-ombuds p { font-size: 12px; color: var(--rf-mid); margin: 0; }
+.rf-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; }
+.rf-cols .head { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--rf-fg); margin-bottom: 16px; }
+.rf-cols .head.spaced { margin-top: 28px; }
+.rf-cols a { display: block; font-size: 13px; color: var(--rf-mid); margin-bottom: 10px; }
+.rf-bottom { padding-top: 32px; display: flex; flex-direction: column; gap: 16px; }
+.rf-legal { font-size: 11px; line-height: 1.65; color: var(--rf-light); margin: 0; }
+.rf-legal a { color: var(--rf-mid); text-decoration: underline; }
+.rf-meta { display: flex; gap: 32px; flex-wrap: wrap; }
+.rf-meta p { font-size: 11px; color: var(--rf-light); margin: 0; }
+
+@media (max-width: 760px) {
+  .rf-top { grid-template-columns: 1fr; gap: 32px; }
+  .rf-cols { grid-template-columns: 1fr 1fr; gap: 28px; }
+}
+
+/* ── variante 04 — minimalista/condensado ── */
+.rf-mini { background: #fff; border-top: 1px solid var(--rule); }
+.rf-mini-inner { max-width: var(--page-max); margin: 0 auto; padding: 56px var(--pad-x) 32px; }
+.rf-mini-top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px; padding-bottom: 32px; border-bottom: 1px solid var(--rule); }
+.rf-mini-top img.logo { height: 18px; }
+.rf-mini-links { display: flex; gap: 26px; flex-wrap: wrap; }
+.rf-mini-links a { font-size: 13px; font-weight: 600; color: var(--mid); }
+.rf-mini-bottom { padding-top: 24px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.rf-mini-bottom p, .rf-mini-bottom a { font-size: 11px; color: var(--light); }
+.rf-mini-bottom a { text-decoration: underline; }
+.rf-mini-reg { font-size: 11px; color: var(--mid); font-weight: 600; }
+
+</style>
+</head>
+<body>
+
+<div class="meta-header">
+  <div class="inner">
+    <p class="meta-label">Codex-tests · Footer v01</p>
+    <h1>Catálogo de footers — 5 variações</h1>
+    <p>O Chaparro curtiu o bloco 17 (CTA em tela cheia) do <code>product-blocks-v06</code> e imaginou ele como abertura do rodapé: "Confie no futuro" gigante em dourado, dá um espaço, desce pro rodapé clássico — ou o rodapé inteiro em amarelo. As 5 variações abaixo mantêm o mesmo CTA dourado (o componente que ele gostou) e testam o que vem depois, usando o conteúdo real do rodapé em <code>website-mvp/index.html</code> — nenhum link, texto legal ou dado de compliance foi inventado ou abreviado além do que está marcado.</p>
+    <nav class="meta-nav"><a href="../index.html">Menu geral</a></nav>
+  </div>
+</div>
+
+
+<!-- ═══════════ 01 — CLÁSSICO ═══════════ -->
+<div class="block-label"><span class="n">01</span><h2>Clássico — CTA dourado acima, rodapé como está</h2></div>
+<p class="block-label" style="padding-top:0;"><span class="note" style="max-width:900px;">Exatamente a ideia literal do Chaparro: o CTA dourado gigante abre, depois vem a faixa de regulação e o rodapé branco exatamente como já está no site hoje. Menor risco, testa só a entrada.</span></p>
+
+<section class="block-cta"><h2>Confie no futuro.</h2><a href="#" class="btn">Inicie uma conversa</a></section>
+
+<footer class="rf rf-white">
+  <div class="rf-reg"><div class="rf-reg-inner"><p>Regulamentada pelo Banco Central do Brasil, instituição financeira nº 513.</p></div></div>
+  <div class="rf-inner">
+    <div class="rf-top">
+      <div class="rf-left">
+        <img class="logo" src="../assets/logos/logo-atf-black.svg" alt="ATF">
+        <div><p class="rf-label">Siga a ATF</p><div class="rf-social"><a href="#">in</a><a href="#">ig</a></div></div>
+        <div><p class="rf-label">Ouvidoria</p><div class="rf-ombuds"><a href="#">Canal de Ouvidoria</a><a href="#">0800 800 0513</a><p>09h00 às 12h00</p><p>14h00 às 17h30</p></div></div>
+      </div>
+      <div class="rf-cols">
+        <div><p class="head">Para Você</p><a href="#">Consignado PF</a><p class="head spaced">Canal de Ajuda</p><a href="#">Central de Atendimento</a><a href="#">Canal de Ética</a><a href="#">Perguntas Frequentes</a></div>
+        <div><p class="head">Para Empresa</p><a href="#">Conta PJ</a><a href="#">Antecipação de Recebíveis</a><a href="#">Capital de Giro</a><a href="#">Risco Sacado</a><a href="#">Crédito Direto ao Consumidor</a><a href="#">Boleto Bancário</a><a href="#">ATF Asset</a></div>
+        <div><p class="head">A ATF</p><a href="#">Quem Somos</a><a href="#">Governança</a><a href="#">Carreiras</a></div>
+        <div><p class="head">Transparência</p><a href="#">Termos e Políticas</a><a href="#">Tabela de Tarifas</a><a href="#">Correspondentes ATF SCD</a></div>
+      </div>
+    </div>
+    <div class="rf-bottom">
+      <p class="rf-legal">As marcas registradas, logotipos e marcas de serviço que aparecem nos serviços e produtos, incluindo, entre outros, a marca registrada "ATF" são marcas registradas e marcas de serviço da ATF. Outros nomes e logotipos de empresas, produtos e serviços usados e exibidos nos serviços e produtos podem ser marcas comerciais ou marcas de serviço de seus respectivos proprietários que podem ou não apoiar ou ser afiliados ou conectados a nós. Sobre Privacidade de Dados e Atendimento aos Direitos de Titulares de Dados, por favor, leia os nossos <a href="#">Termos de Uso e Política de Privacidade</a>.</p>
+      <div class="rf-meta"><p>© 2026 ATF Sociedade de Crédito Direto S.A. · CNPJ: 44.728.700/0001-72</p><p>Rua Mostardeiro, 322/12º andar · Porto Alegre/RS · 90430-000</p></div>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ═══════════ 02 — RODAPÉ INTEIRO DOURADO ═══════════ -->
+<div class="block-label"><span class="n">02</span><h2>Rodapé inteiro dourado</h2></div>
+<p class="block-label" style="padding-top:0;"><span class="note" style="max-width:900px;">A outra opção que ele citou de cabeça: "o próprio rodapé ser amarelo". Uma superfície dourada contínua do CTA até o copyright — texto e links em preto/cinza-escuro pra manter contraste. Mais impacto visual, mas é bastante amarelo pra sustentar até o fim da página.</span></p>
+
+<section class="block-cta"><h2>Confie no futuro.</h2><a href="#" class="btn">Inicie uma conversa</a></section>
+
+<footer class="rf rf-gold">
+  <div class="rf-reg"><div class="rf-reg-inner"><p>Regulamentada pelo Banco Central do Brasil, instituição financeira nº 513.</p></div></div>
+  <div class="rf-inner">
+    <div class="rf-top">
+      <div class="rf-left">
+        <img class="logo" src="../assets/logos/logo-atf-black.svg" alt="ATF">
+        <div><p class="rf-label">Siga a ATF</p><div class="rf-social"><a href="#">in</a><a href="#">ig</a></div></div>
+        <div><p class="rf-label">Ouvidoria</p><div class="rf-ombuds"><a href="#">Canal de Ouvidoria</a><a href="#">0800 800 0513</a><p>09h00 às 12h00</p><p>14h00 às 17h30</p></div></div>
+      </div>
+      <div class="rf-cols">
+        <div><p class="head">Para Você</p><a href="#">Consignado PF</a><p class="head spaced">Canal de Ajuda</p><a href="#">Central de Atendimento</a><a href="#">Canal de Ética</a><a href="#">Perguntas Frequentes</a></div>
+        <div><p class="head">Para Empresa</p><a href="#">Conta PJ</a><a href="#">Antecipação de Recebíveis</a><a href="#">Capital de Giro</a><a href="#">Risco Sacado</a><a href="#">Crédito Direto ao Consumidor</a><a href="#">Boleto Bancário</a><a href="#">ATF Asset</a></div>
+        <div><p class="head">A ATF</p><a href="#">Quem Somos</a><a href="#">Governança</a><a href="#">Carreiras</a></div>
+        <div><p class="head">Transparência</p><a href="#">Termos e Políticas</a><a href="#">Tabela de Tarifas</a><a href="#">Correspondentes ATF SCD</a></div>
+      </div>
+    </div>
+    <div class="rf-bottom">
+      <p class="rf-legal">As marcas registradas, logotipos e marcas de serviço que aparecem nos serviços e produtos, incluindo, entre outros, a marca registrada "ATF" são marcas registradas e marcas de serviço da ATF. Outros nomes e logotipos de empresas, produtos e serviços usados e exibidos nos serviços e produtos podem ser marcas comerciais ou marcas de serviço de seus respectivos proprietários que podem ou não apoiar ou ser afiliados ou conectados a nós. Sobre Privacidade de Dados e Atendimento aos Direitos de Titulares de Dados, por favor, leia os nossos <a href="#">Termos de Uso e Política de Privacidade</a>.</p>
+      <div class="rf-meta"><p>© 2026 ATF Sociedade de Crédito Direto S.A. · CNPJ: 44.728.700/0001-72</p><p>Rua Mostardeiro, 322/12º andar · Porto Alegre/RS · 90430-000</p></div>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ═══════════ 03 — CTA DOURADO + RODAPÉ PRETO ═══════════ -->
+<div class="block-label"><span class="n">03</span><h2>CTA dourado + rodapé preto</h2></div>
+<p class="block-label" style="padding-top:0;"><span class="note" style="max-width:900px;">Não veio da fala do Chaparro, mas é o contraste natural pro amarelo: mantém o CTA gigante dourado como o momento forte, e desce pra um rodapé preto (em vez de branco) — mesmo par de cores que o site já usa em botões e no header do catálogo. Mais peso visual no fechamento da página.</span></p>
+
+<section class="block-cta"><h2>Confie no futuro.</h2><a href="#" class="btn">Inicie uma conversa</a></section>
+
+<footer class="rf rf-black">
+  <div class="rf-reg"><div class="rf-reg-inner"><p>Regulamentada pelo Banco Central do Brasil, instituição financeira nº 513.</p></div></div>
+  <div class="rf-inner">
+    <div class="rf-top">
+      <div class="rf-left">
+        <img class="logo" src="../assets/logos/logo-atf-white.svg" alt="ATF">
+        <div><p class="rf-label">Siga a ATF</p><div class="rf-social"><a href="#">in</a><a href="#">ig</a></div></div>
+        <div><p class="rf-label">Ouvidoria</p><div class="rf-ombuds"><a href="#">Canal de Ouvidoria</a><a href="#">0800 800 0513</a><p>09h00 às 12h00</p><p>14h00 às 17h30</p></div></div>
+      </div>
+      <div class="rf-cols">
+        <div><p class="head">Para Você</p><a href="#">Consignado PF</a><p class="head spaced">Canal de Ajuda</p><a href="#">Central de Atendimento</a><a href="#">Canal de Ética</a><a href="#">Perguntas Frequentes</a></div>
+        <div><p class="head">Para Empresa</p><a href="#">Conta PJ</a><a href="#">Antecipação de Recebíveis</a><a href="#">Capital de Giro</a><a href="#">Risco Sacado</a><a href="#">Crédito Direto ao Consumidor</a><a href="#">Boleto Bancário</a><a href="#">ATF Asset</a></div>
+        <div><p class="head">A ATF</p><a href="#">Quem Somos</a><a href="#">Governança</a><a href="#">Carreiras</a></div>
+        <div><p class="head">Transparência</p><a href="#">Termos e Políticas</a><a href="#">Tabela de Tarifas</a><a href="#">Correspondentes ATF SCD</a></div>
+      </div>
+    </div>
+    <div class="rf-bottom">
+      <p class="rf-legal">As marcas registradas, logotipos e marcas de serviço que aparecem nos serviços e produtos, incluindo, entre outros, a marca registrada "ATF" são marcas registradas e marcas de serviço da ATF. Outros nomes e logotipos de empresas, produtos e serviços usados e exibidos nos serviços e produtos podem ser marcas comerciais ou marcas de serviço de seus respectivos proprietários que podem ou não apoiar ou ser afiliados ou conectados a nós. Sobre Privacidade de Dados e Atendimento aos Direitos de Titulares de Dados, por favor, leia os nossos <a href="#">Termos de Uso e Política de Privacidade</a>.</p>
+      <div class="rf-meta"><p>© 2026 ATF Sociedade de Crédito Direto S.A. · CNPJ: 44.728.700/0001-72</p><p>Rua Mostardeiro, 322/12º andar · Porto Alegre/RS · 90430-000</p></div>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ═══════════ 04 — MINIMALISTA / CONDENSADO ═══════════ -->
+<div class="block-label"><span class="n">04</span><h2>CTA dourado + rodapé minimalista</h2></div>
+<p class="block-label" style="padding-top:0;"><span class="note" style="max-width:900px;">Mesmo CTA, mas o rodapé vira uma linha só — logo, links essenciais e o mínimo de texto legal (o parágrafo grande de marca registrada vira um link "Termos e Políticas"). Nada de compliance foi removido — regulação, CNPJ e endereço continuam, só mais compactos. Testa se dá pra manter arejamento sem repetir a estrutura em colunas.</span></p>
+
+<section class="block-cta"><h2>Confie no futuro.</h2><a href="#" class="btn">Inicie uma conversa</a></section>
+
+<footer class="rf-mini">
+  <div class="rf-mini-inner">
+    <div class="rf-mini-top">
+      <img class="logo" src="../assets/logos/logo-atf-black.svg" alt="ATF">
+      <div class="rf-mini-links">
+        <a href="#">A ATF</a><a href="#">Asset</a><a href="#">Fintech</a><a href="#">Consignado PF</a><a href="#">Carreiras</a><a href="#">Canal de Ouvidoria</a><a href="#">Perguntas Frequentes</a>
+      </div>
+    </div>
+    <div class="rf-mini-bottom">
+      <p class="rf-mini-reg">Regulamentada pelo Banco Central do Brasil, instituição financeira nº 513.</p>
+      <p>© 2026 ATF Sociedade de Crédito Direto S.A. · CNPJ: 44.728.700/0001-72 · Rua Mostardeiro, 322/12º andar · Porto Alegre/RS · <a href="#">Termos e Políticas</a></p>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ═══════════ 05 — TRANSIÇÃO UNIFICADA ═══════════ -->
+<div class="block-label"><span class="n">05</span><h2>Transição unificada — regulação dentro do CTA</h2></div>
+<p class="block-label" style="padding-top:0;"><span class="note" style="max-width:900px;">Hoje a página empilha 3 faixas separadas (CTA, faixa de regulação, rodapé) com bordas entre cada uma. Aqui a linha de regulação sobe pra dentro do próprio bloco dourado, discreta, embaixo do botão — e o rodapé começa direto depois, sem uma terceira faixa. Fica uma transição só, em vez de três.</span></p>
+
+<section class="block-cta">
+  <h2>Confie no futuro.</h2>
+  <a href="#" class="btn">Inicie uma conversa</a>
+  <p class="reg-inline">Regulamentada pelo Banco Central do Brasil, instituição financeira nº 513.</p>
+</section>
+
+<footer class="rf rf-white">
+  <div class="rf-inner" style="padding-top:56px;">
+    <div class="rf-top">
+      <div class="rf-left">
+        <img class="logo" src="../assets/logos/logo-atf-black.svg" alt="ATF">
+        <div><p class="rf-label">Siga a ATF</p><div class="rf-social"><a href="#">in</a><a href="#">ig</a></div></div>
+        <div><p class="rf-label">Ouvidoria</p><div class="rf-ombuds"><a href="#">Canal de Ouvidoria</a><a href="#">0800 800 0513</a><p>09h00 às 12h00</p><p>14h00 às 17h30</p></div></div>
+      </div>
+      <div class="rf-cols">
+        <div><p class="head">Para Você</p><a href="#">Consignado PF</a><p class="head spaced">Canal de Ajuda</p><a href="#">Central de Atendimento</a><a href="#">Canal de Ética</a><a href="#">Perguntas Frequentes</a></div>
+        <div><p class="head">Para Empresa</p><a href="#">Conta PJ</a><a href="#">Antecipação de Recebíveis</a><a href="#">Capital de Giro</a><a href="#">Risco Sacado</a><a href="#">Crédito Direto ao Consumidor</a><a href="#">Boleto Bancário</a><a href="#">ATF Asset</a></div>
+        <div><p class="head">A ATF</p><a href="#">Quem Somos</a><a href="#">Governança</a><a href="#">Carreiras</a></div>
+        <div><p class="head">Transparência</p><a href="#">Termos e Políticas</a><a href="#">Tabela de Tarifas</a><a href="#">Correspondentes ATF SCD</a></div>
+      </div>
+    </div>
+    <div class="rf-bottom">
+      <p class="rf-legal">As marcas registradas, logotipos e marcas de serviço que aparecem nos serviços e produtos, incluindo, entre outros, a marca registrada "ATF" são marcas registradas e marcas de serviço da ATF. Outros nomes e logotipos de empresas, produtos e serviços usados e exibidos nos serviços e produtos podem ser marcas comerciais ou marcas de serviço de seus respectivos proprietários que podem ou não apoiar ou ser afiliados ou conectados a nós. Sobre Privacidade de Dados e Atendimento aos Direitos de Titulares de Dados, por favor, leia os nossos <a href="#">Termos de Uso e Política de Privacidade</a>.</p>
+      <div class="rf-meta"><p>© 2026 ATF Sociedade de Crédito Direto S.A. · CNPJ: 44.728.700/0001-72</p><p>Rua Mostardeiro, 322/12º andar · Porto Alegre/RS · 90430-000</p></div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
