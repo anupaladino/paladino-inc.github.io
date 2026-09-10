@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATF — Galeria magnética v01</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --font: 'Plus Jakarta Sans', sans-serif;
+  --black: #0A0A0A;
+  --mid: #6B6560;
+  --light: #9B9590;
+  --rule: #E8E7E5;
+  --gold: #FFCD7D;
+  --pad-x: 64px;
+}
+body { font-family: var(--font); background: #fff; color: var(--black); -webkit-font-smoothing: antialiased; font-size: 16px; line-height: 1.7; overflow-x: hidden; }
+a { text-decoration: none; color: inherit; }
+
+/* meta */
+.meta-header { background: var(--black); color: #fff; padding: 32px var(--pad-x) 36px; }
+.meta-header .inner { max-width: 1280px; margin: 0 auto; }
+.meta-label { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+.meta-header h1 { font-size: 1.5rem; font-weight: 800; letter-spacing: -.01em; margin-bottom: 14px; }
+.meta-header p { font-size: .9375rem; color: #C9C4BE; max-width: 780px; margin-bottom: 6px; }
+.meta-header ul { margin: 10px 0 4px 18px; color: #C9C4BE; font-size: .875rem; }
+.meta-header li { margin-bottom: 5px; }
+.meta-nav { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 18px; }
+.meta-nav a { font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: #fff; border-bottom: 1.5px solid var(--gold); padding-bottom: 3px; }
+
+.section-label { display: flex; align-items: baseline; gap: 14px; padding: 56px var(--pad-x) 0; max-width: 1280px; margin: 0 auto; border-top: 3px solid var(--black); margin-top: 40px; flex-wrap: wrap; }
+.section-label .n { font-size: 1.4rem; font-weight: 800; color: var(--rule); }
+.section-label h2 { font-size: 1.1rem; font-weight: 800; letter-spacing: -.01em; }
+.section-label p.note { flex-basis: 100%; font-size: .875rem; color: var(--mid); max-width: 760px; margin-top: 6px; }
+
+/* ── galeria magnética (compartilhado entre variantes) ── */
+.magnetic-gallery {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 80px var(--pad-x) 0;
+  min-height: 420px;
+}
+.magnetic-backdrop { position: absolute; inset: 0; z-index: 1; cursor: zoom-out; opacity: 0; pointer-events: none; }
+.magnetic-backdrop.active { pointer-events: auto; }
+
+.magnetic-item {
+  flex: none;
+  width: 100px;
+  height: 340px;
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+  cursor: zoom-in;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  will-change: width, height;
+}
+.magnetic-item.open { cursor: zoom-out; z-index: 3; }
+.magnetic-item.animated {
+  transition: width .32s cubic-bezier(.44,0,.56,1), height .32s cubic-bezier(.44,0,.56,1), filter .32s ease, opacity .32s ease;
+}
+.magnetic-item.dimmed { filter: blur(2px); opacity: .55; }
+
+.hint { text-align: center; font-size: .8125rem; color: var(--light); padding: 24px 0 60px; }
+
+/* conteúdo dentro da imagem — só visível quando o item está aberto (variante 2) */
+.magnetic-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 28px;
+  background: linear-gradient(180deg, rgba(10,10,10,0) 42%, rgba(10,10,10,.78) 100%);
+  color: #fff;
+  opacity: 0;
+  transition: opacity .25s ease;
+  pointer-events: none;
+}
+.magnetic-item.open .magnetic-overlay { opacity: 1; transition-delay: .12s; pointer-events: auto; }
+.magnetic-overlay .pillar { font-size: .6875rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+.magnetic-overlay .title { font-size: 1.3rem; font-weight: 800; letter-spacing: -.01em; line-height: 1.15; margin-bottom: 8px; }
+.magnetic-overlay .desc { font-size: .875rem; color: #E6E3DF; margin-bottom: 16px; }
+.magnetic-overlay .cta { display: inline-flex; align-items: center; gap: 8px; font-size: .8125rem; font-weight: 700; color: #fff; border-bottom: 1.5px solid var(--gold); padding-bottom: 3px; align-self: flex-start; }
+.magnetic-overlay .cta svg { width: 15px; height: 15px; }
+
+@media (max-width: 760px) {
+  .magnetic-gallery { padding: 56px 20px 0; gap: 8px; }
+  .magnetic-item { width: 56px; height: 220px; }
+}
+
+/* ── seção B — mobile: revelar pelo scroll ── */
+.group-intro { max-width: 1280px; margin: 0 auto; padding: 20px var(--pad-x) 0; }
+.group-intro p { font-size: .9375rem; color: var(--mid); max-width: 760px; }
+
+.sr-frame-row { display: flex; gap: 36px; flex-wrap: wrap; justify-content: center; padding: 32px var(--pad-x) 24px; }
+.sr-frame-col { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+.sr-frame-label { font-size: .8125rem; font-weight: 700; color: var(--mid); }
+.sr-device-frame { width: 300px; height: 560px; border: 6px solid var(--black); border-radius: 30px; overflow: hidden; position: relative; background: #EFEDEA; display: flex; align-items: center; }
+
+.sr-scroll { display: flex; align-items: center; overflow-x: auto; -webkit-overflow-scrolling: touch; width: 100%; height: 100%; scrollbar-width: none; cursor: grab; }
+.sr-scroll::-webkit-scrollbar { display: none; }
+.sr-scroll.dragging { cursor: grabbing; }
+
+.sr-item { position: relative; overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat; flex: none; }
+
+.sr-overlay {
+  position: absolute; inset: 0; z-index: 2;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 18px;
+  background: linear-gradient(180deg, rgba(10,10,10,0) 40%, rgba(10,10,10,.8) 100%);
+  color: #fff; opacity: 0; transition: opacity .25s ease; pointer-events: none;
+}
+.sr-overlay .pillar { font-size: .625rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+.sr-overlay .title { font-size: 1rem; font-weight: 800; line-height: 1.15; margin-bottom: 6px; }
+.sr-overlay .desc { font-size: .75rem; color: #E6E3DF; margin-bottom: 10px; line-height: 1.4; }
+.sr-overlay .cta { display: inline-flex; align-items: center; gap: 6px; font-size: .6875rem; font-weight: 700; color: #fff; border-bottom: 1.5px solid var(--gold); padding-bottom: 2px; align-self: flex-start; }
+.sr-overlay .cta svg { width: 12px; height: 12px; }
+
+/* 3a — centro ativa (snap) */
+.sr-scroll.mode-snap { scroll-snap-type: x mandatory; gap: 12px; padding: 0 55px; }
+.sr-item.mode-a { width: 190px; height: 320px; scroll-snap-align: center; filter: blur(1.5px); opacity: .68; transition: filter .25s ease, opacity .25s ease; }
+.sr-item.mode-a.sr-active { filter: none; opacity: 1; }
+.sr-item.mode-a.sr-active .sr-overlay { opacity: 1; }
+
+/* 3b — elástico contínuo (scale por proximidade) */
+.sr-scroll.mode-elastic { gap: 10px; padding: 0 120px; }
+.sr-item.mode-b { width: 76px; height: 250px; transform-origin: center center; will-change: transform; }
+.sr-item.mode-b .sr-overlay { padding: 12px; }
+.sr-item.mode-b .sr-overlay .title { font-size: .8125rem; }
+.sr-item.mode-b .sr-overlay .desc { font-size: .6875rem; -webkit-line-clamp: 2; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* 3c — peek com foco central */
+.sr-scroll.mode-peek { scroll-snap-type: x mandatory; gap: 12px; padding: 0 34px; }
+.sr-item.mode-c { width: 232px; height: 340px; scroll-snap-align: center; transform: scale(.9); opacity: .7; transition: transform .25s ease, opacity .25s ease; }
+.sr-item.mode-c.sr-active { transform: scale(1); opacity: 1; }
+.sr-item.mode-c.sr-active .sr-overlay { opacity: 1; }
+.sr-title-chip { position: absolute; left: 14px; bottom: 14px; z-index: 3; font-size: .8125rem; font-weight: 700; color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,.55); transition: opacity .2s ease; }
+.sr-item.mode-c.sr-active .sr-title-chip { opacity: 0; }
+</style>
+</head>
+<body>
+
+<div class="meta-header">
+  <div class="inner">
+    <p class="meta-label">Codex-tests · Galeria magnética v01</p>
+    <h1>Carrossel magnético — reimplementado em HTML/CSS/JS puro</h1>
+    <p>Você trouxe o "Magnetic Carousel" da OriginKit — é um componente React feito pra rodar dentro do Framer (usa APIs específicas do Framer, tipos, JSX), então não dá pra colar o código direto aqui. Recriei a mecânica do zero em vanilla JS: as imagens perto do cursor "esticam" com um efeito magnético, e clicar abre a imagem grande com as outras borradas atrás.</p>
+    <p><b>Atualizações desta versão:</b></p>
+    <ul>
+      <li><b>Bug corrigido</b> — às vezes o clique não expandia porque o loop de animação do hover ainda estava rodando quando você clicava, e sobrescrevia o tamanho da abertura no frame seguinte. Agora o clique cancela o loop de hover antes de abrir.</li>
+      <li><b>Variante 2</b> — título, subtítulo e CTA agora aparecem <i>dentro</i> da própria imagem ao expandir (sobre um degradê escuro na base), em vez de numa legenda separada abaixo da galeria. Copy real dos 7 produtos (mapeamento posicional: imagem 1 → produto 1, etc.).</li>
+      <li><b>Preview mobile antigo removido</b> — o efeito magnético por cursor não existe em touch, então tirei aquela versão.</li>
+      <li><b>Nova seção — revelar pelo scroll</b> — 3 propostas de como traduzir "clicar revela conteúdo" pra mobile usando scroll horizontal em vez de clique, pra uma seção com os 7 produtos.</li>
+    </ul>
+    <nav class="meta-nav"><a href="../index.html">Menu geral</a></nav>
+  </div>
+</div>
+
+
+<!-- ═══════════ VARIANTE 1 — original, sem legenda ═══════════ -->
+<div class="section-label"><span class="n">01</span><h2>Galeria magnética</h2><p class="note">Fotografia real das Credenciais. Passe o mouse pela fileira, clique pra abrir.</p></div>
+
+<div class="magnetic-gallery">
+  <div class="magnetic-backdrop"></div>
+  <div class="magnetic-item" style="background-image:url('../assets/images/slide-3-image-bg.jpg')"></div>
+  <div class="magnetic-item" style="background-image:url('../assets/images/slide-8-image-bg.jpg')"></div>
+  <div class="magnetic-item" style="background-image:url('../assets/images/slide-11-image-bg.jpg')"></div>
+  <div class="magnetic-item" style="background-image:url('../assets/images/slide-24-image-bg.jpg')"></div>
+  <div class="magnetic-item" style="background-image:url('../assets/images/slide-39-image-bg.jpg')"></div>
+  <div class="magnetic-item" style="background-image:url('../assets/images/slide-41-image-bg.jpg')"></div>
+  <div class="magnetic-item" style="background-image:url('../assets/images/slide-52-image-bg.jpg')"></div>
+</div>
+<p class="hint">passe o mouse pela fileira · clique pra abrir</p>
+
+
+<!-- ═══════════ VARIANTE 2 — título, subtítulo e CTA dentro da imagem ═══════════ -->
+<div class="section-label"><span class="n">02</span><h2>Título, subtítulo e CTA dentro da imagem</h2><p class="note">Ao abrir, o conteúdo do produto aparece sobre a própria foto, num degradê na base — não numa legenda separada.</p></div>
+
+<div class="magnetic-gallery">
+  <div class="magnetic-backdrop"></div>
+
+  <div class="magnetic-item" style="background-image:url('../assets/images/slide-3-image-bg.jpg')">
+    <div class="magnetic-overlay"><p class="pillar">Asset</p><h3 class="title">Antecipação de Recebíveis</h3><p class="desc">Transforme faturamento previsto em capital disponível — sem criar novas obrigações no passivo.</p><a href="#" class="cta">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+  </div>
+  <div class="magnetic-item" style="background-image:url('../assets/images/slide-8-image-bg.jpg')">
+    <div class="magnetic-overlay"><p class="pillar">Asset</p><h3 class="title">Capital de Giro</h3><p class="desc">Crédito estruturado com garantia imobiliária para manter a operação em movimento.</p><a href="#" class="cta">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+  </div>
+  <div class="magnetic-item" style="background-image:url('../assets/images/slide-11-image-bg.jpg')">
+    <div class="magnetic-overlay"><p class="pillar">Asset</p><h3 class="title">Crédito Direto ao Consumidor</h3><p class="desc">Sua empresa recebe à vista. Seus clientes compram com prazo.</p><a href="#" class="cta">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+  </div>
+  <div class="magnetic-item" style="background-image:url('../assets/images/slide-24-image-bg.jpg')">
+    <div class="magnetic-overlay"><p class="pillar">Asset</p><h3 class="title">Risco Sacado</h3><p class="desc">Mais prazo para sua empresa. Mais previsibilidade para seus fornecedores.</p><a href="#" class="cta">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+  </div>
+  <div class="magnetic-item" style="background-image:url('../assets/images/slide-39-image-bg.jpg')">
+    <div class="magnetic-overlay"><p class="pillar">Fintech</p><h3 class="title">Conta PJ</h3><p class="desc">Uma conta feita para a complexidade real de uma empresa, com múltiplos operadores.</p><a href="#" class="cta">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+  </div>
+  <div class="magnetic-item" style="background-image:url('../assets/images/slide-41-image-bg.jpg')">
+    <div class="magnetic-overlay"><p class="pillar">Fintech</p><h3 class="title">Boleto Bancário</h3><p class="desc">Emissão, gestão e conciliação integradas ao fluxo de recebimento da empresa.</p><a href="#" class="cta">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+  </div>
+  <div class="magnetic-item" style="background-image:url('../assets/images/slide-52-image-bg.jpg')">
+    <div class="magnetic-overlay"><p class="pillar">Para Você</p><h3 class="title">Consignado CLT</h3><p class="desc">Crédito consignado para trabalhadores CLT, contratado direto pelo app do governo.</p><a href="#" class="cta">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+  </div>
+</div>
+<p class="hint">passe o mouse pela fileira · clique pra abrir</p>
+
+
+<!-- ═══════════ SEÇÃO B — MOBILE: REVELAR PELO SCROLL ═══════════ -->
+<div class="section-label" style="border-top-width:3px;"><span class="n">B</span><h2>Mobile — revelar pelo scroll</h2></div>
+<div class="group-intro">
+  <p>Em touch não existe cursor contínuo, então o clique-pra-abrir das variantes acima não se traduz direto pro celular. As 3 propostas abaixo usam a posição de scroll no lugar do cursor/clique: a imagem que estiver no centro da tela é a que revela o conteúdo — role e o "foco" passa de uma pra outra, numa seção horizontal com os 7 produtos. Teste arrastando com o mouse dentro dos frames (funciona como scroll touch).</p>
+</div>
+
+<div class="sr-frame-row">
+
+  <div class="sr-frame-col">
+    <p class="sr-frame-label">3a · Centro ativa (snap)</p>
+    <div class="sr-device-frame">
+      <div class="sr-scroll mode-snap" data-mode="snap">
+        <div class="sr-item mode-a" style="background-image:url('../assets/images/slide-3-image-bg.jpg')"><div class="sr-overlay"><p class="pillar">Asset</p><h3 class="title">Antecipação de Recebíveis</h3><p class="desc">Transforme faturamento previsto em capital disponível.</p><a href="#" class="cta">Saiba mais →</a></div></div>
+        <div class="sr-item mode-a" style="background-image:url('../assets/images/slide-8-image-bg.jpg')"><div class="sr-overlay"><p class="pillar">Asset</p><h3 class="title">Capital de Giro</h3><p class="desc">Crédito estruturado com garantia imobiliária.</p><a href="#" class="cta">Saiba mais →</a></div></div>
+        <div class="sr-item mode-a" style="background-image:url('../assets/images/slide-11-image-bg.jpg')"><div class="sr-overlay"><p class="pillar">Asset</p><h3 class="title">Crédito Direto ao Consumidor</h3><p class="desc">Sua empresa recebe à vista.</p><a href="#" class="cta">Saiba mais →</a></div></div>
+        <div class="sr-item mode-a" style="background-image:url('../assets/images/slide-24-image-bg.jpg')"><div class="sr-overlay"><p class="pillar">Asset</p><h3 class="title">Risco Sacado</h3><p class="desc">Mais prazo pra empresa, mais previsibilidade pro fornecedor.</p><a href="#" class="cta">Saiba mais →</a></div></div>
+        <div class="sr-item mode-a" style="background-image:url('../assets/images/slide-39-image-bg.jpg')"><div class="sr-overlay"><p class="pillar">Fintech</p><h3 class="title">Conta PJ</h3><p class="desc">Feita pra complexidade real de uma empresa.</p><a href="#" class="cta">Saiba mais →</a></div></div>
+        <div class="sr-item mode-a" style="background-image:url('../assets/images/slide-41-image-bg.jpg')"><div class="sr-overlay"><p class="pillar">Fintech</p><h3 class="title">Boleto Bancário</h3><p class="desc">Emissão, gestão e conciliação integradas.</p><a href="#" class="cta">Saiba mais →</a></div></div>
+        <div class="sr-item mode-a" style="background-image:url('../assets/images/slide-52-image-bg.jpg')"><div class="sr-overlay"><p class="pillar">Para Você</p><h3 class="title">Consignado CLT</h3><p class="desc">Direto pelo app do governo.</p><a href="#" class="cta">Saiba mais →</a></div></div>
+      </div>
+    </div>
+    <p class="hint" style="padding-bottom:0;max-width:280px;">a imagem central perde o blur e revela o conteúdo — igual ao clique, só que guiado pelo scroll</p>
+  </div>
+
+  <div class="sr-frame-col">
+    <p class="sr-frame-label">3b · Elástico contínuo</p>
+    <div class="sr-device-frame">
+      <div class="sr-scroll mode-elastic" data-mode="elastic">
+        <div class="sr-item mode-b" style="background-image:url('../assets/images/slide-3-image-bg.jpg')"><div class="sr-overlay"><h3 class="title">Antecipação de Recebíveis</h3><p class="desc">Capital disponível sem novas obrigações.</p></div></div>
+        <div class="sr-item mode-b" style="background-image:url('../assets/images/slide-8-image-bg.jpg')"><div class="sr-overlay"><h3 class="title">Capital de Giro</h3><p class="desc">Crédito com garantia imobiliária.</p></div></div>
+        <div class="sr-item mode-b" style="background-image:url('../assets/images/slide-11-image-bg.jpg')"><div class="sr-overlay"><h3 class="title">Crédito Direto ao Consumidor</h3><p class="desc">Recebe à vista, cliente compra a prazo.</p></div></div>
+        <div class="sr-item mode-b" style="background-image:url('../assets/images/slide-24-image-bg.jpg')"><div class="sr-overlay"><h3 class="title">Risco Sacado</h3><p class="desc">Mais prazo, mais previsibilidade.</p></div></div>
+        <div class="sr-item mode-b" style="background-image:url('../assets/images/slide-39-image-bg.jpg')"><div class="sr-overlay"><h3 class="title">Conta PJ</h3><p class="desc">Múltiplos operadores, uma conta.</p></div></div>
+        <div class="sr-item mode-b" style="background-image:url('../assets/images/slide-41-image-bg.jpg')"><div class="sr-overlay"><h3 class="title">Boleto Bancário</h3><p class="desc">Emissão e conciliação integradas.</p></div></div>
+        <div class="sr-item mode-b" style="background-image:url('../assets/images/slide-52-image-bg.jpg')"><div class="sr-overlay"><h3 class="title">Consignado CLT</h3><p class="desc">Direto pelo app do governo.</p></div></div>
+      </div>
+    </div>
+    <p class="hint" style="padding-bottom:0;max-width:280px;">nada de snap — a imagem mais perto do centro cresce por proximidade, igual à versão desktop, só que puxada pelo scroll em vez do mouse</p>
+  </div>
+
+  <div class="sr-frame-col">
+    <p class="sr-frame-label">3c · Peek com foco central</p>
+    <div class="sr-device-frame">
+      <div class="sr-scroll mode-peek" data-mode="peek">
+        <div class="sr-item mode-c" style="background-image:url('../assets/images/slide-3-image-bg.jpg')"><span class="sr-title-chip">Antecipação de Recebíveis</span><div class="sr-overlay"><p class="pillar">Asset</p><h3 class="title">Antecipação de Recebíveis</h3><p class="desc">Transforme faturamento previsto em capital disponível.</p><a href="#" class="cta">Saiba mais →</a></div></div>
+        <div class="sr-item mode-c" style="background-image:url('../assets/images/slide-8-image-bg.jpg')"><span class="sr-title-chip">Capital de Giro</span><div class="sr-overlay"><p class="pillar">Asset</p><h3 class="title">Capital de Giro</h3><p class="desc">Crédito estruturado com garantia imobiliária.</p><a href="#" class="cta">Saiba mais →</a></div></div>
+        <div class="sr-item mode-c" style="background-image:url('../assets/images/slide-11-image-bg.jpg')"><span class="sr-title-chip">CDC</span><div class="sr-overlay"><p class="pillar">Asset</p><h3 class="title">Crédito Direto ao Consumidor</h3><p class="desc">Sua empresa recebe à vista.</p><a href="#" class="cta">Saiba mais →</a></div></div>
+        <div class="sr-item mode-c" style="background-image:url('../assets/images/slide-24-image-bg.jpg')"><span class="sr-title-chip">Risco Sacado</span><div class="sr-overlay"><p class="pillar">Asset</p><h3 class="title">Risco Sacado</h3><p class="desc">Mais prazo pra empresa, mais previsibilidade pro fornecedor.</p><a href="#" class="cta">Saiba mais →</a></div></div>
+        <div class="sr-item mode-c" style="background-image:url('../assets/images/slide-39-image-bg.jpg')"><span class="sr-title-chip">Conta PJ</span><div class="sr-overlay"><p class="pillar">Fintech</p><h3 class="title">Conta PJ</h3><p class="desc">Feita pra complexidade real de uma empresa.</p><a href="#" class="cta">Saiba mais →</a></div></div>
+        <div class="sr-item mode-c" style="background-image:url('../assets/images/slide-41-image-bg.jpg')"><span class="sr-title-chip">Boleto Bancário</span><div class="sr-overlay"><p class="pillar">Fintech</p><h3 class="title">Boleto Bancário</h3><p class="desc">Emissão, gestão e conciliação integradas.</p><a href="#" class="cta">Saiba mais →</a></div></div>
+        <div class="sr-item mode-c" style="background-image:url('../assets/images/slide-52-image-bg.jpg')"><span class="sr-title-chip">Consignado CLT</span><div class="sr-overlay"><p class="pillar">Para Você</p><h3 class="title">Consignado CLT</h3><p class="desc">Direto pelo app do governo.</p><a href="#" class="cta">Saiba mais →</a></div></div>
+      </div>
+    </div>
+    <p class="hint" style="padding-bottom:0;max-width:280px;">título sempre visível e discreto; card central cresce e revela descrição + CTA — nunca fica 100% vazio de conteúdo</p>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  function initMagnetic(gallery) {
+    var backdrop = gallery.querySelector('.magnetic-backdrop');
+    var items = Array.prototype.slice.call(gallery.querySelectorAll('.magnetic-item'));
+    var n = items.length;
+
+    var narrow = window.innerWidth <= 760;
+    var collapsedW = narrow ? 56 : 100;
+    var collapsedH = narrow ? 220 : 340;
+    var hoverW = collapsedW * 2;
+    var hoverH = collapsedH + 60;
+    var gap = narrow ? 8 : 16;
+    var influence = 200;
+    var galleryWidth = gallery.getBoundingClientRect().width || 900;
+    var openSize = Math.min(560, galleryWidth * 0.55);
+
+    var target = items.map(function () { return 0; });
+    var cur = items.map(function () { return 0; });
+    var loop = 0;
+    var openIndex = null;
+
+    function applySize(i, f) {
+      items[i].style.width = (collapsedW + (hoverW - collapsedW) * f) + 'px';
+      items[i].style.height = (collapsedH + (hoverH - collapsedH) * f) + 'px';
+    }
+
+    function stopLoop() { if (loop) { cancelAnimationFrame(loop); loop = 0; } }
+
+    function step() {
+      var moving = false;
+      for (var i = 0; i < n; i++) {
+        var d = target[i] - cur[i];
+        if (Math.abs(d) > 0.001) { cur[i] += d * 0.2; moving = true; }
+        else { cur[i] = target[i]; }
+        applySize(i, cur[i]);
+      }
+      loop = moving ? requestAnimationFrame(step) : 0;
+    }
+
+    function startLoop() { if (!loop) loop = requestAnimationFrame(step); }
+
+    function setTargetsFromCursor(clientX) {
+      var rect = gallery.getBoundingClientRect();
+      var cx = clientX - rect.left;
+      var totalBase = n * collapsedW + (n - 1) * gap;
+      var startX = Math.max(0, (rect.width - totalBase) / 2);
+      target = items.map(function (_, i) {
+        var center = startX + i * (collapsedW + gap) + collapsedW / 2;
+        var dist = Math.abs(cx - center);
+        var f = Math.max(0, 1 - dist / influence);
+        return f * f * (3 - 2 * f);
+      });
+      startLoop();
+    }
+
+    function closeOpen() {
+      stopLoop();
+      items.forEach(function (it) {
+        it.classList.add('animated');
+        it.classList.remove('open', 'dimmed');
+        it.style.width = collapsedW + 'px';
+        it.style.height = collapsedH + 'px';
+      });
+      if (backdrop) backdrop.classList.remove('active');
+      openIndex = null;
+      target = items.map(function () { return 0; });
+      cur = items.map(function () { return 0; });
+      setTimeout(function () { items.forEach(function (it) { it.classList.remove('animated'); }); }, 340);
+    }
+
+    function openItem(i) {
+      stopLoop();
+      openIndex = i;
+      if (backdrop) backdrop.classList.add('active');
+      items.forEach(function (it, idx) {
+        it.classList.add('animated');
+        if (idx === i) {
+          it.classList.add('open'); it.classList.remove('dimmed');
+          it.style.width = openSize + 'px'; it.style.height = openSize + 'px';
+        } else {
+          it.classList.remove('open'); it.classList.add('dimmed');
+          it.style.width = collapsedW + 'px'; it.style.height = collapsedH + 'px';
+        }
+      });
+    }
+
+    items.forEach(function (it, i) {
+      applySize(i, 0);
+      it.addEventListener('click', function (e) {
+        if (e.target.closest('.cta')) return;
+        e.stopPropagation();
+        if (openIndex === i) closeOpen(); else openItem(i);
+      });
+    });
+    if (backdrop) backdrop.addEventListener('click', closeOpen);
+
+    gallery.addEventListener('mousemove', function (e) {
+      if (openIndex !== null) return;
+      setTargetsFromCursor(e.clientX);
+    });
+    gallery.addEventListener('mouseleave', function () {
+      if (openIndex !== null) return;
+      target = items.map(function () { return 0; });
+      startLoop();
+    });
+  }
+
+  document.querySelectorAll('.magnetic-gallery').forEach(initMagnetic);
+
+  // ── seção B — revelar pelo scroll ──
+  // whichever card's center is nearest the container's center gets `.sr-active`.
+  // Started out as an IntersectionObserver (rootMargin band + threshold), but the
+  // threshold was unreachable — a 190-230px card can never fill 60% of a ~28px
+  // center band, so it never crossed the threshold. Direct geometry on scroll is
+  // simpler and has no such ceiling.
+  function initSnapReveal(scrollEl) {
+    var items = Array.prototype.slice.call(scrollEl.querySelectorAll('.sr-item'));
+    var ticking = false;
+    function update() {
+      var rect = scrollEl.getBoundingClientRect();
+      var cx = rect.left + rect.width / 2;
+      var best = -1, bestDist = Infinity;
+      items.forEach(function (it, i) {
+        var r = it.getBoundingClientRect();
+        var d = Math.abs((r.left + r.width / 2) - cx);
+        if (d < bestDist) { bestDist = d; best = i; }
+      });
+      items.forEach(function (it, i) { it.classList.toggle('sr-active', i === best); });
+      ticking = false;
+    }
+    scrollEl.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    update();
+  }
+
+  function initElasticReveal(scrollEl) {
+    var items = Array.prototype.slice.call(scrollEl.querySelectorAll('.sr-item'));
+    var influence = 130;
+    var minScale = 1, maxScale = 1.75;
+    var ticking = false;
+    function update() {
+      var rect = scrollEl.getBoundingClientRect();
+      var centerX = rect.left + rect.width / 2;
+      items.forEach(function (it) {
+        var r = it.getBoundingClientRect();
+        var itemCenter = r.left + r.width / 2;
+        var dist = Math.abs(itemCenter - centerX);
+        var f = Math.max(0, 1 - dist / influence);
+        f = f * f * (3 - 2 * f);
+        it.style.transform = 'scale(' + (minScale + (maxScale - minScale) * f).toFixed(3) + ')';
+        it.style.zIndex = f > 0.5 ? 3 : 1;
+        var overlay = it.querySelector('.sr-overlay');
+        if (overlay) overlay.style.opacity = f > 0.55 ? Math.min(1, (f - 0.55) / 0.35).toFixed(2) : 0;
+      });
+      ticking = false;
+    }
+    scrollEl.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    update();
+  }
+
+  function makeDraggable(el) {
+    var isDown = false, startX = 0, startScroll = 0;
+    el.addEventListener('mousedown', function (e) {
+      isDown = true; el.classList.add('dragging');
+      startX = e.pageX; startScroll = el.scrollLeft;
+    });
+    window.addEventListener('mouseup', function () { isDown = false; el.classList.remove('dragging'); });
+    window.addEventListener('mousemove', function (e) {
+      if (!isDown) return;
+      e.preventDefault();
+      el.scrollLeft = startScroll - (e.pageX - startX);
+    });
+  }
+
+  document.querySelectorAll('.sr-scroll.mode-snap').forEach(initSnapReveal);
+  document.querySelectorAll('.sr-scroll.mode-peek').forEach(initSnapReveal);
+  document.querySelectorAll('.sr-scroll.mode-elastic').forEach(initElasticReveal);
+  document.querySelectorAll('.sr-scroll').forEach(makeDraggable);
+})();
+</script>
+
+</body>
+</html>
