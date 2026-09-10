@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATF — Teste de blocos v05: overlay + mosaico</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --font: 'Plus Jakarta Sans', sans-serif;
+  --black: #0A0A0A;
+  --mid: #6B6560;
+  --light: #9B9590;
+  --rule: #E8E7E5;
+  --gold: #FFCD7D;
+  --page-max: 1280px;
+  --pad-x: 64px;
+}
+
+body { font-family: var(--font); background: #fff; color: var(--black); -webkit-font-smoothing: antialiased; font-size: 16px; line-height: 1.7; overflow-x: hidden; }
+a { text-decoration: none; color: inherit; }
+.page { max-width: var(--page-max); margin: 0 auto; padding: 0 var(--pad-x); }
+
+/* ── META HEADER ── */
+.meta-header { background: var(--black); color: #fff; padding: 32px var(--pad-x) 36px; }
+.meta-header .page { max-width: 1280px; margin: 0 auto; padding: 0; }
+.meta-label { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+.meta-header h1 { font-size: 1.5rem; font-weight: 800; letter-spacing: -.01em; margin-bottom: 14px; }
+.meta-header p { font-size: .9375rem; color: #C9C4BE; max-width: 760px; margin-bottom: 10px; }
+.meta-header ul { margin: 12px 0 4px 18px; color: #C9C4BE; font-size: .875rem; }
+.meta-header li { margin-bottom: 5px; }
+.meta-nav { display: flex; gap: 24px; flex-wrap: wrap; margin-top: 20px; }
+.meta-nav a { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #fff; border-bottom: 1.5px solid var(--gold); padding-bottom: 3px; }
+
+.intro { padding: 80px 0 16px; }
+.variant-tag { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--light); margin-bottom: 16px; }
+.variant-name { font-size: clamp(1.5rem, 2.4vw, 2rem); font-weight: 800; letter-spacing: -.02em; max-width: 680px; margin-bottom: 12px; }
+.variant-note { font-size: .9375rem; color: var(--mid); max-width: 640px; }
+
+/* ── shared caption panel + CTA (no index number, no pillar chip — per feedback) ── */
+.caption {
+  position: relative; z-index: 2;
+  max-width: 420px;
+  padding: 26px 28px;
+  background: rgba(255,255,255,.86);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 18px;
+}
+.caption h3 { font-size: 1.5rem; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; margin-bottom: 10px; }
+.caption p { font-size: .9375rem; color: var(--mid); margin-bottom: 16px; }
+.caption.compact h3 { font-size: 1.2rem; }
+.caption.compact p { display: none; }
+
+.cta { display: inline-flex; align-items: center; gap: 8px; font-size: .8125rem; font-weight: 700; padding-bottom: 3px; border-bottom: 1.5px solid var(--black); transition: gap .2s ease; }
+.cta:hover { gap: 13px; }
+.cta svg { width: 15px; height: 15px; }
+
+
+/* ══════════════════ VARIANT F — VÍDEO FULL SCREEN, TEXTO POR CIMA ══════════════════ */
+.hero-reel { position: relative; min-height: 100vh; display: flex; align-items: flex-end; overflow: hidden; }
+.hero-reel .hr-media { position: absolute; inset: 0; }
+.hero-reel video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.hero-reel .caption { margin: 0 var(--pad-x) 80px; }
+.hero-reel { justify-content: flex-start; }
+
+@media (max-width: 640px) {
+  .hero-reel .caption { margin: 0 20px 48px; max-width: none; }
+}
+
+
+/* ══════════════════ VARIANT G — MOSAICO ══════════════════ */
+.mosaic { display: flex; flex-direction: column; gap: 24px; padding-bottom: 40px; }
+.mosaic-row { display: grid; gap: 24px; }
+.mosaic-row.full { grid-template-columns: 1fr; }
+.mosaic-row.split { grid-template-columns: 1fr 1fr; }
+
+.tile { position: relative; border-radius: 22px; overflow: hidden; display: flex; align-items: flex-end; background: #F0EFED; }
+.tile video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.tile .caption { margin: 24px; }
+.tile.full { min-height: 76vh; }
+.tile.half { min-height: 54vh; }
+
+@media (max-width: 860px) {
+  .mosaic-row.split { grid-template-columns: 1fr; }
+  .tile.half { min-height: 62vh; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- META HEADER — review-only -->
+<div class="meta-header">
+  <div class="page">
+    <p class="meta-label">Codex-tests · Product blocks v05</p>
+    <h1>Teste de blocos — overlay em tela cheia + mosaico</h1>
+    <p>Quinta leva, duas ideias novas:</p>
+    <ul>
+      <li><b>Variante F</b> — o vídeo agora preenche a tela inteira (<code>object-fit: cover</code>, não mais <code>contain</code>) e o texto fica por cima, num cartão translúcido com blur pra garantir leitura em qualquer frame da animação.</li>
+      <li><b>Variante G</b> — mosaico: 1 bloco cheio, 2 lado a lado, 1 cheio, 2 lado a lado, 1 cheio. São exatamente os 7 produtos, sem sobra.</li>
+    </ul>
+    <p>Removido dos dois: os indicadores "01/07" e as pills "Asset"/"Fintech" — ficavam com cara de padrão genérico de IA. Só título, descrição curta (quando cabe) e CTA.</p>
+    <p style="font-size:.8125rem;color:#8f8a84;">Mesmo mapeamento posicional dos vídeos dos testes anteriores. Como as duas variantes usam os 7 clipes cada uma, o peso total desta página dobra em relação ao round 4 — ok para revisão local, mas outro motivo pra comprimir antes de qualquer coisa ir pro ar.</p>
+    <nav class="meta-nav">
+      <a href="../product-blocks-v01/index.html">← v01</a>
+      <a href="../product-blocks-v02/index.html">← v02</a>
+      <a href="../product-blocks-v03/index.html">← v03</a>
+      <a href="../product-blocks-v04/index.html">← v04</a>
+      <a href="../index.html">Menu geral</a>
+    </nav>
+  </div>
+</div>
+
+
+<!-- ══════════════════ VARIANT F ══════════════════ -->
+<div class="page intro">
+  <p class="variant-tag">Variante F</p>
+  <h2 class="variant-name">Vídeo em tela cheia, texto por cima</h2>
+  <p class="variant-note">Cada produto é uma tela cheia de vídeo; o texto flutua por cima num cartão claro com blur, sem depender de escurecer a imagem.</p>
+</div>
+
+<div id="reels">
+  <section class="hero-reel align-left">
+    <div class="hr-media"><video data-src="../assets/videos/slide-7-animation-background.mp4" muted loop playsinline preload="none"></video></div>
+    <div class="caption"><h3>Antecipação de Recebíveis</h3><p>Transforme faturamento previsto em capital disponível — sem criar novas obrigações no passivo.</p><a href="#" class="cta">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+  </section>
+
+  <section class="hero-reel align-left">
+    <div class="hr-media"><video data-src="../assets/videos/slide-9-animation-background.mp4" muted loop playsinline preload="none"></video></div>
+    <div class="caption"><h3>Capital de Giro</h3><p>Crédito estruturado com garantia imobiliária para manter a operação em movimento.</p><a href="#" class="cta">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+  </section>
+
+  <section class="hero-reel align-left">
+    <div class="hr-media"><video data-src="../assets/videos/slide-18-animation-background.mp4" muted loop playsinline preload="none"></video></div>
+    <div class="caption"><h3>Crédito Direto ao Consumidor</h3><p>Sua empresa recebe à vista. Seus clientes compram com prazo.</p><a href="#" class="cta">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+  </section>
+
+  <section class="hero-reel align-left">
+    <div class="hr-media"><video data-src="../assets/videos/slide-33-animation-background.mp4" muted loop playsinline preload="none"></video></div>
+    <div class="caption"><h3>Risco Sacado</h3><p>Mais prazo para sua empresa. Mais previsibilidade para seus fornecedores.</p><a href="#" class="cta">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+  </section>
+
+  <section class="hero-reel align-left">
+    <div class="hr-media"><video data-src="../assets/videos/slide-34-animation-background.mp4" muted loop playsinline preload="none"></video></div>
+    <div class="caption"><h3>Conta PJ</h3><p>Uma conta feita para a complexidade real de uma empresa, com múltiplos operadores.</p><a href="#" class="cta">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+  </section>
+
+  <section class="hero-reel align-left">
+    <div class="hr-media"><video data-src="../assets/videos/slide-35-animation-background.mp4" muted loop playsinline preload="none"></video></div>
+    <div class="caption"><h3>Boleto Bancário</h3><p>Emissão, gestão e conciliação integradas ao fluxo de recebimento da empresa.</p><a href="#" class="cta">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+  </section>
+
+  <section class="hero-reel align-left">
+    <div class="hr-media"><video data-src="../assets/videos/slide-36-animation-background.mp4" muted loop playsinline preload="none"></video></div>
+    <div class="caption"><h3>Consignado CLT</h3><p>Crédito consignado para trabalhadores CLT, contratado direto pelo app do governo.</p><a href="#" class="cta">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+  </section>
+</div>
+
+
+<!-- ══════════════════ VARIANT G ══════════════════ -->
+<div class="page intro">
+  <p class="variant-tag">Variante G</p>
+  <h2 class="variant-name">Mosaico</h2>
+  <p class="variant-note">Um bloco cheio, dois lado a lado, um cheio, dois lado a lado, um cheio — 7 produtos, sem sobra e sem se repetir como grade uniforme.</p>
+</div>
+
+<div class="page">
+  <div class="mosaic" id="mosaic">
+
+    <div class="mosaic-row full">
+      <div class="tile full">
+        <video data-src="../assets/videos/slide-7-animation-background.mp4" muted loop playsinline preload="none"></video>
+        <div class="caption"><h3>Antecipação de Recebíveis</h3><p>Transforme faturamento previsto em capital disponível — sem criar novas obrigações no passivo.</p><a href="#" class="cta">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+      </div>
+    </div>
+
+    <div class="mosaic-row split">
+      <div class="tile half">
+        <video data-src="../assets/videos/slide-9-animation-background.mp4" muted loop playsinline preload="none"></video>
+        <div class="caption compact"><h3>Capital de Giro</h3><a href="#" class="cta">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+      </div>
+      <div class="tile half">
+        <video data-src="../assets/videos/slide-18-animation-background.mp4" muted loop playsinline preload="none"></video>
+        <div class="caption compact"><h3>Crédito Direto ao Consumidor</h3><a href="#" class="cta">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+      </div>
+    </div>
+
+    <div class="mosaic-row full">
+      <div class="tile full">
+        <video data-src="../assets/videos/slide-33-animation-background.mp4" muted loop playsinline preload="none"></video>
+        <div class="caption"><h3>Risco Sacado</h3><p>Mais prazo para sua empresa. Mais previsibilidade para seus fornecedores.</p><a href="#" class="cta">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+      </div>
+    </div>
+
+    <div class="mosaic-row split">
+      <div class="tile half">
+        <video data-src="../assets/videos/slide-34-animation-background.mp4" muted loop playsinline preload="none"></video>
+        <div class="caption compact"><h3>Conta PJ</h3><a href="#" class="cta">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+      </div>
+      <div class="tile half">
+        <video data-src="../assets/videos/slide-35-animation-background.mp4" muted loop playsinline preload="none"></video>
+        <div class="caption compact"><h3>Boleto Bancário</h3><a href="#" class="cta">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+      </div>
+    </div>
+
+    <div class="mosaic-row full">
+      <div class="tile full">
+        <video data-src="../assets/videos/slide-36-animation-background.mp4" muted loop playsinline preload="none"></video>
+        <div class="caption"><h3>Consignado CLT</h3><p>Crédito consignado para trabalhadores CLT, contratado direto pelo app do governo.</p><a href="#" class="cta">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function () {
+  var blocks = document.querySelectorAll('.hero-reel, .tile');
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      var v = entry.target.querySelector('video');
+      if (!v) return;
+      if (entry.isIntersecting) {
+        if (!v.src) { v.src = v.dataset.src; v.load(); }
+        v.play().catch(function () {});
+      } else {
+        v.pause();
+      }
+    });
+  }, { threshold: 0, rootMargin: '30% 0px' });
+  blocks.forEach(function (b) { io.observe(b); });
+})();
+</script>
+
+</body>
+</html>

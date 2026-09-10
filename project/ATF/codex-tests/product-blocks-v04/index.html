@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATF — Teste de blocos v04: tela cheia + paralaxe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --font: 'Plus Jakarta Sans', sans-serif;
+  --black: #0A0A0A;
+  --mid: #6B6560;
+  --light: #9B9590;
+  --rule: #E8E7E5;
+  --gold: #FFCD7D;
+  --off: #FAFAF9;
+  --page-max: 1000px;
+  --pad-x: 64px;
+}
+
+body {
+  font-family: var(--font);
+  background: #fff;
+  color: var(--black);
+  -webkit-font-smoothing: antialiased;
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+a { text-decoration: none; color: inherit; }
+
+.page { max-width: var(--page-max); margin: 0 auto; padding: 0 var(--pad-x); }
+
+/* ── META HEADER ── */
+.meta-header { background: var(--black); color: #fff; padding: 32px var(--pad-x) 36px; }
+.meta-header .page { max-width: 1200px; margin: 0 auto; padding: 0; }
+.meta-label { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+.meta-header h1 { font-size: 1.5rem; font-weight: 800; letter-spacing: -.01em; margin-bottom: 14px; }
+.meta-header p { font-size: .9375rem; color: #C9C4BE; max-width: 760px; margin-bottom: 10px; }
+.meta-flag {
+  background: rgba(255,205,125,.1);
+  border: 1px solid rgba(255,205,125,.35);
+  border-radius: 10px;
+  padding: 14px 18px;
+  font-size: .8125rem;
+  color: #F0DCB0;
+  max-width: 760px;
+  margin-top: 10px;
+}
+.meta-flag b { color: var(--gold); }
+.meta-nav { display: flex; gap: 24px; flex-wrap: wrap; margin-top: 20px; }
+.meta-nav a { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #fff; border-bottom: 1.5px solid var(--gold); padding-bottom: 3px; }
+
+.intro { padding: 80px 0 20px; text-align: center; }
+.section-label { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--light); margin-bottom: 24px; }
+.section-title { font-size: clamp(1.75rem, 2.8vw, 2.4rem); font-weight: 800; line-height: 1.1; letter-spacing: -.02em; margin: 0 auto 16px; max-width: 620px; }
+.section-sub { font-size: 1rem; color: var(--mid); max-width: 480px; margin: 0 auto; }
+
+
+/* ══════════════════ FULL-SCREEN REEL ══════════════════ */
+.reel {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px var(--pad-x);
+  text-align: center;
+  overflow: hidden;
+}
+.reel.tint { background: var(--off); }
+
+.reel-head { max-width: 620px; margin-bottom: 8px; z-index: 2; opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+.reel-head.in { opacity: 1; transform: translateY(0); }
+
+.reel-index { font-size: .8125rem; color: var(--light); font-weight: 600; margin-bottom: 18px; }
+.reel-index b { color: var(--black); }
+
+.reel-chip {
+  display: inline-flex; align-items: center; height: 26px; padding: 0 14px;
+  border-radius: 999px; background: #fff; box-shadow: inset 0 0 0 1px var(--rule);
+  color: var(--mid); font-size: .75rem; font-weight: 600; margin-bottom: 20px;
+}
+.reel.tint .reel-chip { background: var(--off); }
+
+.reel-title { font-size: clamp(2rem, 4.2vw, 3.4rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.05; margin-bottom: 18px; }
+.reel-desc { font-size: 1.0625rem; color: var(--mid); max-width: 460px; margin: 0 auto 26px; }
+
+.reel-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: .875rem; font-weight: 700;
+  padding-bottom: 3px;
+  border-bottom: 1.5px solid var(--black);
+  transition: gap .2s ease, opacity .2s ease;
+}
+.reel-cta:hover { gap: 13px; }
+.reel-cta svg { width: 16px; height: 16px; }
+
+.reel-media {
+  width: min(760px, 92vw);
+  aspect-ratio: 16/10;
+  will-change: transform;
+  z-index: 1;
+}
+.reel-media video { width: 100%; height: 100%; object-fit: contain; display: block; }
+
+@media (max-width: 640px) {
+  .reel { padding: 64px 24px; }
+  .reel-media { width: 100%; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- META HEADER — review-only -->
+<div class="meta-header">
+  <div class="page">
+    <p class="meta-label">Codex-tests · Product blocks v04</p>
+    <h1>Teste de blocos — tela cheia + paralaxe</h1>
+    <p>Quarta leva: texto acima, vídeo grande em tela cheia logo abaixo (fundo branco do vídeo se funde com o fundo da página — sem crop, sem scrim escuro por cima). Cada bloco ocupa a altura do viewport; a mídia se move em paralaxe conforme rola, alternando de sentido/intensidade a cada bloco para dar variação de ritmo — não é o mesmo movimento repetido 7 vezes.</p>
+    <p style="font-size:.8125rem;color:#8f8a84;">Mesmos 7 vídeos do teste anterior, mesmo mapeamento posicional (1º vídeo no 1º produto etc. — ainda não é curadoria real). Fundo alterna entre branco e um cinza quase imperceptível a cada bloco só para dar alguma marcação de onde um produto termina e o outro começa, já que rolar 7 telas brancas em sequência sem nenhuma pista visual fica difícil de acompanhar.</p>
+    <div class="meta-flag"><b>Ainda sem sublinhado dourado</b> — o CTA aqui é só um traço preto simples embaixo do texto, que abre no hover. Se quiser testar outro tratamento de CTA depois, também dá.</div>
+    <nav class="meta-nav">
+      <a href="../product-blocks-v01/index.html">← Round 1 (estrutura)</a>
+      <a href="../product-blocks-v02/index.html">← Round 2 (conteúdo)</a>
+      <a href="../product-blocks-v03/index.html">← Round 3 (mural lúdico)</a>
+      <a href="../index.html">Menu geral</a>
+    </nav>
+  </div>
+</div>
+
+<div class="intro">
+  <p class="section-label">Produtos</p>
+  <h2 class="section-title">Do capital de longo prazo ao dia a dia financeiro.</h2>
+  <p class="section-sub">Fundos, crédito estruturado, infraestrutura digital e consignado CLT — cada produto moldado ao momento de quem opera com a ATF.</p>
+</div>
+
+<div id="reels">
+
+  <section class="reel" data-parallax="-0.14">
+    <div class="reel-head"><p class="reel-index"><b>01</b> / 07</p><span class="reel-chip">Asset</span><h3 class="reel-title">Antecipação de Recebíveis</h3><p class="reel-desc">Transforme faturamento previsto em capital disponível — sem criar novas obrigações no passivo.</p><a href="#" class="reel-cta">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+    <div class="reel-media"><video data-src="../assets/videos/slide-7-animation-background.mp4" muted loop playsinline preload="none"></video></div>
+  </section>
+
+  <section class="reel tint" data-parallax="0.18">
+    <div class="reel-head"><p class="reel-index"><b>02</b> / 07</p><span class="reel-chip">Asset</span><h3 class="reel-title">Capital de Giro</h3><p class="reel-desc">Crédito estruturado com garantia imobiliária para manter a operação em movimento.</p><a href="#" class="reel-cta">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+    <div class="reel-media"><video data-src="../assets/videos/slide-9-animation-background.mp4" muted loop playsinline preload="none"></video></div>
+  </section>
+
+  <section class="reel" data-parallax="-0.18">
+    <div class="reel-head"><p class="reel-index"><b>03</b> / 07</p><span class="reel-chip">Asset</span><h3 class="reel-title">Crédito Direto ao Consumidor</h3><p class="reel-desc">Sua empresa recebe à vista. Seus clientes compram com prazo.</p><a href="#" class="reel-cta">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+    <div class="reel-media"><video data-src="../assets/videos/slide-18-animation-background.mp4" muted loop playsinline preload="none"></video></div>
+  </section>
+
+  <section class="reel tint" data-parallax="0.14">
+    <div class="reel-head"><p class="reel-index"><b>04</b> / 07</p><span class="reel-chip">Asset</span><h3 class="reel-title">Risco Sacado</h3><p class="reel-desc">Mais prazo para sua empresa. Mais previsibilidade para seus fornecedores.</p><a href="#" class="reel-cta">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+    <div class="reel-media"><video data-src="../assets/videos/slide-33-animation-background.mp4" muted loop playsinline preload="none"></video></div>
+  </section>
+
+  <section class="reel" data-parallax="-0.16">
+    <div class="reel-head"><p class="reel-index"><b>05</b> / 07</p><span class="reel-chip">Fintech</span><h3 class="reel-title">Conta PJ</h3><p class="reel-desc">Uma conta feita para a complexidade real de uma empresa, com múltiplos operadores.</p><a href="#" class="reel-cta">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+    <div class="reel-media"><video data-src="../assets/videos/slide-34-animation-background.mp4" muted loop playsinline preload="none"></video></div>
+  </section>
+
+  <section class="reel tint" data-parallax="0.2">
+    <div class="reel-head"><p class="reel-index"><b>06</b> / 07</p><span class="reel-chip">Fintech</span><h3 class="reel-title">Boleto Bancário</h3><p class="reel-desc">Emissão, gestão e conciliação integradas ao fluxo de recebimento da empresa.</p><a href="#" class="reel-cta">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+    <div class="reel-media"><video data-src="../assets/videos/slide-35-animation-background.mp4" muted loop playsinline preload="none"></video></div>
+  </section>
+
+  <section class="reel" data-parallax="-0.15">
+    <div class="reel-head"><p class="reel-index"><b>07</b> / 07</p><span class="reel-chip">Para Você</span><h3 class="reel-title">Consignado CLT</h3><p class="reel-desc">Crédito consignado para trabalhadores CLT, contratado direto pelo app do governo.</p><a href="#" class="reel-cta">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+    <div class="reel-media"><video data-src="../assets/videos/slide-36-animation-background.mp4" muted loop playsinline preload="none"></video></div>
+  </section>
+
+</div>
+
+<script>
+(function () {
+  var reels = Array.prototype.slice.call(document.querySelectorAll('.reel'));
+  var heads = document.querySelectorAll('.reel-head');
+
+  // reveal text once per block
+  if ('IntersectionObserver' in window) {
+    var headIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); headIO.unobserve(e.target); }
+      });
+    }, { threshold: 0.35 });
+    heads.forEach(function (h) { headIO.observe(h); });
+  } else {
+    heads.forEach(function (h) { h.classList.add('in'); });
+  }
+
+  // load + play/pause each video only while its block is near the viewport
+  var videoIO = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      var v = entry.target.querySelector('video');
+      if (!v) return;
+      if (entry.isIntersecting) {
+        if (!v.src) { v.src = v.dataset.src; v.load(); }
+        v.play().catch(function () {});
+      } else {
+        v.pause();
+      }
+    });
+  }, { threshold: 0, rootMargin: '40% 0px' });
+  reels.forEach(function (r) { videoIO.observe(r); });
+
+  // alternating parallax drift on the media, driven by scroll position
+  var ticking = false;
+  function updateParallax() {
+    var vh = window.innerHeight;
+    reels.forEach(function (r) {
+      var media = r.querySelector('.reel-media');
+      var rect = r.getBoundingClientRect();
+      if (rect.bottom < -vh * 0.5 || rect.top > vh * 1.5) return; // skip far offscreen
+      var center = rect.top + rect.height / 2;
+      var distanceFromCenter = (vh / 2) - center; // + when section center below viewport center
+      var factor = parseFloat(r.dataset.parallax) || 0;
+      media.style.transform = 'translateY(' + (distanceFromCenter * factor) + 'px)';
+    });
+    ticking = false;
+  }
+  function onScroll() {
+    if (!ticking) { window.requestAnimationFrame(updateParallax); ticking = true; }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  updateParallax();
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATF — Testes de blocos de produto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --font: 'Plus Jakarta Sans', sans-serif;
+  --black: #0A0A0A;
+  --mid: #6B6560;
+  --light: #9B9590;
+  --rule: #E8E7E5;
+  --gold: #FFCD7D;
+  --page-max: 980px;
+  --pad-x: 64px;
+}
+
+body { font-family: var(--font); background: #fff; color: var(--black); -webkit-font-smoothing: antialiased; font-size: 16px; line-height: 1.7; }
+a { text-decoration: none; color: inherit; }
+.page { max-width: var(--page-max); margin: 0 auto; padding: 0 var(--pad-x); }
+
+header { background: var(--black); color: #fff; padding: 56px var(--pad-x) 48px; }
+header .page { padding: 0; }
+.eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+header h1 { font-size: clamp(1.75rem, 3vw, 2.25rem); font-weight: 800; letter-spacing: -.02em; margin-bottom: 16px; }
+header p { font-size: 1rem; color: #C9C4BE; max-width: 620px; }
+
+main { padding: 56px 0 100px; }
+
+.list { display: flex; flex-direction: column; }
+
+.round {
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  gap: 28px;
+  align-items: start;
+  padding: 32px 0;
+  border-bottom: 1px solid var(--rule);
+  transition: opacity .15s;
+}
+.list .round:first-child { padding-top: 0; }
+.list .round:last-child { border-bottom: none; }
+.round:hover { opacity: .68; }
+
+.round-num { font-size: 1.5rem; font-weight: 800; letter-spacing: -.02em; color: var(--rule); padding-top: 2px; }
+
+.round-title { font-size: 1.15rem; font-weight: 700; letter-spacing: -.01em; margin-bottom: 8px; }
+.round-desc { font-size: .9375rem; color: var(--mid); max-width: 560px; margin-bottom: 10px; }
+.round-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.round-tags span { font-size: .6875rem; font-weight: 600; color: var(--mid); background: #F0EFED; border-radius: 999px; padding: 4px 10px; }
+
+.round-arrow { font-size: 1.15rem; color: var(--light); padding-top: 4px; transition: transform .15s, color .15s; }
+.round:hover .round-arrow { transform: translateX(4px); color: var(--black); }
+
+footer { border-top: 1px solid var(--rule); padding: 32px var(--pad-x); }
+footer p { font-size: .8125rem; color: var(--light); max-width: 620px; }
+
+@media (max-width: 640px) {
+  :root { --pad-x: 24px; }
+  .round { grid-template-columns: 36px 1fr; }
+  .round-arrow { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="page">
+    <p class="eyebrow">Codex-tests · Product blocks</p>
+    <h1>Testes de blocos de produto — índice</h1>
+    <p>Cinco rodadas explorando como apresentar os 7 produtos da ATF na home — estrutura, conteúdo, tom e uso de assets reais das Credenciais. Nenhuma delas substitui o trabalho do Ronald no Figma; servem como referência e ponto de partida.</p>
+  </div>
+</header>
+
+<main class="page">
+  <div class="list">
+
+    <a class="round" href="product-blocks-v01/index.html">
+      <span class="round-num">01</span>
+      <div>
+        <p class="round-title">Estrutura</p>
+        <p class="round-desc">Três formas de organizar os 7 produtos: índice editorial em lista, grade agrupada por pilar (Asset / Fintech / Para Você), e carrossel horizontal com scroll-snap.</p>
+        <div class="round-tags"><span>índice</span><span>grade por pilar</span><span>carrossel</span></div>
+      </div>
+      <span class="round-arrow">→</span>
+    </a>
+
+    <a class="round" href="product-blocks-v02/index.html">
+      <span class="round-num">02</span>
+      <div>
+        <p class="round-title">Conteúdo — primeira leva de assets reais</p>
+        <p class="round-desc">Editorial em tela cheia e índice com preview interativo. Primeira vez usando componentes reais do Design System (botão, chip, slider dots) e um sublinhado dourado animado — abandonado depois.</p>
+        <div class="round-tags"><span>vídeo de produto</span><span>ilustração real</span><span>design system</span></div>
+      </div>
+      <span class="round-arrow">→</span>
+    </a>
+
+    <a class="round" href="product-blocks-v03/index.html">
+      <span class="round-num">03</span>
+      <div>
+        <p class="round-title">Mural lúdico</p>
+        <p class="round-desc">Cards inclinados e de tamanhos variados, tipo moodboard físico. Primeira vez usando os 7 vídeos corretos (ilustrações animadas das Credenciais). Inclui uma técnica alternativa: SVG parado com animação leve via CSS.</p>
+        <div class="round-tags"><span>corkboard</span><span>7 vídeos de ilustração</span><span>hover lift</span></div>
+      </div>
+      <span class="round-arrow">→</span>
+    </a>
+
+    <a class="round" href="product-blocks-v04/index.html">
+      <span class="round-num">04</span>
+      <div>
+        <p class="round-title">Tela cheia + paralaxe</p>
+        <p class="round-desc">Texto acima, vídeo grande abaixo (sem crop, fundo branco se funde com a página), um bloco de 100vh por produto. Paralaxe alternando sentido a cada bloco.</p>
+        <div class="round-tags"><span>scroll storytelling</span><span>paralaxe</span></div>
+      </div>
+      <span class="round-arrow">→</span>
+    </a>
+
+    <a class="round" href="product-blocks-v05/index.html">
+      <span class="round-num">05</span>
+      <div>
+        <p class="round-title">Overlay em tela cheia + mosaico</p>
+        <p class="round-desc">Duas variantes: vídeo cobrindo a tela inteira com texto sobre um cartão translúcido; e um mosaico (cheio / dois lado a lado / cheio / dois lado a lado / cheio). Sem indicadores "01/07" nem pills de pilar.</p>
+        <div class="round-tags"><span>overlay com blur</span><span>mosaico</span><span>sem indicadores</span></div>
+      </div>
+      <span class="round-arrow">→</span>
+    </a>
+
+    <a class="round" href="product-blocks-v06/index.html">
+      <span class="round-num">06</span>
+      <div>
+        <p class="round-title">Catálogo de blocos</p>
+        <p class="round-desc">Não é mais sobre os 7 produtos — 9 padrões de bloco reaproveitáveis em qualquer seção (corte diagonal, marquee, grade assimétrica, texto fixo com mídia rolando, pull-quote, números cinéticos, faixa de marcas, revelação por palavra, CTA em tela cheia), puxando de referências de fora em vez do que a ATF já fez.</p>
+        <div class="round-tags"><span>pattern library</span><span>scroll storytelling</span><span>referências externas</span></div>
+      </div>
+      <span class="round-arrow">→</span>
+    </a>
+
+  </div>
+</main>
+
+<footer>
+  <p>Protótipos exploratórios — não substituem o design aprovado do Ronald no Figma. Ver <code>notes/component-reference-sourcing-plan-2026-09-09.md</code> para o plano completo de referências.</p>
+</footer>
+
+</body>
+</html>
