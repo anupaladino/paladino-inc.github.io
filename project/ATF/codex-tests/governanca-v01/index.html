@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATF — Governança</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --font: 'Plus Jakarta Sans', sans-serif;
+  --black: #0A0A0A;
+  --mid: #6B6560;
+  --light: #9B9590;
+  --rule: #E8E7E5;
+  --gold: #FFCD7D;
+  --page-max: 1080px;
+  --col-text: 660px;
+  --gap-section: 120px;
+  --pad-x: 64px;
+  /* Design System (app/IB) — button tokens */
+  --ds-ink: #343332;
+  --ds-ink-soft: #90887F;
+  --ds-brand: #FFD28B;
+  --ds-brand-hover: #FFE0AB;
+  --ds-outline-hover: #F5F5F4;
+}
+
+body { font-family: var(--font); background: #fff; color: var(--black); -webkit-font-smoothing: antialiased; font-size: 16px; line-height: 1.7; overflow-x: hidden; }
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; display: block; }
+button { font-family: inherit; border: none; background: none; cursor: pointer; }
+
+.page { max-width: var(--page-max); margin: 0 auto; padding: 0 var(--pad-x); }
+
+/* ── nav pill + fullscreen overlay ── */
+.nav-pill-holder { position: absolute; top: 24px; left: 24px; right: 24px; display: flex; justify-content: center; z-index: 210; }
+.nav-pill { pointer-events: auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 60px; padding: 0 24px; background: rgba(255,255,255,.7); backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%); border: 1px solid rgba(10,10,10,.1); border-radius: 999px; box-shadow: 0 10px 30px -18px rgba(10,10,10,.25); width: 100%; max-width: 420px; }
+.nav-pill img.logo { height: 20px; }
+.nav-trigger { display: flex; align-items: center; gap: 10px; color: var(--black); }
+.burger { width: 26px; height: 18px; position: relative; }
+.burger span { position: absolute; left: 0; right: 0; height: 2px; background: var(--black); border-radius: 2px; transition: transform .25s ease, opacity .2s ease, top .25s ease, background .15s ease; }
+.burger span:nth-child(1) { top: 0; }
+.burger span:nth-child(2) { top: 8px; }
+.burger span:nth-child(3) { top: 16px; }
+.nav-trigger:hover .burger span { background: var(--gold); }
+.burger.is-open span:nth-child(1) { top: 8px; transform: rotate(45deg); }
+.burger.is-open span:nth-child(2) { opacity: 0; }
+.burger.is-open span:nth-child(3) { top: 8px; transform: rotate(-45deg); }
+
+.nav-overlay { position: fixed; inset: 0; z-index: 220; background: var(--black); color: #fff; opacity: 0; pointer-events: none; transition: opacity .35s ease; display: flex; flex-direction: column; }
+.nav-overlay.open { opacity: 1; pointer-events: auto; }
+.nav-overlay-top { display: flex; align-items: center; justify-content: space-between; padding: 0 24px; height: 60px; border-bottom: 1px solid rgba(255,255,255,.14); flex: 0 0 auto; }
+.nav-overlay-close { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #fff; }
+.nav-overlay-close:hover { color: var(--gold); }
+.nav-links { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 0 28px; gap: 4px; }
+.nav-links a { position: relative; display: flex; align-items: baseline; gap: 16px; font-size: clamp(2rem, 4.6vw, 3.4rem); font-weight: 800; letter-spacing: -.02em; padding: 8px 0; opacity: 0; transform: translateY(18px); transition: opacity .5s ease, transform .5s ease, color .2s ease; }
+.nav-overlay.open .nav-links a { opacity: 1; transform: translateY(0); }
+.nav-overlay.open .nav-links a:nth-child(1) { transition-delay: .06s; }
+.nav-overlay.open .nav-links a:nth-child(2) { transition-delay: .12s; }
+.nav-overlay.open .nav-links a:nth-child(3) { transition-delay: .18s; }
+.nav-overlay.open .nav-links a:nth-child(4) { transition-delay: .24s; }
+.nav-links a .idx { font-size: .7em; font-weight: 700; color: var(--gold); }
+.nav-links a:hover { color: var(--gold); }
+.nav-overlay-foot { padding: 20px 28px 26px; border-top: 1px solid rgba(255,255,255,.14); font-size: 12px; color: #9a948e; flex: 0 0 auto; }
+
+/* ── hero (white — no photo, no dark surface) ── */
+.hero-light { position: relative; background: #fff; padding-top: 150px; padding-bottom: 88px; }
+.hero-light h1 { font-size: clamp(2.6rem, 4.5vw, 4rem); font-weight: 800; letter-spacing: -.025em; line-height: 1.06; max-width: 780px; margin-bottom: 32px; }
+.hero-light p { font-size: 1.125rem; line-height: 1.65; color: var(--black); max-width: var(--col-text); margin-bottom: 16px; }
+.hero-light p:last-of-type { margin-bottom: 0; }
+
+/* ── section rhythm ── */
+.section { padding: var(--gap-section) 0; border-bottom: 1px solid var(--rule); }
+.section:last-child { border-bottom: none; }
+
+h2 { font-size: clamp(1.75rem, 2.8vw, 2.4rem); font-weight: 800; line-height: 1.1; letter-spacing: -.02em; max-width: 720px; margin-bottom: 24px; }
+h3 { font-size: 1.15rem; font-weight: 700; line-height: 1.35; letter-spacing: -.005em; margin-bottom: 10px; }
+
+p { font-size: 1rem; line-height: 1.75; color: var(--black); max-width: var(--col-text); margin-bottom: 18px; }
+p:last-child { margin-bottom: 0; }
+p.muted { color: var(--mid); }
+
+/* document list */
+.doc-list { display: flex; flex-direction: column; }
+.doc-item { padding: 44px 0; border-bottom: 1px solid var(--rule); }
+.doc-item:first-child { padding-top: 0; }
+.doc-item:last-child { border-bottom: none; padding-bottom: 0; }
+.doc-item h3 { font-size: 1.5rem; font-weight: 800; letter-spacing: -.015em; margin-bottom: 14px; }
+.doc-item p { max-width: var(--col-text); }
+
+/* DS — Outlined button (secondary, medium-emphasis) */
+.btn-ds-outlined { display: inline-flex; align-items: center; justify-content: center; height: 48px; padding: 0 24px; border-radius: 8px; border: 1px solid var(--ds-ink); background: #fff; color: var(--ds-ink); font-family: var(--font); font-size: 14px; font-weight: 500; line-height: 20px; margin-top: 8px; transition: background .15s ease; }
+.btn-ds-outlined:hover { background: var(--ds-outline-hover); }
+
+/* multi-file lists */
+.file-list { margin-top: 18px; }
+.file-row { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding: 13px 0; border-bottom: 1px solid var(--rule); }
+.file-row:last-child { border-bottom: none; }
+.file-name { font-size: .9375rem; color: var(--black); }
+.file-dl { flex: 0 0 auto; font-family: var(--font); font-size: .9375rem; font-weight: 600; color: var(--ds-ink-soft); white-space: nowrap; transition: color .15s ease; }
+.file-dl:hover { color: var(--black); text-decoration: underline; }
+
+/* year groups (collapsible, native <details>) */
+.year-group { border-bottom: 1px solid var(--rule); margin-top: 4px; }
+.year-group:first-of-type { margin-top: 20px; }
+.year-group:last-child { border-bottom: none; }
+.year-group summary { cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; padding: 16px 0; font-size: .9375rem; font-weight: 700; color: var(--black); }
+.year-group summary::-webkit-details-marker { display: none; }
+.year-group summary .chev { font-size: 1.15rem; font-weight: 400; color: var(--light); transition: transform .2s ease; }
+.year-group[open] summary .chev { transform: rotate(45deg); }
+.year-group[open] summary { border-bottom: 1px solid var(--rule); }
+.year-group .file-list { margin-top: 0; padding-bottom: 14px; }
+
+/* ── CTA amarelo + footer amarelo (site-wide, verbatim) ── */
+.cta-gold { background: var(--gold); padding: 130px var(--pad-x) 96px; text-align: center; }
+.cta-gold h2 { font-size: clamp(2.4rem, 6.6vw, 5.2rem); font-weight: 800; letter-spacing: -.03em; line-height: 1; margin-bottom: 32px; color: var(--black); max-width: none; }
+.btn-dark { display: inline-block; font-size: .875rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; background: var(--black); color: #fff; padding: 16px 34px; border-radius: 999px; transition: background .2s ease, transform .2s ease; }
+.btn-dark:hover { background: #1a1a1a; transform: translateY(-1px); }
+
+.footer-gold { background: var(--gold); }
+.footer-gold-inner { max-width: 1280px; margin: 0 auto; padding: 64px var(--pad-x) 40px; }
+.fg-top { display: grid; grid-template-columns: 220px 1fr; gap: 64px; padding-bottom: 40px; border-bottom: 1px solid rgba(10,10,10,.16); }
+.fg-left { display: flex; flex-direction: column; gap: 24px; align-items: flex-start; }
+.fg-left img.logo { height: 18px; }
+.fg-label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(10,10,10,.62); margin-bottom: 10px; }
+.fg-social { display: flex; gap: 10px; }
+.fg-social a { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: 1px solid rgba(10,10,10,.22); color: rgba(10,10,10,.7); font-size: 11px; font-weight: 700; transition: background .2s ease, color .2s ease; }
+.fg-social a:hover { background: var(--black); color: var(--gold); border-color: var(--black); }
+.fg-ombuds a { display: block; font-size: 13px; color: var(--black); margin-bottom: 4px; }
+.fg-ombuds a:hover { text-decoration: underline; }
+.fg-ombuds p { font-size: 12px; color: rgba(10,10,10,.62); margin: 0; }
+.fg-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 36px; }
+.fg-cols .head { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--black); margin-bottom: 14px; }
+.fg-cols .head.spaced { margin-top: 24px; }
+.fg-cols a { display: block; font-size: 13px; color: rgba(10,10,10,.68); margin-bottom: 9px; transition: color .15s ease; }
+.fg-cols a:hover { color: var(--black); text-decoration: underline; }
+.fg-cols a.current { color: var(--black); font-weight: 700; }
+.fg-bottom { padding-top: 28px; display: flex; flex-direction: column; gap: 14px; }
+.fg-legal { font-size: 11px; line-height: 1.65; color: rgba(10,10,10,.5); margin: 0; max-width: none; }
+.fg-legal a { color: rgba(10,10,10,.68); text-decoration: underline; }
+.fg-meta { display: flex; gap: 28px; flex-wrap: wrap; }
+.fg-meta p { font-size: 11px; color: rgba(10,10,10,.5); margin: 0; max-width: none; }
+
+.dev-badge { position: fixed; bottom: 14px; left: 14px; z-index: 300; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: rgba(10,10,10,.45); background: rgba(255,255,255,.85); backdrop-filter: blur(6px); padding: 7px 12px; border-radius: 999px; border: 1px solid var(--rule); transition: color .15s ease; }
+.dev-badge:hover { color: var(--black); }
+
+/* ── responsive ── */
+@media (max-width: 900px) {
+  :root { --pad-x: 24px; --gap-section: 80px; }
+  .hero-light { padding-top: 118px; padding-bottom: 56px; }
+  .fg-top { grid-template-columns: 1fr; gap: 28px; padding-bottom: 28px; }
+  .fg-cols { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .footer-gold-inner { padding: 40px 24px 28px; }
+  .cta-gold { padding: 72px 24px 56px; }
+}
+@media (max-width: 560px) {
+  .nav-pill { height: 52px; padding: 0 18px; }
+  .nav-pill img.logo { height: 16px; }
+  .nav-pill-holder { top: 16px; left: 16px; right: 16px; }
+  .nav-links a { font-size: 1.8rem; }
+  .file-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV: pílula flutuante + overlay ═══ -->
+<div class="nav-pill-holder">
+  <div class="nav-pill">
+    <a href="../../website-mvp/index.html"><img class="logo" src="../../website-mvp/logos/logo-atf-black.svg" alt="ATF"></a>
+    <button class="nav-trigger" data-menu-toggle="menuOverlay"><span class="burger"><span></span><span></span><span></span></span></button>
+  </div>
+</div>
+<div class="nav-overlay" id="menuOverlay">
+  <div class="nav-overlay-top">
+    <img class="logo" src="../../website-mvp/logos/logo-atf-white.svg" alt="ATF" style="height:18px;">
+    <button class="nav-overlay-close" data-menu-toggle="menuOverlay">✕ Fechar</button>
+  </div>
+  <nav class="nav-links">
+    <a href="../../website-mvp/index.html"><span class="idx">01</span>Home</a>
+    <a href="../../website-mvp/sobre.html"><span class="idx">02</span>A ATF</a>
+    <a href="../../website-mvp/asset.html"><span class="idx">03</span>Asset</a>
+    <a href="../../website-mvp/fintech.html"><span class="idx">04</span>Fintech</a>
+  </nav>
+  <div class="nav-overlay-foot">falecom@atf.com.br · 0800 800 0513</div>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero-light">
+  <div class="page">
+    <h1>Governança</h1>
+    <p>Nossa reputação é nosso maior ativo. A governança da ATF começa nas decisões que tomamos antes de qualquer processo ser formalizado, não apenas nos documentos.</p>
+    <p>Aqui você acessa os materiais que sustentam essa postura: código de ética, políticas, demonstrações financeiras e relatórios de ouvidoria.</p>
+  </div>
+</div>
+
+<!-- ═══ DOCUMENTOS ═══ -->
+<div class="page">
+  <div class="section">
+    <div class="doc-list">
+
+      <div class="doc-item">
+        <div>
+          <h3>Código de Ética e Conduta</h3>
+          <p>O Código de Ética e Conduta da ATF reúne os princípios que orientam cada relação que construímos, com clientes, parceiros e colaboradores. Não é um documento para cumprir exigências. É uma expressão do que acreditamos e de como operamos.</p>
+          <a href="https://cdn.prod.website-files.com/646d21b0973adab8756ba8b3/67a25ab56c01bc4e0e578b3a_C%C3%B3digo%20de%20%C3%89tica%20e%20Conduta%20-%20Atualizado%2012.2024.pdf" target="_blank" rel="noopener" class="btn-ds-outlined">Visualizar PDF</a>
+        </div>
+      </div>
+
+      <div class="doc-item">
+        <div>
+          <h3>Políticas Obrigatórias</h3>
+          <p>As políticas obrigatórias da ATF norteiam nossa atuação e garantem que cada processo esteja alinhado a práticas éticas, responsáveis e atualizadas. São o conjunto de diretrizes que traduz nossa postura em procedimentos concretos.</p>
+          <div class="file-list">
+            <div class="file-row"><span class="file-name">Política de Privacidade e Proteção de Dados</span><a class="file-dl" target="_blank" rel="noopener" href="https://cdn.prod.website-files.com/646d21b0973adab8756ba8b3/68e7fd6c630304881dac46cf_Pol%C3%ADtica%20de%20Privacidade%20e%20Prote%C3%A7%C3%A3o%20de%20Dados.pdf">Visualizar PDF</a></div>
+            <div class="file-row"><span class="file-name">Política de Prevenção à Lavagem de Dinheiro e ao Financiamento do Terrorismo</span><a class="file-dl" target="_blank" rel="noopener" href="https://cdn.prod.website-files.com/646d21b0973adab8756ba8b3/69b167e9fc1a0039211971ca_2.ATF-PO-PLD-001_04%20-%20Pol%C3%ADtica%20de%20Preven%C3%A7%C3%A3o%20%C3%A0%20Lavagem%20de%20Dinheiro%20e%20Financiamento%20do%20Terrorismo.pdf">Visualizar PDF</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-item">
+        <div>
+          <h3>Demonstrações Financeiras</h3>
+          <p>As demonstrações financeiras da ATF estão disponíveis por período para consulta e download. Compartilhar nossos resultados é parte do nosso compromisso com a transparência, não como gesto, mas como prática.</p>
+
+          <details class="year-group">
+            <summary>2026 <span class="chev">+</span></summary>
+            <div class="file-list">
+              <div class="file-row"><span class="file-name">Demonstrações Financeiras - 30/06/2026</span><a class="file-dl" target="_blank" rel="noopener" href="https://cdn.prod.website-files.com/646d21b0973adab8756ba8b3/6aa05017e69faeda47c72a1d_VGA%20-%20Relato%CC%81rio%20Auditores%20ATF%20Credit%201%20S%202026.pdf">Visualizar PDF</a></div>
+            </div>
+          </details>
+          <details class="year-group">
+            <summary>2025 <span class="chev">+</span></summary>
+            <div class="file-list">
+              <div class="file-row"><span class="file-name">Demonstrações Financeiras - 30/06/2025</span><a class="file-dl" target="_blank" rel="noopener" href="https://cdn.prod.website-files.com/646d21b0973adab8756ba8b3/68c8094a9a25e87eb41a24fc_Demonstra%C3%A7%C3%B5es%20Financeiras%201S%202025%20-%20ATF.pdf">Visualizar PDF</a></div>
+              <div class="file-row"><span class="file-name">Demonstrações Financeiras - 31/12/2025</span><a class="file-dl" target="_blank" rel="noopener" href="https://cdn.prod.website-files.com/646d21b0973adab8756ba8b3/69cac63d0c393fc2cde4d943_DEMONSTRA%C3%87%C3%95ES%20FINANCEIRAS%2012-2025.pdf">Visualizar PDF</a></div>
+            </div>
+          </details>
+          <details class="year-group">
+            <summary>2024 <span class="chev">+</span></summary>
+            <div class="file-list">
+              <div class="file-row"><span class="file-name">Demonstrações Financeiras - 30/06/2024</span><a class="file-dl" target="_blank" rel="noopener" href="https://cdn.prod.website-files.com/646d21b0973adab8756ba8b3/66cc8d9734708e0ec975eb73_Demonstra%C3%A7%C3%B5es%20Financeiras%20-%2030.06.2024.pdf">Visualizar PDF</a></div>
+              <div class="file-row"><span class="file-name">Demonstrações Financeiras - 31/12/2024</span><a class="file-dl" target="_blank" rel="noopener" href="https://cdn.prod.website-files.com/646d21b0973adab8756ba8b3/67cae60fcb62f97d4f05408e_VGA%20-%20Relat%C3%B3rio%20Auditores%20ATF%202%20S%202024%20assinado.pdf">Visualizar PDF</a></div>
+            </div>
+          </details>
+          <details class="year-group">
+            <summary>2023 <span class="chev">+</span></summary>
+            <div class="file-list">
+              <div class="file-row"><span class="file-name">Demonstrações Financeiras - 30/06/2023</span><a class="file-dl" target="_blank" rel="noopener" href="https://cdn.prod.website-files.com/646d21b0973adab8756ba8b3/64ff8bbc58f1dd858663ae17_Demonstra%C3%A7%C3%A3o%20Financeira%2001%C2%B0%20Semestre%20do%20ano%20de%202023.pdf">Visualizar PDF</a></div>
+              <div class="file-row"><span class="file-name">Demonstrações Financeiras - 31/12/2023</span><a class="file-dl" target="_blank" rel="noopener" href="https://cdn.prod.website-files.com/646d21b0973adab8756ba8b3/665741500b166170f73e3f57_DFs%2031.12.23.pdf">Visualizar PDF</a></div>
+            </div>
+          </details>
+          <details class="year-group">
+            <summary>2022 <span class="chev">+</span></summary>
+            <div class="file-list">
+              <div class="file-row"><span class="file-name">Demonstrações Financeiras - 31/12/2022</span><a class="file-dl" target="_blank" rel="noopener" href="https://cdn.prod.website-files.com/646d21b0973adab8756ba8b3/64af1a595af945b5eb0a4399_R-288-23_ATF%20Credit%2031.12.22%20%5Bcompleto%5D.pdf">Visualizar PDF</a></div>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="doc-item">
+        <div>
+          <h3>Relatórios de Ouvidoria</h3>
+          <p>Os relatórios de ouvidoria da ATF reúnem os dados, aprendizados e ajustes resultantes das manifestações recebidas pelos nossos canais oficiais. Cada retorno é tratado com seriedade, como uma oportunidade real de aprimorar a operação e fortalecer as relações.</p>
+
+          <details class="year-group">
+            <summary>2026 <span class="chev">+</span></summary>
+            <div class="file-list">
+              <div class="file-row"><span class="file-name">Relatório de Ouvidoria - 1º semestre</span><a class="file-dl" target="_blank" rel="noopener" href="https://cdn.prod.website-files.com/646d21b0973adab8756ba8b3/6a60b396ade01a0985b6f524_4f6e26c1d58e46ea91b0b9272a9b26be_Relat%C3%B3rio%20de%20Ouvidoria%2001%C2%B0%20Semestre%20de%202026.pdf">Visualizar PDF</a></div>
+            </div>
+          </details>
+          <details class="year-group">
+            <summary>2025 <span class="chev">+</span></summary>
+            <div class="file-list">
+              <div class="file-row"><span class="file-name">Relatório de Ouvidoria - 1º semestre</span><a class="file-dl" target="_blank" rel="noopener" href="https://cdn.prod.website-files.com/646d21b0973adab8756ba8b3/68b877c6c4939690dff1ee71_ATF%20Bank%20-%20Relat%C3%B3rio%20de%20Ouvidoria%201%C2%BA%20semestre%202025.pptx.pdf">Visualizar PDF</a></div>
+              <div class="file-row"><span class="file-name">Relatório de Ouvidoria - 2º semestre</span><a class="file-dl" target="_blank" rel="noopener" href="https://cdn.prod.website-files.com/646d21b0973adab8756ba8b3/69a5ec187eae02f74c1ce107_Relat%C3%B3rio%20de%20Ouvidoria%20do%2002%C2%B0%20Semestre%20de%202025.pdf">Visualizar PDF</a></div>
+            </div>
+          </details>
+          <details class="year-group">
+            <summary>2024 <span class="chev">+</span></summary>
+            <div class="file-list">
+              <div class="file-row"><span class="file-name">Relatório de Ouvidoria - 1º semestre</span><a class="file-dl" target="_blank" rel="noopener" href="https://cdn.prod.website-files.com/646d21b0973adab8756ba8b3/6671888256332fbdf2d0c3db_ATF%20Bank%20-%20Relat%C3%B3rio%20de%20Ouvidoria%20%201%C2%BA%20semestre%202024.pdf">Visualizar PDF</a></div>
+              <div class="file-row"><span class="file-name">Relatório de Ouvidoria - 2º semestre</span><a class="file-dl" target="_blank" rel="noopener" href="https://cdn.prod.website-files.com/646d21b0973adab8756ba8b3/678ea3efdc56146a8e267ecb_ATF%20Bank%20-%20Relat%C3%B3rio%20de%20Ouvidoria%20%202%C2%BA%20semestre%202024.pdf">Visualizar PDF</a></div>
+            </div>
+          </details>
+          <details class="year-group">
+            <summary>2023 <span class="chev">+</span></summary>
+            <div class="file-list">
+              <div class="file-row"><span class="file-name">Relatório de Ouvidoria - 1º semestre</span><a class="file-dl" target="_blank" rel="noopener" href="https://cdn.prod.website-files.com/646d21b0973adab8756ba8b3/66718884dce9f33485239862_ATF%20Bank%20-%20Relat%C3%B3rio%20de%20Ouvidoria%201%C2%BA%20Semestre%202023.pdf">Visualizar PDF</a></div>
+              <div class="file-row"><span class="file-name">Relatório de Ouvidoria - 2º semestre</span><a class="file-dl" target="_blank" rel="noopener" href="https://cdn.prod.website-files.com/646d21b0973adab8756ba8b3/66718884c940cefe2bf2b526_ATF%20Bank%20-%20Relat%C3%B3rio%20de%20Ouvidoria%20%202%C2%BA%20semestre%202023.pdf">Visualizar PDF</a></div>
+            </div>
+          </details>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CTA + FOOTER (site-wide) ═══ -->
+<section class="cta-gold"><h2>Confie no futuro.</h2><a href="mailto:falecom@atf.com.br" class="btn-dark">Inicie uma conversa</a></section>
+<footer class="footer-gold">
+  <div class="footer-gold-inner">
+    <div class="fg-top">
+      <div class="fg-left">
+        <img class="logo" src="../../website-mvp/logos/logo-atf-black.svg" alt="ATF">
+        <div><p class="fg-label">Siga a ATF</p><div class="fg-social"><a href="#">in</a><a href="#">ig</a></div></div>
+        <div><p class="fg-label">Ouvidoria</p><div class="fg-ombuds"><a href="#">Canal de Ouvidoria</a><a href="#">0800 800 0513</a><p>09h00 às 12h00</p><p>14h00 às 17h30</p></div></div>
+      </div>
+      <div class="fg-cols">
+        <div><p class="head">Para Você</p><a href="#">Consignado PF</a><p class="head spaced">Canal de Ajuda</p><a href="#">Central de Atendimento</a><a href="#">Canal de Ética</a><a href="#">Perguntas Frequentes</a></div>
+        <div><p class="head">Para Empresa</p><a href="#">Conta PJ</a><a href="#">Antecipação de Recebíveis</a><a href="#">Capital de Giro</a><a href="#">Risco Sacado</a><a href="#">Crédito Direto ao Consumidor</a><a href="#">Boleto Bancário</a><a href="#">ATF Asset</a></div>
+        <div><p class="head">A ATF</p><a href="#">Quem Somos</a><a href="#" class="current">Governança</a><a href="../carreiras-v01/index.html">Carreiras</a></div>
+        <div><p class="head">Transparência</p><a href="#">Termos e Políticas</a><a href="#">Tabela de Tarifas</a><a href="#">Correspondentes ATF SCD</a></div>
+      </div>
+    </div>
+    <div class="fg-bottom">
+      <p class="fg-legal">As marcas registradas, logotipos e marcas de serviço que aparecem nos serviços e produtos, incluindo, entre outros, a marca registrada "ATF" são marcas registradas e marcas de serviço da ATF. Outros nomes e logotipos de empresas, produtos e serviços usados e exibidos nos serviços e produtos podem ser marcas comerciais ou marcas de serviço de seus respectivos proprietários que podem ou não apoiar ou ser afiliados ou conectados a nós. Sobre Privacidade de Dados e Atendimento aos Direitos de Titulares de Dados, por favor, leia os nossos <a href="#">Termos de Uso e Política de Privacidade</a>.</p>
+      <div class="fg-meta"><p>Regulamentada pelo Banco Central do Brasil, instituição financeira nº 513.</p></div>
+      <div class="fg-meta"><p>© 2026 ATF Sociedade de Crédito Direto S.A. · CNPJ: 44.728.700/0001-72</p><p>Rua Mostardeiro, 322/12º andar · Porto Alegre/RS · 90430-000</p></div>
+    </div>
+  </div>
+</footer>
+
+<a class="dev-badge" href="../index.html">← Catálogo</a>
+
+<script>
+(function () {
+  document.querySelectorAll('[data-menu-toggle]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var overlay = document.getElementById(btn.dataset.menuToggle);
+      if (!overlay) return;
+      var willOpen = !overlay.classList.contains('open');
+      overlay.classList.toggle('open');
+      document.querySelectorAll('.burger').forEach(function (b) {
+        b.classList.toggle('is-open', willOpen);
+      });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
