@@ -14,14 +14,18 @@ html { scroll-behavior: smooth; }
 :root {
   --font: 'Plus Jakarta Sans', sans-serif;
   --black: #0A0A0A;
-  --mid: #6B6560;
-  --light: #9B9590;
   --rule: #E8E7E5;
   --gold: #FFCD7D;
   --page-max: 1080px;
   --col-text: 660px;
   --gap-section: 120px;
   --pad-x: 64px;
+  /* Design System (app/IB) — button tokens */
+  --ds-ink: #343332;
+  --ds-ink-soft: #90887F;
+  --ds-brand: #FFD28B;
+  --ds-brand-hover: #FFE0AB;
+  --ds-outline-hover: #F5F5F4;
 }
 
 body { font-family: var(--font); background: #fff; color: var(--black); -webkit-font-smoothing: antialiased; font-size: 16px; line-height: 1.7; overflow-x: hidden; }
@@ -33,7 +37,7 @@ button { font-family: inherit; border: none; background: none; cursor: pointer; 
 
 /* ── nav pill + fullscreen overlay (site-wide component) ── */
 .nav-pill-holder { position: absolute; top: 24px; left: 24px; right: 24px; display: flex; justify-content: center; z-index: 210; }
-.nav-pill { pointer-events: auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 60px; padding: 0 10px 0 24px; background: rgba(255,255,255,.16); backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%); border: 1px solid rgba(255,255,255,.28); border-radius: 999px; box-shadow: 0 10px 30px -14px rgba(0,0,0,.35); width: 100%; max-width: 420px; }
+.nav-pill { pointer-events: auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 60px; padding: 0 24px; background: rgba(255,255,255,.16); backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%); border: 1px solid rgba(255,255,255,.28); border-radius: 999px; box-shadow: 0 10px 30px -14px rgba(0,0,0,.35); width: 100%; max-width: 420px; }
 .nav-pill img.logo { height: 20px; }
 .nav-trigger { display: flex; align-items: center; gap: 10px; color: #fff; }
 .burger { width: 26px; height: 18px; position: relative; }
@@ -62,20 +66,19 @@ button { font-family: inherit; border: none; background: none; cursor: pointer; 
 .nav-links a:hover { color: var(--gold); }
 .nav-overlay-foot { padding: 20px 28px 26px; border-top: 1px solid rgba(255,255,255,.14); font-size: 12px; color: #9a948e; flex: 0 0 auto; }
 
-/* ── hero dark (no photo — solid black, hosts the nav pill) ── */
-.hero-dark { position: relative; background: var(--black); color: #fff; padding: 176px var(--pad-x) 100px; overflow: hidden; }
-.hero-dark::before { content: ''; position: absolute; right: -8%; top: -35%; width: 700px; height: 700px; border-radius: 50%; background: radial-gradient(circle, rgba(255,205,125,.16) 0%, rgba(255,205,125,0) 70%); pointer-events: none; }
-.hero-dark .inner { position: relative; z-index: 2; max-width: var(--page-max); margin: 0 auto; }
-.hero-dark h1 { font-size: clamp(2.8rem, 5.2vw, 4.6rem); font-weight: 800; letter-spacing: -.025em; line-height: 1.04; max-width: 840px; margin-bottom: 32px; }
-.hero-dark p { font-size: 1.125rem; line-height: 1.65; color: #C9C4BE; max-width: var(--col-text); margin-bottom: 16px; }
-.hero-dark p:last-of-type { margin-bottom: 32px; }
+/* ── hero (photo — ambiente corporativo) ── */
+.hero-crop { position: relative; min-height: 600px; display: flex; align-items: flex-end; overflow: hidden; }
+.hero-crop img.bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.hero-crop .scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,10,.1) 0%, rgba(10,10,10,.78) 100%); }
+.hero-crop .hero-txt { position: relative; z-index: 2; color: #fff; padding-top: 140px; padding-bottom: 88px; }
+.hero-crop h1 { font-size: clamp(2.6rem, 4.8vw, 4.2rem); font-weight: 800; letter-spacing: -.025em; line-height: 1.06; max-width: 780px; margin-bottom: 32px; }
 
-.btn-pill { display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; padding: 13px 28px; border: 1.5px solid var(--black); border-radius: 999px; transition: background .2s ease, color .2s ease; }
-.btn-pill:hover { background: var(--black); color: #fff; }
-.btn-pill-filled { background: #fff; color: var(--black); border-color: #fff; }
-.btn-pill-filled:hover { background: var(--gold); border-color: var(--gold); }
-.btn-pill-dark { background: var(--black); color: #fff; border-color: var(--black); }
-.btn-pill-dark:hover { background: #1a1a1a; }
+/* intro — bloco entre a hero e "O que nos guia", sem CTA (padrão definido com o Ronald) */
+.intro-lead p { font-size: 1.25rem; line-height: 1.55; letter-spacing: -.005em; color: var(--black); max-width: 780px; margin-bottom: 20px; }
+
+/* DS — Brand button (primary, high-emphasis) */
+.btn-ds-brand { display: inline-flex; align-items: center; justify-content: center; height: 48px; padding: 0 24px; border-radius: 8px; border: none; background: var(--ds-brand); color: var(--ds-ink); font-family: var(--font); font-size: 14px; font-weight: 500; line-height: 20px; transition: background .15s ease; }
+.btn-ds-brand:hover { background: var(--ds-brand-hover); }
 
 /* ── section rhythm ── */
 .section { padding: var(--gap-section) 0; border-bottom: 1px solid var(--rule); }
@@ -86,24 +89,32 @@ h3 { font-size: 1.2rem; font-weight: 700; line-height: 1.3; letter-spacing: -.00
 
 p { font-size: 1rem; line-height: 1.75; color: var(--black); max-width: var(--col-text); margin-bottom: 18px; }
 p:last-child { margin-bottom: 0; }
-p.muted { color: var(--mid); }
 
 .two-col-wide { display: grid; grid-template-columns: 1.1fr 1fr; gap: 80px; align-items: start; }
 
-/* values — 3 big numbered blocks for visual impact */
+/* values — 3 numbered blocks (os 3 pilares) */
 .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; margin-top: 56px; }
 .value-item { padding-top: 28px; border-top: 3px solid var(--black); }
 .value-idx { display: block; font-size: 1.5rem; font-weight: 800; letter-spacing: -.02em; color: var(--gold); margin-bottom: 20px; }
 .value-item h3 { margin-bottom: 12px; }
-.value-item p { color: var(--mid); margin-bottom: 0; }
+.value-item p { color: var(--black); margin-bottom: 0; }
 
 /* form */
-.form-card { padding: 48px 40px; border: 1px solid var(--rule); display: flex; flex-direction: column; gap: 32px; }
+.form-card { padding: 48px 40px; border: 1px solid var(--rule); display: flex; flex-direction: column; gap: 24px; }
+.form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .form-field { display: flex; flex-direction: column; gap: 8px; }
-.form-field label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--mid); }
+.form-field label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--black); }
 .form-field input { font-family: var(--font); font-size: 15px; border: none; border-bottom: 1px solid var(--rule); padding: 10px 0; background: transparent; outline: none; color: var(--black); transition: border-color .15s ease; }
+.form-field input::placeholder { color: var(--ds-ink-soft); }
 .form-field input:focus { border-color: var(--black); }
-.form-field input[type="file"] { font-size: 14px; color: var(--mid); padding: 10px 0; }
+.form-field input[type="file"] { font-size: 14px; padding: 10px 0; }
+.form-help { font-size: 12px; color: var(--black); margin-top: -2px; }
+
+.form-checks { display: flex; flex-direction: column; gap: 12px; }
+.form-check { display: flex; align-items: flex-start; gap: 10px; }
+.form-check input[type="checkbox"] { margin-top: 3px; width: 16px; height: 16px; accent-color: var(--black); flex-shrink: 0; }
+.form-check label { font-size: 13px; line-height: 1.5; color: var(--black); }
+.form-check a { text-decoration: underline; font-weight: 600; }
 
 /* ── CTA amarelo + footer amarelo (site-wide, verbatim) ── */
 .cta-gold { background: var(--gold); padding: 130px var(--pad-x) 96px; text-align: center; }
@@ -143,7 +154,9 @@ p.muted { color: var(--mid); }
   :root { --pad-x: 24px; --gap-section: 80px; }
   .two-col-wide { grid-template-columns: 1fr; gap: 40px; }
   .values-grid { grid-template-columns: 1fr; gap: 40px; }
-  .hero-dark { padding: 128px 24px 64px; }
+  .hero-crop { min-height: 460px; }
+  .intro-lead p { font-size: 1.0625rem; }
+  .hero-crop .hero-txt { padding-top: 108px; padding-bottom: 56px; }
   .fg-top { grid-template-columns: 1fr; gap: 28px; padding-bottom: 28px; }
   .fg-cols { grid-template-columns: 1fr 1fr; gap: 24px; }
   .footer-gold-inner { padding: 40px 24px 28px; }
@@ -151,10 +164,11 @@ p.muted { color: var(--mid); }
   .form-card { padding: 32px 24px; }
 }
 @media (max-width: 560px) {
-  .nav-pill { height: 52px; padding: 0 6px 0 18px; }
+  .nav-pill { height: 52px; padding: 0 18px; }
   .nav-pill img.logo { height: 16px; }
   .nav-pill-holder { top: 16px; left: 16px; right: 16px; }
   .nav-links a { font-size: 1.8rem; }
+  .form-row-2 { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -181,37 +195,42 @@ p.muted { color: var(--mid); }
   <div class="nav-overlay-foot">falecom@atf.com.br · 0800 800 0513</div>
 </div>
 
-<!-- ═══ HERO ═══ -->
-<div class="hero-dark">
-  <div class="inner">
+<!-- ═══ HERO (só título + botão — padrão definido nas últimas reuniões) ═══ -->
+<div class="hero-crop">
+  <img class="bg" src="../../credenciais-web-mvp/assets/images/slide-13-image-bg.jpg" alt="">
+  <div class="scrim"></div>
+  <div class="hero-txt page">
     <h1>Uma marca é reflexo da cultura que a sustenta.</h1>
-    <p>Na ATF, quem trabalha aqui não executa tarefas — constrói relações, toma decisões com critério e contribui para uma operação que escolhe com cuidado onde atua e com quem cresce.</p>
-    <p>Se você busca um ambiente onde clareza, responsabilidade e visão de longo prazo são valores praticados, não declarados, seu lugar pode ser aqui.</p>
-    <a href="#formulario" class="btn-pill btn-pill-filled">Comece sua jornada na ATF</a>
+    <a href="#formulario" class="btn-ds-brand">Comece sua jornada na ATF</a>
   </div>
 </div>
 
-<!-- ═══ O QUE NOS GUIA ═══ -->
+<!-- ═══ BLOCO DE APRESENTAÇÃO (sem CTA) + O QUE NOS GUIA ═══ -->
 <div class="page">
   <div class="section">
-    <h2>O que nos guia</h2>
-    <p class="muted">Os mesmos valores que orientam nossas relações com clientes e parceiros também orientam a forma como trabalhamos internamente.</p>
+    <div class="intro-lead">
+      <p>Na ATF, quem trabalha aqui não executa tarefas. Constrói relações, toma decisões com critério e contribui para uma operação que escolhe com cuidado onde atua e com quem cresce.</p>
+      <p>Se você busca um ambiente onde clareza, responsabilidade e visão de longo prazo são valores praticados, não declarados, seu lugar pode ser aqui.</p>
+    </div>
+
+    <h2 style="margin-top: 64px;">O que nos guia</h2>
+    <p>Os mesmos valores que orientam nossas relações com clientes e parceiros também orientam a forma como trabalhamos internamente.</p>
 
     <div class="values-grid">
       <div class="value-item">
         <span class="value-idx">01</span>
-        <h3>Pessoas com quem valha a pena crescer</h3>
-        <p>Trabalhamos com quem tem substância — e isso vale tanto para clientes quanto para quem faz parte do time. Buscamos pessoas que entendem o que está em jogo, que assumem responsabilidade e que se importam com o resultado do trabalho.</p>
+        <h3>Pessoas em primeiro lugar</h3>
+        <p>Entender as necessidades e os desafios de cada parceiro, cliente e colaborador vem antes de qualquer decisão que tomamos.</p>
       </div>
       <div class="value-item">
         <span class="value-idx">02</span>
         <h3>Comunicação direta e sem ambiguidade</h3>
-        <p>Não operamos com ambiguidade — nem com clientes, nem internamente. Clareza sobre o que se espera, o que está funcionando e o que precisa melhorar é parte do que mantém o time alinhado e confiante.</p>
+        <p>Não operamos com ambiguidade, nem com clientes, nem internamente. Clareza sobre o que se espera, o que está funcionando e o que precisa melhorar é parte do que mantém o time alinhado e confiante.</p>
       </div>
       <div class="value-item">
         <span class="value-idx">03</span>
         <h3>Diversidade como parte da solidez</h3>
-        <p>Perspectivas diferentes tornam as decisões mais robustas. Respeitamos diferenças de origem, gênero, geração e trajetória — não como política, mas porque acreditamos que uma equipe diversa opera com mais inteligência e mais humanidade.</p>
+        <p>Perspectivas diferentes tornam as decisões mais robustas. Respeitamos diferenças de origem, gênero, geração e trajetória, não como política, mas porque acreditamos que uma equipe diversa opera com mais inteligência e mais humanidade.</p>
       </div>
     </div>
   </div>
@@ -223,27 +242,56 @@ p.muted { color: var(--mid); }
     <div class="two-col-wide">
       <div>
         <h2>Faça parte do time ATF.</h2>
-        <p class="muted">Preencha o formulário e anexe seu currículo. Nosso time de pessoas analisa cada candidatura com atenção.</p>
+        <p>Preencha seus dados e anexe o currículo para dar o primeiro passo na ATF.</p>
       </div>
       <div>
         <div class="form-card">
-          <div class="form-field">
-            <label>Nome completo</label>
-            <input type="text" placeholder="Seu nome">
+          <div class="form-row-2">
+            <div class="form-field">
+              <label>Nome</label>
+              <input type="text" placeholder="Seu nome">
+            </div>
+            <div class="form-field">
+              <label>Data de Nascimento</label>
+              <input type="text" placeholder="DD/MM/AAAA">
+            </div>
           </div>
-          <div class="form-field">
-            <label>E-mail</label>
-            <input type="email" placeholder="seu@email.com">
+          <div class="form-row-2">
+            <div class="form-field">
+              <label>CPF</label>
+              <input type="text" placeholder="000.000.000-00">
+            </div>
+            <div class="form-field">
+              <label>Telefone</label>
+              <input type="tel" placeholder="+55 (51) 00000-0000">
+            </div>
           </div>
-          <div class="form-field">
-            <label>Área de interesse</label>
-            <input type="text" placeholder="Ex: Financeiro, Tecnologia, Comercial...">
+          <div class="form-row-2">
+            <div class="form-field">
+              <label>E-mail</label>
+              <input type="email" placeholder="seu@email.com">
+            </div>
+            <div class="form-field">
+              <label>LinkedIn (Opcional)</label>
+              <input type="text" placeholder="www.linkedin.com/in/usuario">
+            </div>
           </div>
           <div class="form-field">
             <label>Currículo</label>
             <input type="file" accept=".pdf,.doc,.docx">
+            <p class="form-help">Tamanho máximo do arquivo: 10MB.</p>
           </div>
-          <a href="#" class="btn-pill btn-pill-dark" style="text-align:center;">Enviar candidatura</a>
+          <div class="form-checks">
+            <div class="form-check">
+              <input type="checkbox" id="chkPrivacidade">
+              <label for="chkPrivacidade">Eu concordo com a <a href="https://cdn.prod.website-files.com/646d21b0973adab8756ba8b3/697380b080aa1ac7d2828f83_ATF-PO-TI-001-02%20-%20Privacidade%20e%20Protecao%20de%20Dados.pdf" target="_blank" rel="noopener">Política de Privacidade</a>.</label>
+            </div>
+            <div class="form-check">
+              <input type="checkbox" id="chkTermo">
+              <label for="chkTermo">Eu concordo com o <a href="https://cdn.prod.website-files.com/646d21b0973adab8756ba8b3/69790064a7a8485da5ce6f3a_Termo_de_Ci%C3%AAncia.pdf" target="_blank" rel="noopener">Termo de Ciência</a>.</label>
+            </div>
+          </div>
+          <a href="#" class="btn-ds-brand" style="text-align:center;">Quero fazer parte do time ATF</a>
         </div>
       </div>
     </div>
