@@ -87,17 +87,20 @@ p:last-child { margin-bottom: 0; }
 .two-col-wide { display: grid; grid-template-columns: 1.1fr 1fr; gap: 80px; align-items: start; }
 
 /* contact info */
-.contact-info { margin-top: 32px; display: flex; flex-direction: column; gap: 10px; }
-.contact-info a { display: block; font-size: 1rem; font-weight: 600; color: var(--black); }
-.contact-info a:hover { text-decoration: underline; }
-.contact-info p { font-size: .9375rem; color: var(--black); margin: 0; }
+.contact-info { margin-top: 32px; display: flex; flex-direction: column; gap: 14px; }
+.contact-row { display: flex; align-items: center; gap: 12px; }
+.contact-icon { flex-shrink: 0; width: 18px; height: 18px; color: var(--black); }
+.contact-icon svg { width: 100%; height: 100%; display: block; }
+a.contact-row { font-size: 1rem; font-weight: 600; color: var(--black); }
+a.contact-row:hover { text-decoration: underline; }
+.contact-row p { font-size: .9375rem; color: var(--black); margin: 0; }
 
 /* form */
 .form-card { padding: 48px 40px; border: 1px solid var(--rule); display: flex; flex-direction: column; gap: 24px; }
 .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .form-field { display: flex; flex-direction: column; gap: 8px; }
 .form-field label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--black); }
-.form-field input { font-family: var(--font); font-size: 15px; border: none; border-bottom: 1px solid var(--rule); padding: 10px 0; background: transparent; outline: none; color: var(--black); transition: border-color .15s ease; }
+.form-field input { font-family: var(--font); font-size: 15px; border: none; border-bottom: 1px solid var(--rule); padding: 10px 0; background: transparent; outline: none; color: var(--black); transition: border-color .15s ease; width: 100%; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .form-field input::placeholder, .form-field textarea::placeholder { color: var(--ds-ink-soft); }
 .form-field input:focus { border-color: var(--black); }
 .form-field textarea { font-family: var(--font); font-size: 15px; border: 1px solid var(--rule); border-radius: 8px; padding: 12px; background: transparent; outline: none; color: var(--black); resize: vertical; min-height: 120px; transition: border-color .15s ease; }
@@ -193,7 +196,7 @@ p:last-child { margin-bottom: 0; }
 <div class="hero-light">
   <div class="page">
     <h1>Central de Atendimento</h1>
-    <p>Caso deseje entrar em contato conosco por telefone ou e-mail, nosso setor de atendimento estará disponível para atendê-lo.</p>
+    <p>Caso deseje entrar em contato conosco por telefone ou e-mail, nosso setor de atendimento estará disponível para atender você.</p>
   </div>
 </div>
 
@@ -203,12 +206,12 @@ p:last-child { margin-bottom: 0; }
     <div class="two-col-wide">
       <div>
         <h2>Como podemos te ajudar?</h2>
-        <p>Entre em contato com a nossa equipe para que possamos lhe ajudar da melhor maneira possível.</p>
+        <p>Nossa equipe está pronta para te ajudar no que for preciso.</p>
         <div class="contact-info">
-          <a href="mailto:falecom@atf.com.br">falecom@atf.com.br</a>
-          <a href="mailto:consignado@atf.com.br">consignado@atf.com.br</a>
-          <a href="tel:08008885151">0800 888 5151</a>
-          <p>09h00 às 18h00</p>
+          <a class="contact-row" href="mailto:falecom@atf.com.br"><span class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>falecom@atf.com.br</a>
+          <a class="contact-row" href="mailto:consignado@atf.com.br"><span class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>consignado@atf.com.br</a>
+          <a class="contact-row" href="tel:08008885151"><span class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 10.8a15.3 15.3 0 0 0 6.6 6.6l2.2-2.2a1.5 1.5 0 0 1 1.6-.3c1.1.4 2.3.6 3.5.6a1.5 1.5 0 0 1 1.5 1.5V21a1.5 1.5 0 0 1-1.5 1.5C10.4 22.5 1.5 13.6 1.5 3.5A1.5 1.5 0 0 1 3 2h3.5A1.5 1.5 0 0 1 8 3.5c0 1.2.2 2.4.6 3.5.1.5 0 1.1-.3 1.6L6.6 10.8Z"/></svg></span>0800 888 5151</a>
+          <div class="contact-row"><span class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span><p>09h00 às 18h00</p></div>
         </div>
       </div>
       <div>
@@ -236,11 +239,11 @@ p:last-child { margin-bottom: 0; }
           <div class="form-row-2">
             <div class="form-field">
               <label>E-mail</label>
-              <input type="email" placeholder="usuario@email.com.br">
+              <input type="email" placeholder="seu@email.com">
             </div>
             <div class="form-field">
               <label>Telefone</label>
-              <input type="tel" placeholder="+55 (51) 00000-0000">
+              <input type="tel" placeholder="(51) 00000-0000">
             </div>
           </div>
           <div class="form-field">

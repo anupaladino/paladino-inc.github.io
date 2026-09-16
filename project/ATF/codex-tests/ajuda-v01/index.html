@@ -95,11 +95,10 @@ p:last-child { margin-bottom: 0; }
 .faq-q { width: 100%; background: none; border: none; text-align: left; cursor: pointer; padding: 24px 0; display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; font-family: var(--font); font-size: 1rem; font-weight: 600; line-height: 1.45; color: var(--black); letter-spacing: -.005em; }
 .faq-q:hover { text-decoration: underline; }
 
-.faq-icon { flex-shrink: 0; width: 20px; height: 20px; margin-top: 2px; position: relative; }
-.faq-icon::before, .faq-icon::after { content: ''; position: absolute; background: currentColor; border-radius: 1px; transition: transform .25s ease, opacity .25s ease; }
-.faq-icon::before { width: 12px; height: 1.5px; top: 9px; left: 4px; }
-.faq-icon::after { width: 1.5px; height: 12px; top: 4px; left: 9px; }
-.faq-item.open .faq-icon::after { transform: scaleY(0); opacity: 0; }
+.faq-icon { flex-shrink: 0; width: 20px; height: 20px; margin-top: 2px; color: var(--black); }
+.faq-icon svg { width: 100%; height: 100%; display: block; }
+.faq-icon .v { transform-box: fill-box; transform-origin: center; transition: transform .25s ease, opacity .25s ease; }
+.faq-item.open .faq-icon .v { transform: scaleY(0); opacity: 0; }
 
 .faq-a { display: none; padding-bottom: 24px; max-width: 620px; }
 .faq-a p { font-size: .9375rem; line-height: 1.7; color: var(--black); margin-bottom: 12px; }
@@ -196,21 +195,21 @@ p:last-child { margin-bottom: 0; }
       <p class="faq-group-label">Conta PJ</p>
 
       <div class="faq-item">
-        <button class="faq-q">O que é a Conta PJ da ATF?<span class="faq-icon"></span></button>
+        <button class="faq-q">O que é a Conta PJ da ATF?<span class="faq-icon"><svg viewBox="0 0 20 20" fill="none"><line class="h" x1="4" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line class="v" x1="10" y1="4" x2="10" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></button>
         <div class="faq-a">
           <p>A Conta PJ é uma conta digital para pessoas jurídicas, desenvolvida para empresas que precisam de controle real sobre a operação financeira. Com ela é possível agendar transferências, realizar pagamentos, gerenciar o fluxo de caixa e operar com múltiplos usuários em diferentes níveis de acesso.</p>
         </div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-q">Quem pode abrir uma Conta PJ?<span class="faq-icon"></span></button>
+        <button class="faq-q">Quem pode abrir uma Conta PJ?<span class="faq-icon"><svg viewBox="0 0 20 20" fill="none"><line class="h" x1="4" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line class="v" x1="10" y1="4" x2="10" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></button>
         <div class="faq-a">
           <p>Empresas de todos os portes, desde MEIs até companhias de médio e grande porte.</p>
         </div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-q">Como faço para abrir uma Conta PJ?<span class="faq-icon"></span></button>
+        <button class="faq-q">Como faço para abrir uma Conta PJ?<span class="faq-icon"><svg viewBox="0 0 20 20" fill="none"><line class="h" x1="4" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line class="v" x1="10" y1="4" x2="10" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></button>
         <div class="faq-a">
           <p>O processo é feito pelo aplicativo ATF, disponível nas lojas de aplicativos. Após o download, você inicia o cadastro com um documento com foto e realiza a biometria facial. Recomendamos um ambiente iluminado, sem óculos ou acessórios.</p>
           <p>Em seguida, são solicitados documentos relativos à empresa. Em até 48 horas, com a documentação aprovada, sua conta estará ativa.</p>
@@ -218,14 +217,14 @@ p:last-child { margin-bottom: 0; }
       </div>
 
       <div class="faq-item">
-        <button class="faq-q">Quais documentos são necessários para abrir uma Conta PJ?<span class="faq-icon"></span></button>
+        <button class="faq-q">Quais documentos são necessários para abrir uma Conta PJ?<span class="faq-icon"><svg viewBox="0 0 20 20" fill="none"><line class="h" x1="4" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line class="v" x1="10" y1="4" x2="10" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></button>
         <div class="faq-a">
           <p>Os documentos variam conforme o tipo societário da empresa. Empresas individuais, sociedades limitadas, sociedades anônimas e outras formas têm exigências distintas. Consulte a relação completa de documentos <a href="#">aqui</a>.</p>
         </div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-q">Existe algum custo para abrir ou manter a Conta PJ?<span class="faq-icon"></span></button>
+        <button class="faq-q">Existe algum custo para abrir ou manter a Conta PJ?<span class="faq-icon"><svg viewBox="0 0 20 20" fill="none"><line class="h" x1="4" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line class="v" x1="10" y1="4" x2="10" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></button>
         <div class="faq-a">
           <p>A abertura da conta não tem custo. Os custos de manutenção variam conforme o tipo de conta contratado. Consulte nossa <a href="../tabela-de-tarifas-v01/index.html">Tabela de Tarifas</a> ou entre em contato com o time comercial para entender a condição mais adequada para sua empresa.</p>
         </div>
@@ -236,14 +235,14 @@ p:last-child { margin-bottom: 0; }
       <p class="faq-group-label">Antecipação de Recebíveis</p>
 
       <div class="faq-item">
-        <button class="faq-q">O que é antecipação de recebíveis?<span class="faq-icon"></span></button>
+        <button class="faq-q">O que é antecipação de recebíveis?<span class="faq-icon"><svg viewBox="0 0 20 20" fill="none"><line class="h" x1="4" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line class="v" x1="10" y1="4" x2="10" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></button>
         <div class="faq-a">
           <p>É uma operação que permite à empresa receber antecipadamente o valor de vendas a prazo já realizadas. Em vez de esperar o vencimento, a empresa transforma faturamento futuro em capital disponível agora, sem criar novas obrigações no passivo.</p>
         </div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-q">Qual a diferença entre antecipação de recebíveis e empréstimo?<span class="faq-icon"></span></button>
+        <button class="faq-q">Qual a diferença entre antecipação de recebíveis e empréstimo?<span class="faq-icon"><svg viewBox="0 0 20 20" fill="none"><line class="h" x1="4" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line class="v" x1="10" y1="4" x2="10" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></button>
         <div class="faq-a">
           <p>Na antecipação de recebíveis, a empresa adianta o recebimento de valores que já tem a receber de seus clientes. Não há criação de nova dívida, apenas um adiantamento, com desconto de uma taxa sobre o valor antecipado.</p>
           <p>No empréstimo, a empresa contrai uma obrigação nova: recebe um montante externo e se compromete a devolvê-lo com juros ao longo do tempo. São mecanismos distintos para necessidades distintas.</p>
@@ -251,14 +250,14 @@ p:last-child { margin-bottom: 0; }
       </div>
 
       <div class="faq-item">
-        <button class="faq-q">Quando faz sentido antecipar recebíveis?<span class="faq-icon"></span></button>
+        <button class="faq-q">Quando faz sentido antecipar recebíveis?<span class="faq-icon"><svg viewBox="0 0 20 20" fill="none"><line class="h" x1="4" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line class="v" x1="10" y1="4" x2="10" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></button>
         <div class="faq-a">
           <p>Quando a empresa precisa de capital de giro adicional para financiar operações, fazer investimentos ou honrar compromissos sem contrair uma nova dívida. É uma alternativa para quem tem recebíveis futuros sólidos e precisa de liquidez no presente.</p>
         </div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-q">Como solicitar a Antecipação de Recebíveis da ATF?<span class="faq-icon"></span></button>
+        <button class="faq-q">Como solicitar a Antecipação de Recebíveis da ATF?<span class="faq-icon"><svg viewBox="0 0 20 20" fill="none"><line class="h" x1="4" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line class="v" x1="10" y1="4" x2="10" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></button>
         <div class="faq-a">
           <p>Entre em contato com nosso time comercial. A operação é estruturada de forma personalizada, com análise da operação da sua empresa e condições definidas conforme o perfil de cada cliente.</p>
         </div>
@@ -269,21 +268,21 @@ p:last-child { margin-bottom: 0; }
       <p class="faq-group-label">Capital de Giro</p>
 
       <div class="faq-item">
-        <button class="faq-q">O que é capital de giro?<span class="faq-icon"></span></button>
+        <button class="faq-q">O que é capital de giro?<span class="faq-icon"><svg viewBox="0 0 20 20" fill="none"><line class="h" x1="4" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line class="v" x1="10" y1="4" x2="10" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></button>
         <div class="faq-a">
           <p>Capital de giro são os recursos que uma empresa precisa para manter sua operação regular, cobrindo despesas enquanto os recebimentos ainda não entraram no caixa. É o que mantém a empresa funcionando de forma saudável no dia a dia.</p>
         </div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-q">Como funciona o Capital de Giro da ATF?<span class="faq-icon"></span></button>
+        <button class="faq-q">Como funciona o Capital de Giro da ATF?<span class="faq-icon"><svg viewBox="0 0 20 20" fill="none"><line class="h" x1="4" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line class="v" x1="10" y1="4" x2="10" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></button>
         <div class="faq-a">
           <p>O Capital de Giro da ATF é estruturado com garantia imobiliária, por meio de alienação fiduciária, permitindo transformar em crédito até 60% do valor do imóvel. As condições são definidas conforme o perfil e as necessidades específicas de cada empresa.</p>
         </div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-q">Quando recorrer a uma operação de capital de giro?<span class="faq-icon"></span></button>
+        <button class="faq-q">Quando recorrer a uma operação de capital de giro?<span class="faq-icon"><svg viewBox="0 0 20 20" fill="none"><line class="h" x1="4" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line class="v" x1="10" y1="4" x2="10" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></button>
         <div class="faq-a">
           <p>Quando as obrigações a pagar superam o ativo circulante disponível, ou quando a empresa está em momento de crescimento e precisa de recursos para sustentar a expansão antes de os lucros cobrirem o investimento necessário.</p>
         </div>
@@ -294,21 +293,21 @@ p:last-child { margin-bottom: 0; }
       <p class="faq-group-label">CDC</p>
 
       <div class="faq-item">
-        <button class="faq-q">O que é o CDC, Crédito Direto ao Consumidor?<span class="faq-icon"></span></button>
+        <button class="faq-q">O que é o CDC, Crédito Direto ao Consumidor?<span class="faq-icon"><svg viewBox="0 0 20 20" fill="none"><line class="h" x1="4" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line class="v" x1="10" y1="4" x2="10" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></button>
         <div class="faq-a">
           <p>O CDC é uma modalidade de crédito vinculada à aquisição de bens ou serviços. No contexto da ATF, funciona assim: sua empresa vende e recebe à vista, e o cliente paga de forma parcelada diretamente à ATF. Um mecanismo que beneficia os dois lados sem comprometer o fluxo de caixa da empresa.</p>
         </div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-q">Como funciona o processo de contratação do CDC?<span class="faq-icon"></span></button>
+        <button class="faq-q">Como funciona o processo de contratação do CDC?<span class="faq-icon"><svg viewBox="0 0 20 20" fill="none"><line class="h" x1="4" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line class="v" x1="10" y1="4" x2="10" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></button>
         <div class="faq-a">
           <p>Para oferecer o CDC da ATF, sua empresa precisa ter uma conta aberta conosco. A análise do perfil do cliente é feita em até 4 horas, e os recursos são disponibilizados em até 48 horas. Todo o processo é conduzido de forma digital.</p>
         </div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-q">Qual a diferença entre o CDC e outras formas de crédito?<span class="faq-icon"></span></button>
+        <button class="faq-q">Qual a diferença entre o CDC e outras formas de crédito?<span class="faq-icon"><svg viewBox="0 0 20 20" fill="none"><line class="h" x1="4" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line class="v" x1="10" y1="4" x2="10" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></button>
         <div class="faq-a">
           <p>O CDC é vinculado à aquisição de um bem ou serviço específico, com condições adaptadas ao perfil do consumidor e ao contexto da compra. Outras modalidades de crédito são genéricas, não estão associadas a uma transação específica e geralmente têm exigências distintas de garantia e prazo.</p>
         </div>
@@ -319,21 +318,21 @@ p:last-child { margin-bottom: 0; }
       <p class="faq-group-label">Risco Sacado</p>
 
       <div class="faq-item">
-        <button class="faq-q">O que é risco sacado?<span class="faq-icon"></span></button>
+        <button class="faq-q">O que é risco sacado?<span class="faq-icon"><svg viewBox="0 0 20 20" fill="none"><line class="h" x1="4" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line class="v" x1="10" y1="4" x2="10" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></button>
         <div class="faq-a">
           <p>Risco sacado é uma operação em que o fornecedor antecipa o recebimento de notas fiscais ou títulos a vencer junto ao seu cliente. A ATF antecipa o valor para o fornecedor e passa a ser credora da operação. O comprador, então, paga à ATF no vencimento acordado.</p>
         </div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-q">Quais as vantagens do risco sacado?<span class="faq-icon"></span></button>
+        <button class="faq-q">Quais as vantagens do risco sacado?<span class="faq-icon"><svg viewBox="0 0 20 20" fill="none"><line class="h" x1="4" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line class="v" x1="10" y1="4" x2="10" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></button>
         <div class="faq-a">
           <p>Para a empresa compradora: mais prazo para organizar o fluxo de caixa sem atrasar fornecedores. Para o fornecedor: recebimento antecipado com segurança de que o valor será honrado. É uma operação que fortalece relações comerciais estratégicas e melhora a saúde financeira de toda a cadeia.</p>
         </div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-q">É possível operar risco sacado com fundo próprio?<span class="faq-icon"></span></button>
+        <button class="faq-q">É possível operar risco sacado com fundo próprio?<span class="faq-icon"><svg viewBox="0 0 20 20" fill="none"><line class="h" x1="4" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line class="v" x1="10" y1="4" x2="10" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></button>
         <div class="faq-a">
           <p>Sim. A ATF tem experiência na estruturação e operação de FIDCs e pode gerir toda essa operação para a sua empresa, atuando tanto como financiadora direta quanto como gestora do fundo.</p>
         </div>
@@ -344,35 +343,35 @@ p:last-child { margin-bottom: 0; }
       <p class="faq-group-label">Gestão de Fundos</p>
 
       <div class="faq-item">
-        <button class="faq-q">O que a ATF oferece em gestão de fundos?<span class="faq-icon"></span></button>
+        <button class="faq-q">O que a ATF oferece em gestão de fundos?<span class="faq-icon"><svg viewBox="0 0 20 20" fill="none"><line class="h" x1="4" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line class="v" x1="10" y1="4" x2="10" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></button>
         <div class="faq-a">
           <p>A ATF estrutura e opera fundos de investimento com foco em crédito, especialmente FIDCs. Oferecemos suporte completo da modelagem à operação diária, com rigor técnico, adequação regulatória e presença ativa em cada decisão relevante.</p>
         </div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-q">O que é um FIDC e como ele pode beneficiar minha empresa?<span class="faq-icon"></span></button>
+        <button class="faq-q">O que é um FIDC e como ele pode beneficiar minha empresa?<span class="faq-icon"><svg viewBox="0 0 20 20" fill="none"><line class="h" x1="4" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line class="v" x1="10" y1="4" x2="10" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></button>
         <div class="faq-a">
           <p>O FIDC, Fundo de Investimento em Direitos Creditórios, permite que empresas captem recursos usando seus próprios recebíveis como base. É uma forma estratégica de financiar crescimento com eficiência fiscal e sem comprometer o caixa operacional.</p>
         </div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-q">Qual a diferença entre FIDC Monocedente e FIDC Fornecedor?<span class="faq-icon"></span></button>
+        <button class="faq-q">Qual a diferença entre FIDC Monocedente e FIDC Fornecedor?<span class="faq-icon"><svg viewBox="0 0 20 20" fill="none"><line class="h" x1="4" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line class="v" x1="10" y1="4" x2="10" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></button>
         <div class="faq-a">
           <p>O FIDC Monocedente é indicado para empresas que querem antecipar recebíveis de clientes com base em seu próprio crediário. O FIDC Fornecedor permite investir na cadeia de suprimentos, oferecendo prazo aos fornecedores enquanto mantém o capital circulante.</p>
         </div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-q">A ATF é autorizada para operar com fundos?<span class="faq-icon"></span></button>
+        <button class="faq-q">A ATF é autorizada para operar com fundos?<span class="faq-icon"><svg viewBox="0 0 20 20" fill="none"><line class="h" x1="4" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line class="v" x1="10" y1="4" x2="10" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></button>
         <div class="faq-a">
           <p>Sim. A ATF é regulamentada pelo Banco Central do Brasil como Instituição Financeira nº 513, e autorizada pela CVM para estruturação e operação de FIDCs. São mais de 20 anos de experiência nesse mercado.</p>
         </div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-q">Como iniciar uma estruturação de fundo com a ATF?<span class="faq-icon"></span></button>
+        <button class="faq-q">Como iniciar uma estruturação de fundo com a ATF?<span class="faq-icon"><svg viewBox="0 0 20 20" fill="none"><line class="h" x1="4" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line class="v" x1="10" y1="4" x2="10" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></button>
         <div class="faq-a">
           <p>O processo começa com uma conversa. Nosso time de especialistas entende o momento da sua empresa, analisa o contexto e propõe uma estrutura personalizada, com total transparência sobre cada etapa.</p>
         </div>
