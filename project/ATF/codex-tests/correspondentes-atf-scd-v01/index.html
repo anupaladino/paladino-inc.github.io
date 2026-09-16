@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ATF — Carreiras</title>
+<title>ATF — Correspondentes ATF SCD</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -14,6 +14,8 @@ html { scroll-behavior: smooth; }
 :root {
   --font: 'Plus Jakarta Sans', sans-serif;
   --black: #0A0A0A;
+  --mid: #6B6560;
+  --light: #9B9590;
   --rule: #E8E7E5;
   --gold: #FFCD7D;
   --page-max: 1080px;
@@ -35,13 +37,13 @@ button { font-family: inherit; border: none; background: none; cursor: pointer; 
 
 .page { max-width: var(--page-max); margin: 0 auto; padding: 0 var(--pad-x); }
 
-/* ── nav pill + fullscreen overlay (site-wide component) ── */
+/* ── nav pill + fullscreen overlay ── */
 .nav-pill-holder { position: absolute; top: 24px; left: 24px; right: 24px; display: flex; justify-content: center; z-index: 210; }
-.nav-pill { pointer-events: auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 60px; padding: 0 24px; background: rgba(255,255,255,.16); backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%); border: 1px solid rgba(255,255,255,.28); border-radius: 999px; box-shadow: 0 10px 30px -14px rgba(0,0,0,.35); width: 100%; max-width: 420px; }
+.nav-pill { pointer-events: auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 60px; padding: 0 24px; background: rgba(255,255,255,.7); backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%); border: 1px solid rgba(10,10,10,.1); border-radius: 999px; box-shadow: 0 10px 30px -18px rgba(10,10,10,.25); width: 100%; max-width: 420px; }
 .nav-pill img.logo { height: 20px; }
-.nav-trigger { display: flex; align-items: center; gap: 10px; color: #fff; }
+.nav-trigger { display: flex; align-items: center; gap: 10px; color: var(--black); }
 .burger { width: 26px; height: 18px; position: relative; }
-.burger span { position: absolute; left: 0; right: 0; height: 2px; background: #fff; border-radius: 2px; transition: transform .25s ease, opacity .2s ease, top .25s ease; }
+.burger span { position: absolute; left: 0; right: 0; height: 2px; background: var(--black); border-radius: 2px; transition: transform .25s ease, opacity .2s ease, top .25s ease, background .15s ease; }
 .burger span:nth-child(1) { top: 0; }
 .burger span:nth-child(2) { top: 8px; }
 .burger span:nth-child(3) { top: 16px; }
@@ -66,55 +68,33 @@ button { font-family: inherit; border: none; background: none; cursor: pointer; 
 .nav-links a:hover { color: var(--gold); }
 .nav-overlay-foot { padding: 20px 28px 26px; border-top: 1px solid rgba(255,255,255,.14); font-size: 12px; color: #9a948e; flex: 0 0 auto; }
 
-/* ── hero (photo — ambiente corporativo) ── */
-.hero-crop { position: relative; min-height: 600px; display: flex; align-items: flex-end; overflow: hidden; }
-.hero-crop img.bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.hero-crop .scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,10,.1) 0%, rgba(10,10,10,.78) 100%); }
-.hero-crop .hero-txt { position: relative; z-index: 2; color: #fff; padding-top: 140px; padding-bottom: 88px; }
-.hero-crop h1 { font-size: clamp(2.6rem, 4.8vw, 4.2rem); font-weight: 800; letter-spacing: -.025em; line-height: 1.06; max-width: 780px; margin-bottom: 32px; }
-
-/* intro — bloco entre a hero e "O que nos guia", sem CTA (padrão definido com o Ronald) */
-.intro-lead p { font-size: 1.25rem; line-height: 1.55; letter-spacing: -.005em; color: var(--black); max-width: 780px; margin-bottom: 20px; }
-
-/* DS — Brand button (primary, high-emphasis) */
-.btn-ds-brand { display: inline-flex; align-items: center; justify-content: center; height: 48px; padding: 0 24px; border-radius: 8px; border: none; background: var(--ds-brand); color: var(--ds-ink); font-family: var(--font); font-size: 14px; font-weight: 500; line-height: 20px; transition: background .15s ease; }
-.btn-ds-brand:hover { background: var(--ds-brand-hover); }
+/* ── hero (white — no photo, no dark surface) ── */
+.hero-light { position: relative; background: #fff; padding-top: 150px; padding-bottom: 88px; }
+.hero-light h1 { font-size: clamp(2.6rem, 4.5vw, 4rem); font-weight: 800; letter-spacing: -.025em; line-height: 1.06; max-width: 780px; margin-bottom: 32px; }
+.hero-light p { font-size: 1.125rem; line-height: 1.65; color: var(--black); max-width: var(--col-text); margin-bottom: 16px; }
+.hero-light p:last-of-type { margin-bottom: 0; }
 
 /* ── section rhythm ── */
 .section { padding: var(--gap-section) 0; border-bottom: 1px solid var(--rule); }
 .section:last-child { border-bottom: none; }
 
 h2 { font-size: clamp(1.75rem, 2.8vw, 2.4rem); font-weight: 800; line-height: 1.1; letter-spacing: -.02em; max-width: 720px; margin-bottom: 24px; }
-h3 { font-size: 1.2rem; font-weight: 700; line-height: 1.3; letter-spacing: -.005em; margin-bottom: 12px; }
+h3 { font-size: 1.15rem; font-weight: 700; line-height: 1.35; letter-spacing: -.005em; margin-bottom: 10px; }
 
 p { font-size: 1rem; line-height: 1.75; color: var(--black); max-width: var(--col-text); margin-bottom: 18px; }
 p:last-child { margin-bottom: 0; }
 
-.two-col-wide { display: grid; grid-template-columns: 1.1fr 1fr; gap: 80px; align-items: start; }
+/* document list */
+.doc-list { display: flex; flex-direction: column; }
+.doc-item { padding: 44px 0; border-bottom: 1px solid var(--rule); }
+.doc-item:first-child { padding-top: 0; }
+.doc-item:last-child { border-bottom: none; padding-bottom: 0; }
+.doc-item h3 { font-size: 1.5rem; font-weight: 800; letter-spacing: -.015em; margin-bottom: 14px; }
+.doc-item p { max-width: var(--col-text); }
 
-/* values — 3 numbered blocks (os 3 pilares) */
-.values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; margin-top: 56px; }
-.value-item { padding-top: 28px; border-top: 3px solid var(--black); }
-.value-idx { display: block; font-size: 1.5rem; font-weight: 800; letter-spacing: -.02em; color: var(--gold); margin-bottom: 20px; }
-.value-item h3 { margin-bottom: 12px; }
-.value-item p { color: var(--black); margin-bottom: 0; }
-
-/* form */
-.form-card { padding: 48px 40px; border: 1px solid var(--rule); display: flex; flex-direction: column; gap: 24px; }
-.form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.form-field { display: flex; flex-direction: column; gap: 8px; }
-.form-field label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--black); }
-.form-field input { font-family: var(--font); font-size: 15px; border: none; border-bottom: 1px solid var(--rule); padding: 10px 0; background: transparent; outline: none; color: var(--black); transition: border-color .15s ease; }
-.form-field input::placeholder { color: var(--ds-ink-soft); }
-.form-field input:focus { border-color: var(--black); }
-.form-field input[type="file"] { font-size: 14px; padding: 10px 0; }
-.form-help { font-size: 12px; color: var(--black); margin-top: -2px; }
-
-.form-checks { display: flex; flex-direction: column; gap: 12px; }
-.form-check { display: flex; align-items: flex-start; gap: 10px; }
-.form-check input[type="checkbox"] { margin-top: 3px; width: 16px; height: 16px; accent-color: var(--black); flex-shrink: 0; }
-.form-check label { font-size: 13px; line-height: 1.5; color: var(--black); }
-.form-check a { text-decoration: underline; font-weight: 600; }
+/* DS — Outlined button (secondary, medium-emphasis) */
+.btn-ds-outlined { display: inline-flex; align-items: center; justify-content: center; height: 48px; padding: 0 24px; border-radius: 8px; border: 1px solid var(--ds-ink); background: #fff; color: var(--ds-ink); font-family: var(--font); font-size: 14px; font-weight: 500; line-height: 20px; margin-top: 8px; transition: background .15s ease; }
+.btn-ds-outlined:hover { background: var(--ds-outline-hover); }
 
 /* ── CTA amarelo + footer amarelo (site-wide, verbatim) ── */
 .cta-gold { background: var(--gold); padding: 130px var(--pad-x) 96px; text-align: center; }
@@ -152,23 +132,17 @@ p:last-child { margin-bottom: 0; }
 /* ── responsive ── */
 @media (max-width: 900px) {
   :root { --pad-x: 24px; --gap-section: 80px; }
-  .two-col-wide { grid-template-columns: 1fr; gap: 40px; }
-  .values-grid { grid-template-columns: 1fr; gap: 40px; }
-  .hero-crop { min-height: 460px; }
-  .intro-lead p { font-size: 1.0625rem; }
-  .hero-crop .hero-txt { padding-top: 108px; padding-bottom: 56px; }
+  .hero-light { padding-top: 118px; padding-bottom: 56px; }
   .fg-top { grid-template-columns: 1fr; gap: 28px; padding-bottom: 28px; }
   .fg-cols { grid-template-columns: 1fr 1fr; gap: 24px; }
   .footer-gold-inner { padding: 40px 24px 28px; }
   .cta-gold { padding: 72px 24px 56px; }
-  .form-card { padding: 32px 24px; }
 }
 @media (max-width: 560px) {
   .nav-pill { height: 52px; padding: 0 18px; }
   .nav-pill img.logo { height: 16px; }
   .nav-pill-holder { top: 16px; left: 16px; right: 16px; }
   .nav-links a { font-size: 1.8rem; }
-  .form-row-2 { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -177,7 +151,7 @@ p:last-child { margin-bottom: 0; }
 <!-- ═══ NAV: pílula flutuante + overlay ═══ -->
 <div class="nav-pill-holder">
   <div class="nav-pill">
-    <a href="../../website-mvp/index.html"><img class="logo" src="../../website-mvp/logos/logo-atf-white.svg" alt="ATF"></a>
+    <a href="../../website-mvp/index.html"><img class="logo" src="../../website-mvp/logos/logo-atf-black.svg" alt="ATF"></a>
     <button class="nav-trigger" data-menu-toggle="menuOverlay"><span class="burger"><span></span><span></span><span></span></span></button>
   </div>
 </div>
@@ -195,105 +169,36 @@ p:last-child { margin-bottom: 0; }
   <div class="nav-overlay-foot">falecom@atf.com.br · 0800 800 0513</div>
 </div>
 
-<!-- ═══ HERO (só título + botão — padrão definido nas últimas reuniões) ═══ -->
-<div class="hero-crop">
-  <img class="bg" src="../../credenciais-web-mvp/assets/images/slide-13-image-bg.jpg" alt="">
-  <div class="scrim"></div>
-  <div class="hero-txt page">
-    <h1>Uma marca é reflexo da cultura que a sustenta.</h1>
-    <a href="#formulario" class="btn-ds-brand">Comece sua jornada na ATF</a>
+<!-- ═══ HERO ═══ -->
+<div class="hero-light">
+  <div class="page">
+    <h1>Correspondentes ATF SCD</h1>
+    <p>Os correspondentes bancários da ATF atuam como extensão autorizada da nossa operação. Escolhemos com quem operamos com critério, e isso vale para os parceiros que representam a ATF no atendimento ao cliente.</p>
   </div>
 </div>
 
-<!-- ═══ BLOCO DE APRESENTAÇÃO (sem CTA) + O QUE NOS GUIA ═══ -->
+<!-- ═══ O QUE SÃO ═══ -->
 <div class="page">
   <div class="section">
-    <div class="intro-lead">
-      <p>Na ATF, quem trabalha aqui não executa tarefas. Constrói relações, toma decisões com critério e contribui para uma operação que escolhe com cuidado onde atua e com quem cresce.</p>
-      <p>Se você busca um ambiente onde clareza, responsabilidade e visão de longo prazo são valores praticados, não declarados, seu lugar pode ser aqui.</p>
-    </div>
-
-    <h2 style="margin-top: 64px;">O que nos guia</h2>
-    <p>Os mesmos valores que orientam nossas relações com clientes e parceiros também orientam a forma como trabalhamos internamente.</p>
-
-    <div class="values-grid">
-      <div class="value-item">
-        <span class="value-idx">01</span>
-        <h3>Pessoas em primeiro lugar</h3>
-        <p>Entender as necessidades e os desafios de cada parceiro, cliente e colaborador vem antes de qualquer decisão que tomamos.</p>
-      </div>
-      <div class="value-item">
-        <span class="value-idx">02</span>
-        <h3>Comunicação direta e sem ambiguidade</h3>
-        <p>Não operamos com ambiguidade, nem com clientes, nem internamente. Clareza sobre o que se espera, o que está funcionando e o que precisa melhorar é parte do que mantém o time alinhado e confiante.</p>
-      </div>
-      <div class="value-item">
-        <span class="value-idx">03</span>
-        <h3>Diversidade como parte da solidez</h3>
-        <p>Perspectivas diferentes tornam as decisões mais robustas. Respeitamos diferenças de origem, gênero, geração e trajetória, não como política, mas porque acreditamos que uma equipe diversa opera com mais inteligência e mais humanidade.</p>
-      </div>
-    </div>
+    <h2>O que são correspondentes bancários</h2>
+    <p>Correspondentes bancários são empresas autorizadas pelo Banco Central do Brasil a realizar, em nome de uma instituição financeira, operações e serviços junto ao público. Na ATF, os correspondentes atuam na captação e no atendimento de clientes para o Crédito Consignado Privado.</p>
+    <p>Todo correspondente autorizado atua dentro dos limites regulatórios definidos pelo Banco Central e sob os padrões de conduta exigidos pela ATF.</p>
   </div>
 </div>
 
-<!-- ═══ FORMULÁRIO ═══ -->
-<div class="page" id="formulario">
+<!-- ═══ DOCUMENTO ═══ -->
+<div class="page">
   <div class="section">
-    <div class="two-col-wide">
-      <div>
-        <h2>Faça parte do time ATF.</h2>
-        <p>Preencha seus dados e anexe o currículo para dar o primeiro passo na ATF.</p>
-      </div>
-      <div>
-        <div class="form-card">
-          <div class="form-row-2">
-            <div class="form-field">
-              <label>Nome</label>
-              <input type="text" placeholder="Seu nome">
-            </div>
-            <div class="form-field">
-              <label>Data de Nascimento</label>
-              <input type="text" placeholder="DD/MM/AAAA">
-            </div>
-          </div>
-          <div class="form-row-2">
-            <div class="form-field">
-              <label>CPF</label>
-              <input type="text" placeholder="000.000.000-00">
-            </div>
-            <div class="form-field">
-              <label>Telefone</label>
-              <input type="tel" placeholder="+55 (51) 00000-0000">
-            </div>
-          </div>
-          <div class="form-row-2">
-            <div class="form-field">
-              <label>E-mail</label>
-              <input type="email" placeholder="seu@email.com">
-            </div>
-            <div class="form-field">
-              <label>LinkedIn (Opcional)</label>
-              <input type="text" placeholder="www.linkedin.com/in/usuario">
-            </div>
-          </div>
-          <div class="form-field">
-            <label>Currículo</label>
-            <input type="file" accept=".pdf,.doc,.docx">
-            <p class="form-help">Tamanho máximo do arquivo: 10MB.</p>
-          </div>
-          <div class="form-checks">
-            <div class="form-check">
-              <input type="checkbox" id="chkPrivacidade">
-              <label for="chkPrivacidade">Eu concordo com a <a href="https://cdn.prod.website-files.com/646d21b0973adab8756ba8b3/697380b080aa1ac7d2828f83_ATF-PO-TI-001-02%20-%20Privacidade%20e%20Protecao%20de%20Dados.pdf" target="_blank" rel="noopener">Política de Privacidade</a>.</label>
-            </div>
-            <div class="form-check">
-              <input type="checkbox" id="chkTermo">
-              <label for="chkTermo">Eu concordo com o <a href="https://cdn.prod.website-files.com/646d21b0973adab8756ba8b3/69790064a7a8485da5ce6f3a_Termo_de_Ci%C3%AAncia.pdf" target="_blank" rel="noopener">Termo de Ciência</a>.</label>
-            </div>
-          </div>
-          <a href="#" class="btn-ds-brand" style="text-align:center;">Quero fazer parte do time ATF</a>
+    <div class="doc-list">
+
+      <div class="doc-item">
+        <div>
+          <h3>Lista de correspondentes autorizados</h3>
+          <p>Relação completa dos correspondentes bancários autorizados a operar em nome da ATF. Em caso de dúvida sobre a autenticidade de um contato recebido em nome da ATF, consulte a lista abaixo ou entre em contato diretamente conosco.</p>
+          <a href="https://cdn.prod.website-files.com/646d21b0973adab8756ba8b3/6928618a067c29d8397223c8_Informa%C3%A7%C3%A3o%20-%20Site%20-%20Corbans%20ATF.pdf" target="_blank" rel="noopener" class="btn-ds-outlined">Visualizar PDF</a>
         </div>
       </div>
+
     </div>
   </div>
 </div>
@@ -311,8 +216,8 @@ p:last-child { margin-bottom: 0; }
       <div class="fg-cols">
         <div><p class="head">Para Você</p><a href="#">Consignado PF</a><p class="head spaced">Canal de Ajuda</p><a href="#">Central de Atendimento</a><a href="#">Canal de Ética</a><a href="#">Perguntas Frequentes</a></div>
         <div><p class="head">Para Empresa</p><a href="#">Conta PJ</a><a href="#">Antecipação de Recebíveis</a><a href="#">Capital de Giro</a><a href="#">Risco Sacado</a><a href="#">Crédito Direto ao Consumidor</a><a href="#">Boleto Bancário</a><a href="#">ATF Asset</a></div>
-        <div><p class="head">A ATF</p><a href="#">Quem Somos</a><a href="../governanca-v01/index.html">Governança</a><a href="#" class="current">Carreiras</a></div>
-        <div><p class="head">Transparência</p><a href="../termos-e-politicas-v01/index.html">Termos e Políticas</a><a href="../tabela-de-tarifas-v01/index.html">Tabela de Tarifas</a><a href="../correspondentes-atf-scd-v01/index.html">Correspondentes ATF SCD</a></div>
+        <div><p class="head">A ATF</p><a href="#">Quem Somos</a><a href="../governanca-v01/index.html">Governança</a><a href="../carreiras-v01/index.html">Carreiras</a></div>
+        <div><p class="head">Transparência</p><a href="../termos-e-politicas-v01/index.html">Termos e Políticas</a><a href="../tabela-de-tarifas-v01/index.html">Tabela de Tarifas</a><a href="#" class="current">Correspondentes ATF SCD</a></div>
       </div>
     </div>
     <div class="fg-bottom">
