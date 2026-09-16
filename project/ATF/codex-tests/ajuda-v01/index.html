@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATF — Perguntas Frequentes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --font: 'Plus Jakarta Sans', sans-serif;
+  --black: #0A0A0A;
+  --mid: #6B6560;
+  --light: #9B9590;
+  --rule: #E8E7E5;
+  --gold: #FFCD7D;
+  --page-max: 1080px;
+  --col-text: 660px;
+  --gap-section: 120px;
+  --pad-x: 64px;
+  /* Design System (app/IB) — button tokens */
+  --ds-ink: #343332;
+  --ds-ink-soft: #90887F;
+  --ds-brand: #FFD28B;
+  --ds-brand-hover: #FFE0AB;
+  --ds-outline-hover: #F5F5F4;
+}
+
+body { font-family: var(--font); background: #fff; color: var(--black); -webkit-font-smoothing: antialiased; font-size: 16px; line-height: 1.7; overflow-x: hidden; }
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; display: block; }
+button { font-family: inherit; border: none; background: none; cursor: pointer; }
+
+.page { max-width: var(--page-max); margin: 0 auto; padding: 0 var(--pad-x); }
+
+/* ── nav pill + fullscreen overlay ── */
+.nav-pill-holder { position: absolute; top: 24px; left: 24px; right: 24px; display: flex; justify-content: center; z-index: 210; }
+.nav-pill { pointer-events: auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 60px; padding: 0 24px; background: rgba(255,255,255,.7); backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%); border: 1px solid rgba(10,10,10,.1); border-radius: 999px; box-shadow: 0 10px 30px -18px rgba(10,10,10,.25); width: 100%; max-width: 420px; }
+.nav-pill img.logo { height: 20px; }
+.nav-trigger { display: flex; align-items: center; gap: 10px; color: var(--black); }
+.burger { width: 26px; height: 18px; position: relative; }
+.burger span { position: absolute; left: 0; right: 0; height: 2px; background: var(--black); border-radius: 2px; transition: transform .25s ease, opacity .2s ease, top .25s ease, background .15s ease; }
+.burger span:nth-child(1) { top: 0; }
+.burger span:nth-child(2) { top: 8px; }
+.burger span:nth-child(3) { top: 16px; }
+.nav-trigger:hover .burger span { background: var(--gold); }
+.burger.is-open span:nth-child(1) { top: 8px; transform: rotate(45deg); }
+.burger.is-open span:nth-child(2) { opacity: 0; }
+.burger.is-open span:nth-child(3) { top: 8px; transform: rotate(-45deg); }
+
+.nav-overlay { position: fixed; inset: 0; z-index: 220; background: var(--black); color: #fff; opacity: 0; pointer-events: none; transition: opacity .35s ease; display: flex; flex-direction: column; }
+.nav-overlay.open { opacity: 1; pointer-events: auto; }
+.nav-overlay-top { display: flex; align-items: center; justify-content: space-between; padding: 0 24px; height: 60px; border-bottom: 1px solid rgba(255,255,255,.14); flex: 0 0 auto; }
+.nav-overlay-close { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #fff; }
+.nav-overlay-close:hover { color: var(--gold); }
+.nav-links { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 0 28px; gap: 4px; }
+.nav-links a { position: relative; display: flex; align-items: baseline; gap: 16px; font-size: clamp(2rem, 4.6vw, 3.4rem); font-weight: 800; letter-spacing: -.02em; padding: 8px 0; opacity: 0; transform: translateY(18px); transition: opacity .5s ease, transform .5s ease, color .2s ease; }
+.nav-overlay.open .nav-links a { opacity: 1; transform: translateY(0); }
+.nav-overlay.open .nav-links a:nth-child(1) { transition-delay: .06s; }
+.nav-overlay.open .nav-links a:nth-child(2) { transition-delay: .12s; }
+.nav-overlay.open .nav-links a:nth-child(3) { transition-delay: .18s; }
+.nav-overlay.open .nav-links a:nth-child(4) { transition-delay: .24s; }
+.nav-links a .idx { font-size: .7em; font-weight: 700; color: var(--gold); }
+.nav-links a:hover { color: var(--gold); }
+.nav-overlay-foot { padding: 20px 28px 26px; border-top: 1px solid rgba(255,255,255,.14); font-size: 12px; color: #9a948e; flex: 0 0 auto; }
+
+/* ── hero (white — no photo, no dark surface) ── */
+.hero-light { position: relative; background: #fff; padding-top: 150px; padding-bottom: 88px; }
+.hero-light h1 { font-size: clamp(2.6rem, 4.5vw, 4rem); font-weight: 800; letter-spacing: -.025em; line-height: 1.06; max-width: 780px; margin-bottom: 32px; }
+.hero-light p { font-size: 1.125rem; line-height: 1.65; color: var(--black); max-width: var(--col-text); margin-bottom: 16px; }
+.hero-light p:last-of-type { margin-bottom: 0; }
+
+/* ── section rhythm ── */
+.section { padding: var(--gap-section) 0; border-bottom: 1px solid var(--rule); }
+.section:last-child { border-bottom: none; }
+
+h2 { font-size: clamp(1.75rem, 2.8vw, 2.4rem); font-weight: 800; line-height: 1.1; letter-spacing: -.02em; max-width: 720px; margin-bottom: 24px; }
+h3 { font-size: 1.15rem; font-weight: 700; line-height: 1.35; letter-spacing: -.005em; margin-bottom: 10px; }
+
+p { font-size: 1rem; line-height: 1.75; color: var(--black); max-width: var(--col-text); margin-bottom: 18px; }
+p:last-child { margin-bottom: 0; }
+
+/* ── FAQ accordion ── */
+.faq-group { margin-top: 56px; }
+.faq-group:first-of-type { margin-top: 0; }
+
+.faq-group-label { font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--black); margin-bottom: 8px; padding-bottom: 16px; border-bottom: 2px solid var(--black); }
+
+.faq-item { border-bottom: 1px solid var(--rule); }
+
+.faq-q { width: 100%; background: none; border: none; text-align: left; cursor: pointer; padding: 24px 0; display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; font-family: var(--font); font-size: 1rem; font-weight: 600; line-height: 1.45; color: var(--black); letter-spacing: -.005em; }
+.faq-q:hover { text-decoration: underline; }
+
+.faq-icon { flex-shrink: 0; width: 20px; height: 20px; margin-top: 2px; position: relative; }
+.faq-icon::before, .faq-icon::after { content: ''; position: absolute; background: currentColor; border-radius: 1px; transition: transform .25s ease, opacity .25s ease; }
+.faq-icon::before { width: 12px; height: 1.5px; top: 9px; left: 4px; }
+.faq-icon::after { width: 1.5px; height: 12px; top: 4px; left: 9px; }
+.faq-item.open .faq-icon::after { transform: scaleY(0); opacity: 0; }
+
+.faq-a { display: none; padding-bottom: 24px; max-width: 620px; }
+.faq-a p { font-size: .9375rem; line-height: 1.7; color: var(--black); margin-bottom: 12px; }
+.faq-a p:last-child { margin-bottom: 0; }
+.faq-a a { color: var(--black); text-decoration: underline; font-weight: 600; }
+.faq-item.open .faq-a { display: block; }
+
+/* ── CTA amarelo + footer amarelo (site-wide, verbatim) ── */
+.cta-gold { background: var(--gold); padding: 130px var(--pad-x) 96px; text-align: center; }
+.cta-gold h2 { font-size: clamp(2.4rem, 6.6vw, 5.2rem); font-weight: 800; letter-spacing: -.03em; line-height: 1; margin-bottom: 32px; color: var(--black); max-width: none; }
+.btn-dark { display: inline-block; font-size: .875rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; background: var(--black); color: #fff; padding: 16px 34px; border-radius: 999px; transition: background .2s ease, transform .2s ease; }
+.btn-dark:hover { background: #1a1a1a; transform: translateY(-1px); }
+
+.footer-gold { background: var(--gold); }
+.footer-gold-inner { max-width: 1280px; margin: 0 auto; padding: 64px var(--pad-x) 40px; }
+.fg-top { display: grid; grid-template-columns: 220px 1fr; gap: 64px; padding-bottom: 40px; border-bottom: 1px solid rgba(10,10,10,.16); }
+.fg-left { display: flex; flex-direction: column; gap: 24px; align-items: flex-start; }
+.fg-left img.logo { height: 18px; }
+.fg-label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(10,10,10,.62); margin-bottom: 10px; }
+.fg-social { display: flex; gap: 10px; }
+.fg-social a { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: 1px solid rgba(10,10,10,.22); color: rgba(10,10,10,.7); font-size: 11px; font-weight: 700; transition: background .2s ease, color .2s ease; }
+.fg-social a:hover { background: var(--black); color: var(--gold); border-color: var(--black); }
+.fg-ombuds a { display: block; font-size: 13px; color: var(--black); margin-bottom: 4px; }
+.fg-ombuds a:hover { text-decoration: underline; }
+.fg-ombuds p { font-size: 12px; color: rgba(10,10,10,.62); margin: 0; }
+.fg-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 36px; }
+.fg-cols .head { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--black); margin-bottom: 14px; }
+.fg-cols .head.spaced { margin-top: 24px; }
+.fg-cols a { display: block; font-size: 13px; color: rgba(10,10,10,.68); margin-bottom: 9px; transition: color .15s ease; }
+.fg-cols a:hover { color: var(--black); text-decoration: underline; }
+.fg-cols a.current { color: var(--black); font-weight: 700; }
+.fg-bottom { padding-top: 28px; display: flex; flex-direction: column; gap: 14px; }
+.fg-legal { font-size: 11px; line-height: 1.65; color: rgba(10,10,10,.5); margin: 0; max-width: none; }
+.fg-legal a { color: rgba(10,10,10,.68); text-decoration: underline; }
+.fg-meta { display: flex; gap: 28px; flex-wrap: wrap; }
+.fg-meta p { font-size: 11px; color: rgba(10,10,10,.5); margin: 0; max-width: none; }
+
+.dev-badge { position: fixed; bottom: 14px; left: 14px; z-index: 300; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: rgba(10,10,10,.45); background: rgba(255,255,255,.85); backdrop-filter: blur(6px); padding: 7px 12px; border-radius: 999px; border: 1px solid var(--rule); transition: color .15s ease; }
+.dev-badge:hover { color: var(--black); }
+
+/* ── responsive ── */
+@media (max-width: 900px) {
+  :root { --pad-x: 24px; --gap-section: 80px; }
+  .hero-light { padding-top: 118px; padding-bottom: 56px; }
+  .fg-top { grid-template-columns: 1fr; gap: 28px; padding-bottom: 28px; }
+  .fg-cols { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .footer-gold-inner { padding: 40px 24px 28px; }
+  .cta-gold { padding: 72px 24px 56px; }
+}
+@media (max-width: 560px) {
+  .nav-pill { height: 52px; padding: 0 18px; }
+  .nav-pill img.logo { height: 16px; }
+  .nav-pill-holder { top: 16px; left: 16px; right: 16px; }
+  .nav-links a { font-size: 1.8rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV: pílula flutuante + overlay ═══ -->
+<div class="nav-pill-holder">
+  <div class="nav-pill">
+    <a href="../../website-mvp/index.html"><img class="logo" src="../../website-mvp/logos/logo-atf-black.svg" alt="ATF"></a>
+    <button class="nav-trigger" data-menu-toggle="menuOverlay"><span class="burger"><span></span><span></span><span></span></span></button>
+  </div>
+</div>
+<div class="nav-overlay" id="menuOverlay">
+  <div class="nav-overlay-top">
+    <img class="logo" src="../../website-mvp/logos/logo-atf-white.svg" alt="ATF" style="height:18px;">
+    <button class="nav-overlay-close" data-menu-toggle="menuOverlay">✕ Fechar</button>
+  </div>
+  <nav class="nav-links">
+    <a href="../../website-mvp/index.html"><span class="idx">01</span>Home</a>
+    <a href="../../website-mvp/sobre.html"><span class="idx">02</span>A ATF</a>
+    <a href="../../website-mvp/asset.html"><span class="idx">03</span>Asset</a>
+    <a href="../../website-mvp/fintech.html"><span class="idx">04</span>Fintech</a>
+  </nav>
+  <div class="nav-overlay-foot">falecom@atf.com.br · 0800 800 0513</div>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero-light">
+  <div class="page">
+    <h1>Perguntas Frequentes</h1>
+    <p>Reunimos aqui as dúvidas mais comuns sobre as soluções da ATF. Se não encontrar o que procura, nosso time está disponível para conversar.</p>
+  </div>
+</div>
+
+<!-- ═══ FAQ ═══ -->
+<div class="page">
+  <div class="section">
+
+    <div class="faq-group">
+      <p class="faq-group-label">ATF Fintech — Conta PJ</p>
+
+      <div class="faq-item">
+        <button class="faq-q">O que é a Conta PJ da ATF?<span class="faq-icon"></span></button>
+        <div class="faq-a">
+          <p>A Conta PJ é uma conta digital para pessoas jurídicas, desenvolvida para empresas que precisam de controle real sobre a operação financeira. Com ela é possível agendar transferências, realizar pagamentos, gerenciar o fluxo de caixa e operar com múltiplos usuários em diferentes níveis de acesso.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Quem pode abrir uma Conta PJ?<span class="faq-icon"></span></button>
+        <div class="faq-a">
+          <p>Empresas de todos os portes, desde MEIs até companhias de médio e grande porte.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Como faço para abrir uma Conta PJ?<span class="faq-icon"></span></button>
+        <div class="faq-a">
+          <p>O processo é feito pelo aplicativo ATF, disponível nas lojas de aplicativos. Após o download, você inicia o cadastro com um documento com foto e realiza a biometria facial. Recomendamos um ambiente iluminado, sem óculos ou acessórios.</p>
+          <p>Em seguida, são solicitados documentos relativos à empresa. Em até 48 horas, com a documentação aprovada, sua conta estará ativa.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Quais documentos são necessários para abrir uma Conta PJ?<span class="faq-icon"></span></button>
+        <div class="faq-a">
+          <p>Os documentos variam conforme o tipo societário da empresa. Empresas individuais, sociedades limitadas, sociedades anônimas e outras formas têm exigências distintas. Consulte a relação completa de documentos <a href="#">aqui</a>.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Existe algum custo para abrir ou manter a Conta PJ?<span class="faq-icon"></span></button>
+        <div class="faq-a">
+          <p>A abertura da conta não tem custo. Os custos de manutenção variam conforme o tipo de conta contratado. Consulte nossa <a href="../tabela-de-tarifas-v01/index.html">Tabela de Tarifas</a> ou entre em contato com o time comercial para entender a condição mais adequada para sua empresa.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-group">
+      <p class="faq-group-label">ATF Asset — Antecipação de Recebíveis</p>
+
+      <div class="faq-item">
+        <button class="faq-q">O que é antecipação de recebíveis?<span class="faq-icon"></span></button>
+        <div class="faq-a">
+          <p>É uma operação que permite à empresa receber antecipadamente o valor de vendas a prazo já realizadas. Em vez de esperar o vencimento, a empresa transforma faturamento futuro em capital disponível agora, sem criar novas obrigações no passivo.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Qual a diferença entre antecipação de recebíveis e empréstimo?<span class="faq-icon"></span></button>
+        <div class="faq-a">
+          <p>Na antecipação de recebíveis, a empresa adianta o recebimento de valores que já tem a receber de seus clientes. Não há criação de nova dívida, apenas um adiantamento, com desconto de uma taxa sobre o valor antecipado.</p>
+          <p>No empréstimo, a empresa contrai uma obrigação nova: recebe um montante externo e se compromete a devolvê-lo com juros ao longo do tempo. São mecanismos distintos para necessidades distintas.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Quando faz sentido antecipar recebíveis?<span class="faq-icon"></span></button>
+        <div class="faq-a">
+          <p>Quando a empresa precisa de capital de giro adicional para financiar operações, fazer investimentos ou honrar compromissos sem contrair uma nova dívida. É uma alternativa para quem tem recebíveis futuros sólidos e precisa de liquidez no presente.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Como solicitar a Antecipação de Recebíveis da ATF?<span class="faq-icon"></span></button>
+        <div class="faq-a">
+          <p>Entre em contato com nosso time comercial. A operação é estruturada de forma personalizada, com análise da operação da sua empresa e condições definidas conforme o perfil de cada cliente.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-group">
+      <p class="faq-group-label">ATF Asset — Capital de Giro</p>
+
+      <div class="faq-item">
+        <button class="faq-q">O que é capital de giro?<span class="faq-icon"></span></button>
+        <div class="faq-a">
+          <p>Capital de giro são os recursos que uma empresa precisa para manter sua operação regular, cobrindo despesas enquanto os recebimentos ainda não entraram no caixa. É o que mantém a empresa funcionando de forma saudável no dia a dia.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Como funciona o Capital de Giro da ATF?<span class="faq-icon"></span></button>
+        <div class="faq-a">
+          <p>O Capital de Giro da ATF é estruturado com garantia imobiliária, por meio de alienação fiduciária, permitindo transformar em crédito até 60% do valor do imóvel. As condições são definidas conforme o perfil e as necessidades específicas de cada empresa.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Quando recorrer a uma operação de capital de giro?<span class="faq-icon"></span></button>
+        <div class="faq-a">
+          <p>Quando as obrigações a pagar superam o ativo circulante disponível, ou quando a empresa está em momento de crescimento e precisa de recursos para sustentar a expansão antes de os lucros cobrirem o investimento necessário.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-group">
+      <p class="faq-group-label">ATF Asset — CDC</p>
+
+      <div class="faq-item">
+        <button class="faq-q">O que é o CDC, Crédito Direto ao Consumidor?<span class="faq-icon"></span></button>
+        <div class="faq-a">
+          <p>O CDC é uma modalidade de crédito vinculada à aquisição de bens ou serviços. No contexto da ATF, funciona assim: sua empresa vende e recebe à vista, e o cliente paga de forma parcelada diretamente à ATF. Um mecanismo que beneficia os dois lados sem comprometer o fluxo de caixa da empresa.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Como funciona o processo de contratação do CDC?<span class="faq-icon"></span></button>
+        <div class="faq-a">
+          <p>Para oferecer o CDC da ATF, sua empresa precisa ter uma conta aberta conosco. A análise do perfil do cliente é feita em até 4 horas, e os recursos são disponibilizados em até 48 horas. Todo o processo é conduzido de forma digital.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Qual a diferença entre o CDC e outras formas de crédito?<span class="faq-icon"></span></button>
+        <div class="faq-a">
+          <p>O CDC é vinculado à aquisição de um bem ou serviço específico, com condições adaptadas ao perfil do consumidor e ao contexto da compra. Outras modalidades de crédito são genéricas, não estão associadas a uma transação específica e geralmente têm exigências distintas de garantia e prazo.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-group">
+      <p class="faq-group-label">ATF Asset — Risco Sacado</p>
+
+      <div class="faq-item">
+        <button class="faq-q">O que é risco sacado?<span class="faq-icon"></span></button>
+        <div class="faq-a">
+          <p>Risco sacado é uma operação em que o fornecedor antecipa o recebimento de notas fiscais ou títulos a vencer junto ao seu cliente. A ATF antecipa o valor para o fornecedor e passa a ser credora da operação. O comprador, então, paga à ATF no vencimento acordado.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Quais as vantagens do risco sacado?<span class="faq-icon"></span></button>
+        <div class="faq-a">
+          <p>Para a empresa compradora: mais prazo para organizar o fluxo de caixa sem atrasar fornecedores. Para o fornecedor: recebimento antecipado com segurança de que o valor será honrado. É uma operação que fortalece relações comerciais estratégicas e melhora a saúde financeira de toda a cadeia.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">É possível operar risco sacado com fundo próprio?<span class="faq-icon"></span></button>
+        <div class="faq-a">
+          <p>Sim. A ATF tem experiência na estruturação e operação de FIDCs e pode gerir toda essa operação para a sua empresa, atuando tanto como financiadora direta quanto como gestora do fundo.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-group">
+      <p class="faq-group-label">ATF Asset — Gestão de Fundos</p>
+
+      <div class="faq-item">
+        <button class="faq-q">O que a ATF oferece em gestão de fundos?<span class="faq-icon"></span></button>
+        <div class="faq-a">
+          <p>A ATF estrutura e opera fundos de investimento com foco em crédito, especialmente FIDCs. Oferecemos suporte completo da modelagem à operação diária, com rigor técnico, adequação regulatória e presença ativa em cada decisão relevante.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">O que é um FIDC e como ele pode beneficiar minha empresa?<span class="faq-icon"></span></button>
+        <div class="faq-a">
+          <p>O FIDC, Fundo de Investimento em Direitos Creditórios, permite que empresas captem recursos usando seus próprios recebíveis como base. É uma forma estratégica de financiar crescimento com eficiência fiscal e sem comprometer o caixa operacional.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Qual a diferença entre FIDC Monocedente e FIDC Fornecedor?<span class="faq-icon"></span></button>
+        <div class="faq-a">
+          <p>O FIDC Monocedente é indicado para empresas que querem antecipar recebíveis de clientes com base em seu próprio crediário. O FIDC Fornecedor permite investir na cadeia de suprimentos, oferecendo prazo aos fornecedores enquanto mantém o capital circulante.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">A ATF é autorizada para operar com fundos?<span class="faq-icon"></span></button>
+        <div class="faq-a">
+          <p>Sim. A ATF é regulamentada pelo Banco Central do Brasil como Instituição Financeira nº 513, e autorizada pela CVM para estruturação e operação de FIDCs. São mais de 20 anos de experiência nesse mercado.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Como iniciar uma estruturação de fundo com a ATF?<span class="faq-icon"></span></button>
+        <div class="faq-a">
+          <p>O processo começa com uma conversa. Nosso time de especialistas entende o momento da sua empresa, analisa o contexto e propõe uma estrutura personalizada, com total transparência sobre cada etapa.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ CTA + FOOTER (site-wide) ═══ -->
+<section class="cta-gold"><h2>Confie no futuro.</h2><a href="mailto:falecom@atf.com.br" class="btn-dark">Inicie uma conversa</a></section>
+<footer class="footer-gold">
+  <div class="footer-gold-inner">
+    <div class="fg-top">
+      <div class="fg-left">
+        <img class="logo" src="../../website-mvp/logos/logo-atf-black.svg" alt="ATF">
+        <div><p class="fg-label">Siga a ATF</p><div class="fg-social"><a href="#">in</a><a href="#">ig</a></div></div>
+        <div><p class="fg-label">Ouvidoria</p><div class="fg-ombuds"><a href="#">Canal de Ouvidoria</a><a href="#">0800 800 0513</a><p>09h00 às 12h00</p><p>14h00 às 17h30</p></div></div>
+      </div>
+      <div class="fg-cols">
+        <div><p class="head">Para Você</p><a href="#">Consignado PF</a><p class="head spaced">Canal de Ajuda</p><a href="../atendimento-v01/index.html">Central de Atendimento</a><a href="https://www.contatoseguro.com.br/atf" target="_blank" rel="noopener">Canal de Ética</a><a href="#" class="current">Perguntas Frequentes</a></div>
+        <div><p class="head">Para Empresa</p><a href="#">Conta PJ</a><a href="#">Antecipação de Recebíveis</a><a href="#">Capital de Giro</a><a href="#">Risco Sacado</a><a href="#">Crédito Direto ao Consumidor</a><a href="#">Boleto Bancário</a><a href="#">ATF Asset</a></div>
+        <div><p class="head">A ATF</p><a href="#">Quem Somos</a><a href="../governanca-v01/index.html">Governança</a><a href="../carreiras-v01/index.html">Carreiras</a></div>
+        <div><p class="head">Transparência</p><a href="../termos-e-politicas-v01/index.html">Termos e Políticas</a><a href="../tabela-de-tarifas-v01/index.html">Tabela de Tarifas</a><a href="../correspondentes-atf-scd-v01/index.html">Correspondentes ATF SCD</a></div>
+      </div>
+    </div>
+    <div class="fg-bottom">
+      <p class="fg-legal">As marcas registradas, logotipos e marcas de serviço que aparecem nos serviços e produtos, incluindo, entre outros, a marca registrada "ATF" são marcas registradas e marcas de serviço da ATF. Outros nomes e logotipos de empresas, produtos e serviços usados e exibidos nos serviços e produtos podem ser marcas comerciais ou marcas de serviço de seus respectivos proprietários que podem ou não apoiar ou ser afiliados ou conectados a nós. Sobre Privacidade de Dados e Atendimento aos Direitos de Titulares de Dados, por favor, leia os nossos <a href="../termos-e-politicas-v01/index.html">Termos de Uso e Política de Privacidade</a>.</p>
+      <div class="fg-meta"><p>Regulamentada pelo Banco Central do Brasil, instituição financeira nº 513.</p></div>
+      <div class="fg-meta"><p>© 2026 ATF Sociedade de Crédito Direto S.A. · CNPJ: 44.728.700/0001-72</p><p>Rua Mostardeiro, 322/12º andar · Porto Alegre/RS · 90430-000</p></div>
+    </div>
+  </div>
+</footer>
+
+<a class="dev-badge" href="../index.html">← Catálogo</a>
+
+<script>
+(function () {
+  document.querySelectorAll('[data-menu-toggle]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var overlay = document.getElementById(btn.dataset.menuToggle);
+      if (!overlay) return;
+      var willOpen = !overlay.classList.contains('open');
+      overlay.classList.toggle('open');
+      document.querySelectorAll('.burger').forEach(function (b) {
+        b.classList.toggle('is-open', willOpen);
+      });
+    });
+  });
+  document.querySelectorAll('.faq-q').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var item = btn.closest('.faq-item');
+      var isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(function (el) { el.classList.remove('open'); });
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
