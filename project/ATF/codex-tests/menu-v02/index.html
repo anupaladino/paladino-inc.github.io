@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATF — Menu: variantes fixas no scroll</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --font: 'Plus Jakarta Sans', sans-serif;
+  --black: #0A0A0A;
+  --mid: #6B6560;
+  --rule: #E8E7E5;
+  --gold: #FFCD7D;
+  --page-max: 1280px;
+  --pad-x: 64px;
+  --ds-ink: #343332;
+  --ds-brand: #FFD28B;
+  --ds-brand-hover: #FFE0AB;
+  --ds-outline-hover: #F5F5F4;
+}
+
+body { font-family: var(--font); background: #fff; color: var(--black); -webkit-font-smoothing: antialiased; font-size: 16px; line-height: 1.7; overflow-x: hidden; }
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; display: block; }
+button { font-family: inherit; border: none; background: none; cursor: pointer; }
+.page { max-width: var(--page-max); margin: 0 auto; padding: 0 var(--pad-x); }
+
+/* ═══════════ MENU — fixo no scroll, compacto ao rolar, 4 variantes ═══════════ */
+.nav-pill-holder { position: fixed; top: 24px; left: 0; right: 0; z-index: 300; display: flex; justify-content: center; pointer-events: none; transition: top .3s ease; }
+.nav-pill-holder.is-compact { top: 12px; }
+
+.nav-pill { pointer-events: auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; width: 100%; max-width: 420px; height: 60px; padding: 0 24px; border-radius: 999px; transition: height .3s ease, padding .3s ease, max-width .3s ease, background .3s ease, border-color .3s ease, box-shadow .3s ease; }
+.nav-pill-holder.is-compact .nav-pill { height: 48px; padding: 0 18px; max-width: 360px; }
+
+.nav-pill img.logo { height: 20px; transition: height .3s ease; }
+.nav-pill-holder.is-compact img.logo { height: 16px; }
+
+.nav-trigger { display: flex; align-items: center; gap: 10px; }
+.burger { width: 26px; height: 18px; position: relative; }
+.burger span { position: absolute; left: 0; right: 0; height: 2px; border-radius: 2px; transition: transform .25s ease, opacity .2s ease, top .25s ease, background .2s ease; }
+.burger span:nth-child(1) { top: 0; }
+.burger span:nth-child(2) { top: 8px; }
+.burger span:nth-child(3) { top: 16px; }
+.nav-trigger:hover .burger span { background: var(--gold) !important; }
+.burger.is-open span:nth-child(1) { top: 8px; transform: rotate(45deg); }
+.burger.is-open span:nth-child(2) { opacity: 0; }
+.burger.is-open span:nth-child(3) { top: 8px; transform: rotate(-45deg); }
+
+/* variant 1 — translúcido escuro (o que já tínhamos levado pro Figma) */
+.nav-pill.v-glass-dark { background: rgba(255,255,255,.16); backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%); border: 1px solid rgba(255,255,255,.28); box-shadow: 0 10px 30px -14px rgba(0,0,0,.35); color: #fff; }
+.nav-pill.v-glass-dark .burger span { background: #fff; }
+
+/* variant 2 — translúcido claro (branco, com blur) */
+.nav-pill.v-glass-light { background: rgba(255,255,255,.7); backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%); border: 1px solid rgba(10,10,10,.1); box-shadow: 0 10px 30px -18px rgba(10,10,10,.25); color: var(--black); }
+.nav-pill.v-glass-light .burger span { background: var(--black); }
+
+/* variant 3 — sólido escuro (sem transparência) */
+.nav-pill.v-solid-dark { background: var(--black); border: 1px solid rgba(255,255,255,.1); box-shadow: 0 10px 30px -14px rgba(0,0,0,.45); color: #fff; }
+.nav-pill.v-solid-dark .burger span { background: #fff; }
+
+/* variant 4 — sólido claro (branco opaco, sem transparência) */
+.nav-pill.v-solid-light { background: #fff; border: 1px solid var(--rule); box-shadow: 0 10px 30px -18px rgba(10,10,10,.18); color: var(--black); }
+.nav-pill.v-solid-light .burger span { background: var(--black); }
+
+/* overlay em tela cheia — igual em todas as variantes (já aprovado) */
+.nav-overlay { position: fixed; inset: 0; z-index: 320; background: var(--black); color: #fff; opacity: 0; pointer-events: none; transition: opacity .35s ease; display: flex; flex-direction: column; }
+.nav-overlay.open { opacity: 1; pointer-events: auto; }
+.nav-overlay-top { display: flex; align-items: center; justify-content: space-between; padding: 0 24px; height: 60px; border-bottom: 1px solid rgba(255,255,255,.14); flex: 0 0 auto; }
+.nav-overlay-close { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #fff; }
+.nav-overlay-close:hover { color: var(--gold); }
+.nav-links { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 0 28px; gap: 4px; }
+.nav-links a { position: relative; display: flex; align-items: baseline; gap: 16px; font-size: clamp(2rem, 4.6vw, 3.4rem); font-weight: 800; letter-spacing: -.02em; padding: 8px 0; opacity: 0; transform: translateY(18px); transition: opacity .5s ease, transform .5s ease, color .2s ease; }
+.nav-overlay.open .nav-links a { opacity: 1; transform: translateY(0); }
+.nav-overlay.open .nav-links a:nth-child(1) { transition-delay: .06s; }
+.nav-overlay.open .nav-links a:nth-child(2) { transition-delay: .12s; }
+.nav-overlay.open .nav-links a:nth-child(3) { transition-delay: .18s; }
+.nav-overlay.open .nav-links a:nth-child(4) { transition-delay: .24s; }
+.nav-links a .idx { font-size: .7em; font-weight: 700; color: var(--gold); }
+.nav-links a:hover { color: var(--gold); }
+.nav-overlay-foot { padding: 20px 28px 26px; border-top: 1px solid rgba(255,255,255,.14); font-size: 12px; color: #9a948e; flex: 0 0 auto; }
+
+/* ═══════════ CONTEÚDO — versão resumida representativa do ATF_10 (copy e fotos reais do Figma) ═══════════ */
+
+/* hero */
+.hero-crop { position: relative; min-height: 92vh; display: flex; align-items: flex-end; overflow: hidden; }
+.hero-crop img.bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.hero-crop .scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,10,.05) 0%, rgba(10,10,10,.55) 100%); }
+.hero-crop .hero-txt { position: relative; z-index: 2; color: #fff; padding: 0 var(--pad-x) 88px; }
+.hero-crop h1 { font-size: clamp(2.6rem, 6vw, 5.6rem); font-weight: 800; letter-spacing: -.02em; line-height: .98; margin-bottom: 32px; }
+.btn-ds-brand { display: inline-flex; align-items: center; gap: 8px; height: 52px; padding: 0 26px; border-radius: 8px; border: none; background: var(--ds-brand); color: var(--ds-ink); font-family: var(--font); font-size: 15px; font-weight: 600; transition: background .15s ease; }
+.btn-ds-brand:hover { background: var(--ds-brand-hover); }
+
+/* intro + números */
+.intro-section { padding: 140px 0 100px; border-bottom: 1px solid var(--rule); }
+.intro-section h2 { font-size: clamp(1.9rem, 3.6vw, 3.2rem); font-weight: 800; line-height: 1.15; letter-spacing: -.02em; max-width: 980px; margin-bottom: 40px; }
+.intro-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; max-width: 980px; margin-bottom: 56px; }
+.intro-cols p { font-size: 1rem; font-weight: 600; line-height: 1.6; margin: 0; }
+.divider { border: none; border-top: 1px solid var(--rule); margin-bottom: 56px; }
+.stats-title { font-size: clamp(1.6rem, 3vw, 2.6rem); font-weight: 800; letter-spacing: -.015em; margin-bottom: 40px; }
+.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.stat-card { border: 1px solid var(--rule); border-radius: 8px; padding: 28px 24px; }
+.stat-num { font-size: clamp(2rem, 3.4vw, 2.75rem); font-weight: 800; letter-spacing: -.02em; color: var(--gold); -webkit-text-stroke: 0; margin-bottom: 8px; }
+.stat-label { font-size: .875rem; color: var(--mid); margin: 0; }
+
+/* dois pilares */
+.pillars-section { padding: 100px 0; border-bottom: 1px solid var(--rule); }
+.pillars-section h2 { font-size: clamp(1.9rem, 3.6vw, 3.2rem); font-weight: 800; line-height: 1.1; letter-spacing: -.02em; margin-bottom: 48px; }
+.pillars-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.pillar-card { border: 1px solid var(--rule); display: flex; flex-direction: column; }
+.pillar-photo { position: relative; aspect-ratio: 3/4; overflow: hidden; }
+.pillar-photo img { width: 100%; height: 100%; object-fit: cover; }
+.pillar-badge { position: absolute; top: 24px; left: 24px; color: #fff; font-size: 13px; font-weight: 800; letter-spacing: .02em; }
+.pillar-badge span { font-weight: 500; opacity: .85; }
+.pillar-body { padding: 28px 24px 32px; }
+.pillar-body h3 { font-size: 1.4rem; font-weight: 800; line-height: 1.25; letter-spacing: -.01em; margin-bottom: 20px; }
+.btn-ds-outlined { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 20px; border-radius: 8px; border: 1px solid var(--ds-ink); background: #fff; color: var(--ds-ink); font-family: var(--font); font-size: 13px; font-weight: 600; transition: background .15s ease; }
+.btn-ds-outlined:hover { background: var(--ds-outline-hover); }
+
+/* CTA amarelo + footer amarelo (site-wide, verbatim) */
+.cta-gold { background: var(--gold); padding: 130px var(--pad-x) 96px; text-align: center; }
+.cta-gold h2 { font-size: clamp(2.4rem, 6.6vw, 5.2rem); font-weight: 800; letter-spacing: -.03em; line-height: 1; margin-bottom: 32px; color: var(--black); }
+.btn-dark { display: inline-block; font-size: .875rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; background: var(--black); color: #fff; padding: 16px 34px; border-radius: 999px; transition: background .2s ease, transform .2s ease; }
+.btn-dark:hover { background: #1a1a1a; transform: translateY(-1px); }
+
+.footer-gold { background: var(--gold); }
+.footer-gold-inner { max-width: 1280px; margin: 0 auto; padding: 64px var(--pad-x) 40px; }
+.fg-top { display: grid; grid-template-columns: 220px 1fr; gap: 64px; padding-bottom: 40px; border-bottom: 1px solid rgba(10,10,10,.16); }
+.fg-left { display: flex; flex-direction: column; gap: 24px; align-items: flex-start; }
+.fg-left img.logo { height: 18px; }
+.fg-label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(10,10,10,.62); margin-bottom: 10px; }
+.fg-social { display: flex; gap: 10px; }
+.fg-social a { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: 1px solid rgba(10,10,10,.22); color: rgba(10,10,10,.7); font-size: 11px; font-weight: 700; transition: background .2s ease, color .2s ease; }
+.fg-social a:hover { background: var(--black); color: var(--gold); border-color: var(--black); }
+.fg-ombuds a { display: block; font-size: 13px; color: var(--black); margin-bottom: 4px; }
+.fg-ombuds a:hover { text-decoration: underline; }
+.fg-ombuds p { font-size: 12px; color: rgba(10,10,10,.62); margin: 0; }
+.fg-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 36px; }
+.fg-cols .head { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--black); margin-bottom: 14px; }
+.fg-cols .head.spaced { margin-top: 24px; }
+.fg-cols a { display: block; font-size: 13px; color: rgba(10,10,10,.68); margin-bottom: 9px; transition: color .15s ease; }
+.fg-cols a:hover { color: var(--black); text-decoration: underline; }
+.fg-bottom { padding-top: 28px; display: flex; flex-direction: column; gap: 14px; }
+.fg-legal { font-size: 11px; line-height: 1.65; color: rgba(10,10,10,.5); margin: 0; }
+.fg-legal a { color: rgba(10,10,10,.68); text-decoration: underline; }
+.fg-meta { display: flex; gap: 28px; flex-wrap: wrap; }
+.fg-meta p { font-size: 11px; color: rgba(10,10,10,.5); margin: 0; }
+
+/* ═══════════ painel de controle (não é parte do design — só pra este teste) ═══════════ */
+.variant-panel { position: fixed; bottom: 20px; left: 20px; z-index: 400; background: rgba(255,255,255,.97); backdrop-filter: blur(8px); border: 1px solid var(--rule); border-radius: 12px; padding: 16px; width: 240px; box-shadow: 0 16px 40px -20px rgba(0,0,0,.35); }
+.variant-panel-label { font-size: 10px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--mid); margin-bottom: 10px; }
+.variant-buttons { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+.variant-buttons button { text-align: left; font-size: 13px; font-weight: 600; padding: 9px 12px; border-radius: 7px; border: 1px solid var(--rule); color: var(--black); transition: background .15s ease, border-color .15s ease; }
+.variant-buttons button:hover { background: var(--ds-outline-hover); }
+.variant-buttons button.active { background: var(--black); color: #fff; border-color: var(--black); }
+.variant-hint { font-size: 11px; line-height: 1.5; color: var(--mid); margin: 0; }
+.dev-badge { position: fixed; bottom: 20px; right: 20px; z-index: 400; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: rgba(10,10,10,.45); background: rgba(255,255,255,.9); backdrop-filter: blur(6px); padding: 8px 14px; border-radius: 999px; border: 1px solid var(--rule); }
+.dev-badge:hover { color: var(--black); }
+
+@media (max-width: 900px) {
+  :root { --pad-x: 24px; }
+  .intro-cols { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: 1fr; }
+  .pillars-grid { grid-template-columns: 1fr; }
+  .fg-top { grid-template-columns: 1fr; gap: 28px; }
+  .fg-cols { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .variant-panel { left: 12px; bottom: 12px; width: 200px; }
+  .dev-badge { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ MENU: fixo, compacta ao rolar, 4 variantes trocáveis pelo painel ═══ -->
+<div class="nav-pill-holder" id="navHolder">
+  <div class="nav-pill v-glass-dark" id="navPill">
+    <a href="#"><img class="logo" id="navLogo" src="../../website-mvp/logos/logo-atf-white.svg" alt="ATF"></a>
+    <button class="nav-trigger" data-menu-toggle="menuOverlay"><span class="burger"><span></span><span></span><span></span></span></button>
+  </div>
+</div>
+<div class="nav-overlay" id="menuOverlay">
+  <div class="nav-overlay-top">
+    <img class="logo" src="../../website-mvp/logos/logo-atf-white.svg" alt="ATF" style="height:18px;">
+    <button class="nav-overlay-close" data-menu-toggle="menuOverlay">✕ Fechar</button>
+  </div>
+  <nav class="nav-links">
+    <a href="#"><span class="idx">01</span>Home</a>
+    <a href="#"><span class="idx">02</span>A ATF</a>
+    <a href="#"><span class="idx">03</span>Asset</a>
+    <a href="#"><span class="idx">04</span>Fintech</a>
+  </nav>
+  <div class="nav-overlay-foot">falecom@atf.com.br · 0800 800 0513</div>
+</div>
+
+<!-- ═══ HERO (foto e copy reais do ATF_10) ═══ -->
+<section class="hero-crop">
+  <img class="bg" src="assets/hero-fintech.png" alt="">
+  <div class="scrim"></div>
+  <div class="hero-txt page">
+    <h1>Fintech<br>para negócios.</h1>
+    <a href="#" class="btn-ds-brand">Comece por aqui →</a>
+  </div>
+</section>
+
+<!-- ═══ INTRO + NÚMEROS (copy real do ATF_10) ═══ -->
+<section class="page intro-section">
+  <h2>Integramos fundos, crédito e infraestrutura financeira digital para empresas que precisam crescer com critério, governança e previsibilidade.</h2>
+  <div class="intro-cols">
+    <p>A ATF não busca qualquer negócio. Busca os negócios certos: aqueles em que a relação pode ser construída com responsabilidade, clareza e visão de longo prazo.</p>
+    <p>Desde 1997, escolhemos com quem operar, estruturamos cada solução com rigor e acompanhamos de perto o que colocamos em movimento.</p>
+  </div>
+  <hr class="divider">
+  <h2 class="stats-title">Os números que sustentam essa trajetória.</h2>
+  <div class="stats-grid">
+    <div class="stat-card"><p class="stat-num">R$ 8 bi+</p><p class="stat-label">em volume operado</p></div>
+    <div class="stat-card"><p class="stat-num">R$ 4 bi+</p><p class="stat-label">em boletos liquidados</p></div>
+    <div class="stat-card"><p class="stat-num">600 mil+</p><p class="stat-label">clientes diretos e indiretos</p></div>
+  </div>
+</section>
+
+<!-- ═══ DOIS PILARES (fotos e copy reais do ATF_10) ═══ -->
+<section class="page pillars-section">
+  <h2>Dois pilares.<br>Uma estrutura integrada.</h2>
+  <div class="pillars-grid">
+    <div class="pillar-card">
+      <div class="pillar-photo">
+        <img src="assets/pillar-asset.png" alt="">
+        <p class="pillar-badge">ATF <span>ASSET</span></p>
+      </div>
+      <div class="pillar-body">
+        <h3>Gestão de fundos, crédito e funding para negócios que pensam à frente.</h3>
+        <a href="#" class="btn-ds-outlined">Comece por aqui →</a>
+      </div>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-photo">
+        <img src="assets/pillar-fintech.png" alt="">
+        <p class="pillar-badge">ATF <span>FINTECH</span></p>
+      </div>
+      <div class="pillar-body">
+        <h3>Para negócios que precisam ir além de uma conta.</h3>
+        <a href="#" class="btn-ds-outlined">Comece por aqui →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA + FOOTER (site-wide, verbatim) ═══ -->
+<section class="cta-gold"><h2>Confie no futuro.</h2><a href="mailto:falecom@atf.com.br" class="btn-dark">Inicie uma conversa</a></section>
+<footer class="footer-gold">
+  <div class="footer-gold-inner">
+    <div class="fg-top">
+      <div class="fg-left">
+        <img class="logo" src="../../website-mvp/logos/logo-atf-black.svg" alt="ATF">
+        <div><p class="fg-label">Siga a ATF</p><div class="fg-social"><a href="#">in</a><a href="#">ig</a></div></div>
+        <div><p class="fg-label">Ouvidoria</p><div class="fg-ombuds"><a href="#">Canal de Ouvidoria</a><a href="#">0800 800 0513</a><p>09h00 às 12h00</p><p>14h00 às 17h30</p></div></div>
+      </div>
+      <div class="fg-cols">
+        <div><p class="head">Para Você</p><a href="#">Consignado PF</a><p class="head spaced">Canal de Ajuda</p><a href="#">Central de Atendimento</a><a href="#">Canal de Ética</a><a href="#">Perguntas Frequentes</a></div>
+        <div><p class="head">Para Empresa</p><a href="#">Conta PJ</a><a href="#">Antecipação de Recebíveis</a><a href="#">Capital de Giro</a><a href="#">Risco Sacado</a><a href="#">Crédito Direto ao Consumidor</a><a href="#">Boleto Bancário</a><a href="#">ATF Asset</a></div>
+        <div><p class="head">A ATF</p><a href="#">Quem Somos</a><a href="#">Governança</a><a href="#">Carreiras</a></div>
+        <div><p class="head">Transparência</p><a href="#">Termos e Políticas</a><a href="#">Tabela de Tarifas</a><a href="#">Correspondentes ATF SCD</a></div>
+      </div>
+    </div>
+    <div class="fg-bottom">
+      <p class="fg-legal">As marcas registradas, logotipos e marcas de serviço que aparecem nos serviços e produtos, incluindo, entre outros, a marca registrada "ATF" são marcas registradas e marcas de serviço da ATF. Outros nomes e logotipos de empresas, produtos e serviços usados e exibidos nos serviços e produtos podem ser marcas comerciais ou marcas de serviço de seus respectivos proprietários que podem ou não apoiar ou ser afiliados ou conectados a nós. Sobre Privacidade de Dados e Atendimento aos Direitos de Titulares de Dados, por favor, leia os nossos <a href="#">Termos de Uso e Política de Privacidade</a>.</p>
+      <div class="fg-meta"><p>Regulamentada pelo Banco Central do Brasil, instituição financeira nº 513.</p></div>
+      <div class="fg-meta"><p>© 2026 ATF Sociedade de Crédito Direto S.A. · CNPJ: 44.728.700/0001-72</p><p>Rua Mostardeiro, 322/12º andar · Porto Alegre/RS · 90430-000</p></div>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══ painel de teste (não faz parte do design) ═══ -->
+<div class="variant-panel">
+  <p class="variant-panel-label">Menu — variantes</p>
+  <div class="variant-buttons">
+    <button data-variant="glass-dark" class="active">Translúcido escuro</button>
+    <button data-variant="glass-light">Translúcido claro</button>
+    <button data-variant="solid-dark">Sólido escuro</button>
+    <button data-variant="solid-light">Sólido claro</button>
+  </div>
+  <p class="variant-hint">Role a página: o menu fica fixo e compacta depois do topo.</p>
+</div>
+<a class="dev-badge" href="../index.html">← Catálogo</a>
+
+<script>
+(function () {
+  document.querySelectorAll('[data-menu-toggle]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var overlay = document.getElementById(btn.dataset.menuToggle);
+      if (!overlay) return;
+      var willOpen = !overlay.classList.contains('open');
+      overlay.classList.toggle('open');
+      document.querySelectorAll('.burger').forEach(function (b) {
+        b.classList.toggle('is-open', willOpen);
+      });
+    });
+  });
+
+  var pill = document.getElementById('navPill');
+  var logo = document.getElementById('navLogo');
+  var LOGO_WHITE = '../../website-mvp/logos/logo-atf-white.svg';
+  var LOGO_BLACK = '../../website-mvp/logos/logo-atf-black.svg';
+
+  document.querySelectorAll('.variant-buttons button').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.variant-buttons button').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      var v = btn.dataset.variant;
+      pill.className = 'nav-pill v-' + v;
+      logo.src = v.indexOf('dark') !== -1 ? LOGO_WHITE : LOGO_BLACK;
+    });
+  });
+
+  var holder = document.getElementById('navHolder');
+  window.addEventListener('scroll', function () {
+    holder.classList.toggle('is-compact', window.scrollY > 40);
+  }, { passive: true });
+})();
+</script>
+
+</body>
+</html>
