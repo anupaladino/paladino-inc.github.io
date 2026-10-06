@@ -28,11 +28,12 @@
 
   /* ── STAGE ── */
   #stage {
-    width: 100vw; height: 100vh;
+    width: 100vw; height: 100vh; height: 100dvh;
     display: flex; align-items: center; justify-content: center;
   }
   #scaler {
     width: 1280px; height: 720px;
+    flex-shrink: 0;
     position: relative;
     transform-origin: center center;
   }
@@ -352,6 +353,23 @@
   Static file — the content is still readable in the page source.
 -->
 <style>
+  /* rotate prompt — phones in portrait only */
+  #rotate {
+    display: none;
+    position: fixed; inset: 0; z-index: 9998;
+    align-items: center; justify-content: center;
+    background: #0D0D0D; color: #F5F5F3;
+    font-family: 'DM Sans', sans-serif; text-align: center;
+  }
+  .rotate-box { max-width: 300px; padding: 24px; }
+  .rotate-icon { width: 56px; height: 56px; margin: 0 auto 28px; display: block; animation: rotate-hint 2.4s ease-in-out infinite; }
+  .rotate-title { font-size: 20px; font-weight: 500; line-height: 1.35; margin-bottom: 12px; }
+  .rotate-text { font-size: 14px; line-height: 1.5; color: #8C8C8C; }
+  @keyframes rotate-hint { 0%, 30% { transform: rotate(0); } 50%, 80% { transform: rotate(-90deg); } 100% { transform: rotate(0); } }
+  @media (orientation: portrait) and (max-width: 900px) {
+    #rotate { display: flex; }
+  }
+
   #gate {
     position: fixed; inset: 0; z-index: 9999;
     display: flex; align-items: center; justify-content: center;
@@ -382,6 +400,18 @@
 </style>
 </head>
 <body>
+<!-- ROTATE PROMPT -->
+<div id="rotate">
+  <div class="rotate-box">
+    <svg class="rotate-icon" viewBox="0 0 56 56" fill="none" stroke="#F5F5F3" stroke-width="1.5" aria-hidden="true">
+      <rect x="17" y="6" width="22" height="44" rx="4"/>
+      <line x1="25" y1="44" x2="31" y2="44"/>
+    </svg>
+    <div class="rotate-title">Gire o celular</div>
+    <div class="rotate-text">Esta proposta foi feita para tela horizontal. Para a melhor leitura, gire o celular ou abra no computador.</div>
+  </div>
+</div>
+
 <!-- PASSWORD GATE -->
 <div id="gate">
   <div class="gate-box">
@@ -1892,6 +1922,19 @@
   }
   escalar();
   window.addEventListener('resize', escalar);
+
+  // swipe navigation
+  let toqueX = 0, toqueY = 0;
+  document.addEventListener('touchstart', function(e) {
+    toqueX = e.touches[0].clientX; toqueY = e.touches[0].clientY;
+  }, { passive: true });
+  document.addEventListener('touchend', function(e) {
+    if (document.getElementById('gate')) return;
+    const dx = e.changedTouches[0].clientX - toqueX;
+    const dy = e.changedTouches[0].clientY - toqueY;
+    if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return;
+    mover(dx < 0 ? 1 : -1);
+  });
 </script>
 <script>
   // password gate
